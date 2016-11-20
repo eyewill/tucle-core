@@ -26,6 +26,11 @@ class TucleCoreServiceProvider extends ServiceProvider
       __DIR__.'/../views',
     ]);
 
+    if (class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->config->get('app.debug'))
+    {
+      $this->app->register(new \Barryvdh\Debugbar\ServiceProvider($this->app));
+    }
+
     $this->app->make('view')->share('tucle', $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter'));
 
     if (!$this->app->routesAreCached())
