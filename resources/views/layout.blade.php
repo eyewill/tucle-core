@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>{{ config('app.brand') }}</title>
+  <title>{{ config('app.brand', 'TUCLE5') }}</title>
 
 @section('stylesheet')
   <!-- Fonts -->
@@ -38,7 +38,7 @@
 
       <!-- Branding Image -->
       <a class="navbar-brand" href="{{ url('/') }}">
-        {{ config('app.brand') }}
+        {{ config('app.brand', 'TUCLE5') }}
       </a>
     </div>
 

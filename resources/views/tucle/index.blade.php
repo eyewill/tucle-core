@@ -5,7 +5,7 @@
 @section('content')
   <div class="container">
     <div class="page-header">
-      <h1>{{ config('app.brand') }}</h1>
+      <h1>{{ config('app.brand', 'TUCLE5') }}</h1>
     </div>
 
     <table class="table" data-provider="datatables">

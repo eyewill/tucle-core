@@ -1,0 +1,23 @@
+
+$navbar-default-color: #E0E0E0;
+$navbar-default-link-color: #E0E0E0;
+$navbar-default-link-active-color: #EFEFEF;
+$navbar-default-link-hover-color: #EFEFEF;
+$navbar-default-bg: #60656D;
+$navbar-height: 80px;
+
+#cms .navbar-static-top {
+  border: none;
+}
+
+#cms .navbar-static-top:after {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 100%;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,000000+100&0.65+0,0+100 */
+  background: -moz-linear-gradient(top,  rgba(238,238,238,0.65) 0%, rgba(255,255,255,255) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(238,238,238,0.65) 0%,rgba(255,255,255,255) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(238,238,238,0.65) 0%,rgba(255,255,255,255) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6eeeeee', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}

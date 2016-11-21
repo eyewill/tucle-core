@@ -10,6 +10,8 @@ class Initializer
 
   public function generator()
   {
+    yield $this->copyAssetsSass();
+
     yield $this->copyAuthView();
 
     yield $this->addLaravelIdeHelper();
@@ -24,8 +26,30 @@ class Initializer
     }
 
     yield $this->updateHttpRoutes();
+  }
 
-    // @todo resourcesとassetsをコピーする
+  public function copyAssetsSass()
+  {
+    if (File::exists(resource_path('assets/sass')))
+    {
+      return resource_path('assets/sass').' already exists';
+    }
+
+    File::copyDirectory(__DIR__.'/../files/assets/sass', resource_path('assets/sass'));
+
+    return 'assets/sass copied.';
+  }
+
+  public function copyAuthView()
+  {
+    if (File::exists(resource_path('views/auth')))
+    {
+      return resource_path('views/auth').' already exists';
+    }
+
+    File::copyDirectory(__DIR__.'/../files/auth', resource_path('views/auth'));
+
+    return 'auth view copied.';
   }
 
   public function addLaravelIdeHelper()
@@ -131,18 +155,6 @@ __PHP___
     else {
       return $routesPath.' already exists.';
     }
-  }
-
-  public function copyAuthView()
-  {
-    if (File::exists(resource_path('views/auth')))
-    {
-      return resource_path('views/auth').' already exists';
-    }
-
-    File::copyDirectory(__DIR__.'/../files/auth', resource_path('views/auth'));
-
-    return 'auth view copied.';
   }
 
 }

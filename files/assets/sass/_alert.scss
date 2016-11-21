@@ -1,0 +1,26 @@
+
+.alert .flash {
+  font-weight: bold;
+}
+
+.alert .flash:before {
+  font-family: FontAwesome;
+  margin-right: 2px;
+}
+
+.alert.alert-success .flash:before {
+  content: '\f00c'; // fa-check
+}
+
+.alert.alert-danger .flash:before {
+  content: '\f00d'; // fa-times
+}
+
+.alert.alert-info .flash:before {
+  content: '\f129'; // fa-info
+}
+
+.alert.alert-warning .flash:before {
+  content: '\f071'; // fa-exclamation-triangle
+}
+

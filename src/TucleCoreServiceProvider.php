@@ -28,8 +28,8 @@ class TucleCoreServiceProvider extends ServiceProvider
    */
   public function boot()
   {
-    \View::addNamespace('tucle', [
-      __DIR__.'/../views',
+    $this->app->view->addNamespace('tucle', [
+      __DIR__ . '/../resources/views',
     ]);
 
     if ($this->app->environment('local'))
@@ -43,7 +43,7 @@ class TucleCoreServiceProvider extends ServiceProvider
       }
     }
 
-    $this->app->make('view')->share('tucle', $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter'));
+    $this->app->view->share('tucle', $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter'));
 
     if (!$this->app->routesAreCached())
     {
