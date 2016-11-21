@@ -87,9 +87,7 @@
   <script src="/assets/moment/js/moment-with-locales.min.js"></script>
   <script src="/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
-  {{ $tucle->jsFlashMessage() }}
-
-  {{ $tucle->jsRestAction() }}
+  @include('tucle::partial.scripts')
 
   <script>
     $('[data-provider=datetimepicker]').datetimepicker({
