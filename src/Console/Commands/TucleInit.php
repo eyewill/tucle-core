@@ -1,7 +1,7 @@
 <?php namespace Eyewill\TucleCore\Console\Commands;
 
 use Exception;
-use Eyewill\TucleCore\Initialize;
+use Eyewill\TucleCore\Initializer;
 use Illuminate\Console\Command;
 
 class TucleInit extends Command
@@ -41,7 +41,7 @@ class TucleInit extends Command
     $only = $this->option('only');
 
     try {
-      $factory = new Initialize($force, $only);
+      $factory = new Initializer($force, $only);
       foreach ($factory->generator() as $message)
         $this->info($message);
     } catch (Exception $e) {

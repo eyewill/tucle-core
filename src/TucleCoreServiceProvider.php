@@ -15,6 +15,12 @@ class TucleCoreServiceProvider extends ServiceProvider
     'Eyewill\TucleCore\Console\Commands\TucleInit',
   ];
 
+  protected $providersLocal = [
+    'Barryvdh\Debugbar\ServiceProvider',
+    'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+    'Primalbase\Migrate\MigrateServiceProvider',
+  ];
+
   /**
    * Bootstrap the application services.
    *
@@ -26,9 +32,15 @@ class TucleCoreServiceProvider extends ServiceProvider
       __DIR__.'/../views',
     ]);
 
-    if (class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->config->get('app.debug'))
+    if ($this->app->environment('local'))
     {
-      $this->app->register(new \Barryvdh\Debugbar\ServiceProvider($this->app));
+      foreach ($this->providersLocal as $provider)
+      {
+        if (class_exists($provider))
+        {
+          $this->app->register($provider);
+        }
+      }
     }
 
     $this->app->make('view')->share('tucle', $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter'));
