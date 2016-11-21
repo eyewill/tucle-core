@@ -32,6 +32,8 @@ class Initializer
 
     yield $this->composer->update();
 
+    yield $this->makeConfigFile();
+
     yield $this->updateHttpRoutes();
   }
 
@@ -65,7 +67,7 @@ class Initializer
     $routesPath = app_path().'/Http/routes.php';
     if (is_null($homeRoute))
     {
-      File::put($routesPath, <<<__PHP___
+      File::put($routesPath, <<<__PHP__
 <?php
 
 /**
@@ -76,7 +78,7 @@ class Initializer
 Route::get('/', function () {
   return view('tucle::tucle.index');
 })->middleware('auth')->name('home');
-__PHP___
+__PHP__
       );
       return $routesPath.' generated.';
     }
@@ -85,4 +87,24 @@ __PHP___
     }
   }
 
+  public function makeConfigFile()
+  {
+    $configFilePath = base_path('config/tucle.php');
+    if (File::exists($configFilePath)) {
+      return $configFilePath . ' already exists.';
+    }
+
+    File::put($configFilePath, <<<__PHP__
+<?php
+
+return [
+  
+  'modules' => [],
+  
+];
+__PHP__
+    );
+
+    return $configFilePath.' generated.';
+  }
 }

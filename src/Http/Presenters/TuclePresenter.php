@@ -7,7 +7,7 @@ class TuclePresenter
   public function navigation()
   {
     $html = '';
-    $modules = config('module.modules', []);
+    $modules = config('tucle.modules', []);
     foreach ($modules as $module)
     {
       $presenter = app('App\\Http\\Presenters\\'.studly_case($module).'Presenter');

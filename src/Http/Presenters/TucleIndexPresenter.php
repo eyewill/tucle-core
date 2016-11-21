@@ -6,7 +6,7 @@ class TucleIndexPresenter
 {
   public function entries()
   {
-    $modules = config('module.modules', []);
+    $modules = config('tucle.modules', []);
     $html = '';
     foreach ($modules as $module)
     {
