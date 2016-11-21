@@ -6,24 +6,20 @@ class TuclePresenter
 {
   public function navigation()
   {
-    $items = [
-//      [
-//        'url'   => '/',
-//        'label' => 'Home',
-//      ],
-    ];
-
+    $html = '';
     $modules = config('module.modules', []);
     foreach ($modules as $module)
     {
       $presenter = app('App\\Http\\Presenters\\'.studly_case($module).'Presenter');
-      $items[] = [
-        'url' => $presenter->route('index'),
-        'label' => $presenter->getPageTitle(),
-      ];
+      $url = $presenter->route('index');
+      $label = $presenter->getPageTitle();
+      $html.= '<li>';
+      $html.= '<a href="'.$url.'">';
+      $html.= e($label);
+      $html.= '</a>';
+      $html.= '</li>';
     }
 
-    $html = view()->renderEach('partial.navigation', $items, 'item');
     return new HtmlString($html);
   }
 }
