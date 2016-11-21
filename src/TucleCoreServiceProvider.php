@@ -15,6 +15,10 @@ class TucleCoreServiceProvider extends ServiceProvider
     'Eyewill\TucleCore\Console\Commands\TucleInit',
   ];
 
+  protected $providers = [
+    'Collective\Html\HtmlServiceProvider',
+  ];
+
   protected $providersLocal = [
     'Barryvdh\Debugbar\ServiceProvider',
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
@@ -31,6 +35,14 @@ class TucleCoreServiceProvider extends ServiceProvider
     $this->app->view->addNamespace('tucle', [
       __DIR__ . '/../resources/views',
     ]);
+
+    foreach ($this->providers as $provider)
+    {
+      if (class_exists($provider))
+      {
+        $this->app->register($provider);
+      }
+    }
 
     if ($this->app->environment('local'))
     {
