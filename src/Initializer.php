@@ -16,6 +16,8 @@ class Initializer
   {
     yield $this->copyAssetsSass();
 
+    yield $this->copyAssetsCKEditor();
+
     yield $this->copyAuthView();
 
     yield $this->composer->add('laravelcollective/html', '5.2.*');
@@ -47,6 +49,18 @@ class Initializer
     File::copyDirectory(__DIR__.'/../files/assets/sass', resource_path('assets/sass'));
 
     return 'assets/sass copied.';
+  }
+
+  public function copyAssetsCKEditor()
+  {
+    if (File::exists(resource_path('assets/ckeditor')))
+    {
+      return resource_path('assets/ckeditor').' already exists';
+    }
+
+    File::copyDirectory(__DIR__.'/../files/assets/ckeditor', resource_path('assets/ckeditor'));
+
+    return 'assets/ckeditor copied.';
   }
 
   public function copyAuthView()
