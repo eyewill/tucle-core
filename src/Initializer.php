@@ -2,11 +2,15 @@
 
 use File;
 use Route;
-use Symfony\Component\Process\Process;
 
 class Initializer
 {
-  protected $composerUpdate = false;
+  protected $composer;
+
+  public function __construct($force, $only)
+  {
+    $this->composer = new ComposerManager;
+  }
 
   public function generator()
   {
@@ -14,16 +18,19 @@ class Initializer
 
     yield $this->copyAuthView();
 
-    yield $this->addLaravelIdeHelper();
+    yield $this->composer->add('laravelcollective/html', '5.2.*');
 
-    yield $this->addLaravelDebugbar();
+    yield $this->composer->add('codesleeve/stapler', '1.0.*');
 
-    yield $this->addMigrateBuild();
+    yield $this->composer->add('barryvdh/laravel-debugbar', '^2.3');
 
-    if ($this->composerUpdate)
-    {
-      yield $this->composerUpdate();
-    }
+    yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
+    yield $this->composer->scripts('php artisan ide-helper:generate', 1);
+    yield $this->composer->scripts('php artisan ide-helper:meta', 2);
+
+    yield $this->composer->add('primalbase/laravel5-migrate-build', '0.0.0.*');
+
+    yield $this->composer->update();
 
     yield $this->updateHttpRoutes();
   }
@@ -50,85 +57,6 @@ class Initializer
     File::copyDirectory(__DIR__.'/../files/auth', resource_path('views/auth'));
 
     return 'auth view copied.';
-  }
-
-  public function addLaravelIdeHelper()
-  {
-    $path = base_path('composer.json');
-    if (!File::exists($path))
-    {
-      return 'composer.json not exists.';
-    }
-
-    $composerJson = json_decode(File::get($path), true);
-    if (!array_has($composerJson, 'require.barryvdh/laravel-ide-helper'))
-    {
-      array_set($composerJson, 'require.barryvdh/laravel-ide-helper', '^2.2');
-      $this->composerUpdate = true;
-    }
-    $postUpdateCmd = array_get($composerJson, 'scripts.post-update-cmd');
-    if (!in_array('php artisan ide-helper:generate', $postUpdateCmd))
-    {
-      array_splice($postUpdateCmd, 1, 0, 'php artisan ide-helper:generate');
-      $this->composerUpdate = true;
-    }
-    if (!in_array('php artisan ide-helper:meta', $postUpdateCmd))
-    {
-      array_splice($postUpdateCmd, 2, 0, 'php artisan ide-helper:meta');
-      $this->composerUpdate = true;
-    }
-    array_set($composerJson, 'scripts.post-update-cmd', $postUpdateCmd);
-
-    File::put($path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
-
-    return 'add laravel-ide-helper to composer.json';
-  }
-
-  public function addLaravelDebugbar()
-  {
-    $path = base_path('composer.json');
-    if (!File::exists($path))
-    {
-      return 'composer.json not exists.';
-    }
-
-    $composerJson = json_decode(File::get($path), true);
-    if (!array_has($composerJson, 'require.barryvdh/laravel-debugbar'))
-    {
-      array_set($composerJson, 'require.barryvdh/laravel-debugbar', '^2.3');
-      $this->composerUpdate = true;
-    }
-    File::put($path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
-
-    return 'add laravel-debugbar to composer.json';
-  }
-
-  public function addMigrateBuild()
-  {
-    $path = base_path('composer.json');
-    if (!File::exists($path))
-    {
-      return 'composer.json not exists.';
-    }
-
-    $composerJson = json_decode(File::get($path), true);
-    if (!array_has($composerJson, 'require.primalbase/laravel5-migrate-build'))
-    {
-      array_set($composerJson, 'require.primalbase/laravel5-migrate-build', '0.0.0.*');
-      $this->composerUpdate = true;
-    }
-    File::put($path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
-
-    return 'add laravel5-migrate-build to composer.json';
-  }
-
-
-  public function composerUpdate()
-  {
-    $process = new Process('composer update');
-    $process->setTimeout(0);
-    $process->run();
-    return $process->getOutput();
   }
 
   public function updateHttpRoutes()
