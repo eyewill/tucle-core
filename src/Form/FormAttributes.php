@@ -4,23 +4,38 @@ class FormAttributes
 {
   protected $attributes = [];
 
-  public function __construct($attributes = [])
+  /**
+   * FormAttributes constructor.
+   * @param array $attributes
+   */
+  public function __construct(array $attributes = [])
   {
     $this->attributes = $attributes;
   }
 
-  public function setAttributes($attributes)
+  /**
+   * @param array $attributes
+   */
+  public function set(array $attributes)
   {
     $this->attributes = $attributes;
   }
 
-  public function getAttributes()
+  /**
+   * @return array
+   */
+  public function get()
   {
     return $this->attributes;
   }
 
-  public function mergeAttributes($attributes)
+  /**
+   * @param $attributes
+   * @return $this
+   */
+  public function merge($attributes)
   {
-    return $this->attributes = array_merge($attributes, $this->attributes);
+    $this->attributes = array_merge($attributes, $this->attributes);
+    return $this;
   }
 }

@@ -1,6 +1,8 @@
 <?php namespace Eyewill\TucleCore;
 
 use Eyewill\TucleCore\Contracts\Presenter\ModelEditPresenter as EditModelPresenterContracts;
+use Eyewill\TucleCore\Form\FormGroup;
+use Eyewill\TucleCore\Form\FormInput;
 use Eyewill\TucleCore\Http\Presenters\ModelEditPresenter;
 use Eyewill\TucleCore\Http\Presenters\TucleIndexPresenter;
 use File;
@@ -55,7 +57,9 @@ class TucleCoreServiceProvider extends ServiceProvider
       }
     }
 
-    $this->app->view->share('tucle', $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter'));
+    $this->app->view->share('tucle',
+      $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter')
+    );
 
     if (!$this->app->routesAreCached())
     {
@@ -84,7 +88,6 @@ class TucleCoreServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    $this->app->bind('Eyewill\TucleCore\Contracts\Renderer\FormElementRenderer', 'Eyewill\TucleCore\Renderer\FormElementRenderer');
     $this->app->singleton(EditModelPresenterContracts::class, ModelEditPresenter::class);
     $this->app->singleton('TucleIndexPresenter', TucleIndexPresenter::class);
 

@@ -11,7 +11,7 @@ class TucleInit extends Command
    *
    * @var string
    */
-  protected $signature = 'tucle:init {--force} {--only=}';
+  protected $signature = 'tucle:init {--force} {--only=} {--list}';
 
   /**
    * The console command description.
@@ -39,17 +39,28 @@ class TucleInit extends Command
   {
     $force = $this->option('force');
     $only = $this->option('only');
+    $list = $this->option('list');
 
     try {
       $factory = new Initializer($force, $only);
-      foreach ($factory->generator() as $message)
-        $this->info($message);
+      if ($list)
+      {
+        $this->info('all tasks.');
+        $this->info('----------');
+        $this->info(implode(PHP_EOL, $factory->getRegisteredTasks()));
+      }
+      else
+      {
+        foreach ($factory->generator() as $message)
+        {
+          $this->info($message);
+        }
+        $this->info('Tucle apps initialized.');
+      }
     } catch (Exception $e) {
 
       $this->error($e->getFile().':'.$e->getLine().' '.$e->getMessage());
       exit(-1);
     }
-
-    $this->info('Tucle apps initialized.');
   }
 }

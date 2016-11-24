@@ -2,7 +2,9 @@
     "name": "eyewill/tucle-core",
     "description": "Tucle Core",
     "author": "Hiroshi Kawai <kawai@primalbase.jp>",
-    "require": {},
+    "require": {
+        "intervention/image": "^2.3"
+    },
     "autoload": {
         "psr-4": {
             "Eyewill\\TucleCore\\": "src/"

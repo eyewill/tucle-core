@@ -1,6 +1,7 @@
 @extends('tucle::layout')
 
-@include('tucle::module.ckeditor');
+@include('tucle::module.ckeditor')
+@include('tucle::module.fileinput')
 
 @section('content')
 <div class="container">

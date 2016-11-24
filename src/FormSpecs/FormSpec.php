@@ -1,8 +1,8 @@
-<?php namespace Eyewill\TucleCore\FormTypes;
+<?php namespace Eyewill\TucleCore\FormSpecs;
 
 use Eyewill\TucleCore\Form\FormAttributes;
 
-class FormType
+class FormSpec
 {
   protected $attributes;
 

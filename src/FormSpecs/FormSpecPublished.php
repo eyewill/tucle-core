@@ -1,6 +1,6 @@
-<?php namespace Eyewill\TucleCore\FormTypes;
+<?php namespace Eyewill\TucleCore\FormSpecs;
 
-class FormTypePublished extends FormType
+class FormSpecPublished extends FormSpec
 {
   public function __construct($spec = [])
   {

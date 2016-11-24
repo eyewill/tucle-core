@@ -6,37 +6,78 @@ use Route;
 class Initializer
 {
   protected $composer;
+  protected $force;
+  protected $registeredTasks = [
+    'assets',
+    'packages',
+    'auth',
+    'composer',
+    'config',
+    'routes',
+  ];
 
-  public function __construct($force, $only)
+  protected $tasks = [];
+
+  public function __construct($force = false, $only = null)
   {
+    $this->force = $force;
+    if (is_null($only))
+    {
+      $this->tasks = $this->registeredTasks;
+    }
+    else
+    {
+      $this->tasks = explode(',', $only);
+    }
+
     $this->composer = new ComposerManager;
+  }
+
+  public function getRegisteredTasks()
+  {
+    return $this->registeredTasks;
   }
 
   public function generator()
   {
-    yield $this->copyAssetsSass();
+    if (in_array('assets', $this->tasks))
+    {
+      yield $this->copyAssetsSass();
+      yield $this->copyAssetsCKEditor();
+    }
 
-    yield $this->copyAssetsCKEditor();
+    if (in_array('packages', $this->tasks))
+    {
+      yield $this->copyBower();
+      yield $this->copyGulpfile();
+    }
 
-    yield $this->copyAuthView();
+    if (in_array('auth', $this->tasks))
+    {
+      yield $this->copyAuthView();
+    }
 
-    yield $this->composer->add('laravelcollective/html', '5.2.*');
+    if (in_array('composer', $this->tasks))
+    {
+      yield $this->composer->add('laravelcollective/html', '5.2.*');
+      yield $this->composer->add('codesleeve/stapler', '1.0.*');
+      yield $this->composer->add('barryvdh/laravel-debugbar', '^2.3');
+      yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
+      yield $this->composer->scripts('php artisan ide-helper:generate', 1);
+      yield $this->composer->scripts('php artisan ide-helper:meta', 2);
+      yield $this->composer->add('primalbase/laravel5-migrate-build', '0.0.0.*');
+      yield $this->composer->update();
+    }
 
-    yield $this->composer->add('codesleeve/stapler', '1.0.*');
+    if (in_array('config', $this->tasks))
+    {
+      yield $this->makeConfigFile();
+    }
 
-    yield $this->composer->add('barryvdh/laravel-debugbar', '^2.3');
-
-    yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
-    yield $this->composer->scripts('php artisan ide-helper:generate', 1);
-    yield $this->composer->scripts('php artisan ide-helper:meta', 2);
-
-    yield $this->composer->add('primalbase/laravel5-migrate-build', '0.0.0.*');
-
-    yield $this->composer->update();
-
-    yield $this->makeConfigFile();
-
-    yield $this->updateHttpRoutes();
+    if (in_array('routes', $this->tasks))
+    {
+      yield $this->updateHttpRoutes();
+    }
   }
 
   public function copyAssetsSass()
@@ -73,6 +114,32 @@ class Initializer
     File::copyDirectory(__DIR__.'/../files/auth', resource_path('views/auth'));
 
     return 'auth view copied.';
+  }
+
+  public function copyBower()
+  {
+    $path = base_path('bower.json');
+    if (!$this->force && File::exists($path))
+    {
+      return $path.' already exists.';
+    }
+
+    File::copy(__DIR__.'/../files/bower.json', $path);
+
+    return $path.' copied.';
+  }
+
+  public function copyGulpfile()
+  {
+    $path = base_path('gulpfile.js');
+    if (!$this->force && File::exists($path))
+    {
+      return $path.' already exists.';
+    }
+
+    File::copy(__DIR__.'/../files/gulpfile.js', $path);
+
+    return $path.' copied.';
   }
 
   public function updateHttpRoutes()

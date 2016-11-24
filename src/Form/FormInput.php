@@ -1,14 +1,14 @@
 <?php namespace Eyewill\TucleCore\Form;
 
-use Eyewill\TucleCore\FormTypes\FormType;
+use Eyewill\TucleCore\FormSpecs\FormSpec;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 
 class FormInput
 {
-  /** @var  FormType */
-  protected $type;
+  /** @var  FormSpec */
+  protected $spec;
 
   protected $name;
   protected $attributes;
@@ -16,10 +16,10 @@ class FormInput
   /** @var ModelPresenter */
   protected $presenter;
 
-  public function __construct(ModelPresenter $presenter, FormType $type)
+  public function __construct(ModelPresenter $presenter, FormSpec $type)
   {
     $this->presenter = $presenter;
-    $this->type = $type;
+    $this->spec = $type;
   }
 
   /**
@@ -43,17 +43,17 @@ class FormInput
    */
   public function render()
   {
-    $type = $this->type;
+    $type = $this->spec;
     $name = $type->getName();
-    $attributes = $type->getAttributes()->mergeAttributes([
+    $attributes = $type->getAttributes()->merge([
       'class' => 'form-control',
-    ]);
+    ])->get();
 
     $html = $this->label();
     $html.= $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
     $html.= $this->renderHelp();
     $html.= $this->renderError();
-    if ($this->type->getGroup())
+    if ($this->spec->getGroup())
     {
       $html = $this->grouping($html);
     }
@@ -86,7 +86,7 @@ class FormInput
   {
     $class = '';
 
-    if ($this->type->getRequired())
+    if ($this->spec->getRequired())
     {
       $class .= 'required';
     }
@@ -94,12 +94,12 @@ class FormInput
     $attributes = [
       'class' => $class,
     ];
-    return $this->presenter->getForm()->label($this->type->getLabel(), null, $attributes);
+    return $this->presenter->getForm()->label($this->spec->getLabel(), null, $attributes);
   }
 
   public function renderHelp()
   {
-    $help = $this->type->getHelp();
+    $help = $this->spec->getHelp();
 
     $html = '';
     if (!empty($help))
@@ -114,14 +114,14 @@ class FormInput
 
   public function hasError()
   {
-    $name = $this->type->getName();
+    $name = $this->spec->getName();
 
     return $this->errors()->has($name);
   }
 
   public function renderError()
   {
-    $name = $this->type->getName();
+    $name = $this->spec->getName();
 
     $html = '';
     if ($this->hasError())

@@ -1,20 +1,20 @@
 <?php namespace Eyewill\TucleCore\Form;
 
-use Eyewill\TucleCore\FormSpecs\FormSpecTextarea;
+use Eyewill\TucleCore\FormSpecs\FormSpecImage;
 
-class FormTextarea extends FormInput
+class FormImage extends FormInput
 {
   public function render()
   {
-    /** @var FormSpecTextarea $spec */
+    /** @var FormSpecImage $spec */
     $spec = $this->spec;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->merge([
-      'class' => 'form-control',
+      'class' => 'file-loading',
+      'data-allowed-file-extensions' => '["jpg", "png", "gif"]'
     ])->get();
-
     $html = $this->label();
-    $html.= $this->presenter->getForm()->textarea($name, null, $attributes)->toHtml();
+    $html.= $this->presenter->getForm()->file($name, $attributes)->toHtml();
     $html.= $this->renderHelp();
     $html.= $this->renderError();
     if ($spec->getGroup())
@@ -24,4 +24,5 @@ class FormTextarea extends FormInput
 
     return $html;
   }
+
 }

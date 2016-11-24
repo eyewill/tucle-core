@@ -1,7 +1,7 @@
 <?php namespace Eyewill\TucleCore\Form;
 
-use Eyewill\TucleCore\FormTypes\FormType;
-use Eyewill\TucleCore\FormTypes\FormTypeSelect;
+use Eyewill\TucleCore\FormSpecs\FormSpec;
+use Eyewill\TucleCore\FormSpecs\FormSpecSelect;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSelect extends FormInput
@@ -9,7 +9,7 @@ class FormSelect extends FormInput
   protected $emptyLabel;
   protected $values = [];
 
-  public function __construct(ModelPresenter $presenter, FormType $type)
+  public function __construct(ModelPresenter $presenter, FormSpec $type)
   {
     $this->setValues($type->getValues());
     $this->setEmptyLabel($type->getEmptyLabel());
@@ -28,12 +28,12 @@ class FormSelect extends FormInput
 
   public function render()
   {
-    /** @var FormTypeSelect $type */
-    $type = $this->type;
+    /** @var FormSpecSelect $type */
+    $type = $this->spec;
     $name = $type->getName();
-    $attributes = $type->getAttributes()->mergeAttributes([
+    $attributes = $type->getAttributes()->merge([
       'class' => 'form-control',
-    ]);
+    ])->get();
     $values = $this->values;
     if ($this->emptyLabel)
     {

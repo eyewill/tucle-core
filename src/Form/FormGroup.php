@@ -1,12 +1,12 @@
 <?php namespace Eyewill\TucleCore\Form;
 
 use Eyewill\TucleCore\Factories\FormInputFactory;
-use Eyewill\TucleCore\FormTypes\FormTypeGroup;
+use Eyewill\TucleCore\FormSpecs\FormSpecGroup;
 
 class FormGroup extends FormInput
 {
-  /** @var FormTypeGroup */
-  protected $type;
+  /** @var FormSpecGroup */
+  protected $spec;
 
   public function render()
   {
@@ -22,7 +22,7 @@ class FormGroup extends FormInput
   public function renderGroupForms()
   {
     $html = '';
-    $forms = $this->type->getForms();
+    $forms = $this->spec->getForms();
     foreach ($forms as $form)
     {
       $width = array_get($form, 'width', 'col-xs-12');

@@ -1,9 +1,9 @@
 <?php namespace Eyewill\TucleCore\Form;
 
-use Eyewill\TucleCore\FormTypes\FormTypePublished;
+use Eyewill\TucleCore\FormSpecs\FormSpecPublished;
 
 class FormPublished extends FormGroup
 {
-  /** @var FormTypePublished */
-  protected $type;
+  /** @var FormSpecPublished */
+  protected $spec;
 }
