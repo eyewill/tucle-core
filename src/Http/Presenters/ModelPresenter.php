@@ -23,7 +23,7 @@ class ModelPresenter
     $this->form = $form;
     $this->html = $html;
     $this->breadCrumbs = array_merge([[
-      'label' => config('app.brand', 'TUCLE5'),
+      'label' => config('tucle.brand', 'TUCLE5'),
       'url' => '/',
     ]], $this->breadCrumbs);
   }

@@ -20,7 +20,14 @@ class Initializer
 
   public function __construct($force = false, $only = null)
   {
-    $this->force = $force;
+    if (!File::exists(base_path('.tucle')))
+    {
+      $this->force = true;
+    }
+    else
+    {
+      $this->force = $force;
+    }
     if (is_null($only))
     {
       $this->tasks = $this->registeredTasks;
@@ -78,11 +85,13 @@ class Initializer
     {
       yield $this->updateHttpRoutes();
     }
+
+    File::put(base_path('.tucle'), 'installed.');
   }
 
   public function copyAssetsSass()
   {
-    if (File::exists(resource_path('assets/sass')))
+    if (!$this->force && File::exists(resource_path('assets/sass')))
     {
       return resource_path('assets/sass').' already exists';
     }
@@ -94,7 +103,7 @@ class Initializer
 
   public function copyAssetsCKEditor()
   {
-    if (File::exists(resource_path('assets/ckeditor')))
+    if (!$this->force && File::exists(resource_path('assets/ckeditor')))
     {
       return resource_path('assets/ckeditor').' already exists';
     }
@@ -106,7 +115,7 @@ class Initializer
 
   public function copyAuthView()
   {
-    if (File::exists(resource_path('views/auth')))
+    if (!$this->force && File::exists(resource_path('views/auth')))
     {
       return resource_path('views/auth').' already exists';
     }
@@ -146,9 +155,12 @@ class Initializer
   {
     $homeRoute = Route::getRoutes()->getByName('home');
     $routesPath = app_path().'/Http/routes.php';
-    if (is_null($homeRoute))
+    if (!$this->force && !is_null($homeRoute))
     {
-      File::put($routesPath, <<<__PHP__
+      return $routesPath.' already exists.';
+    }
+
+    File::put($routesPath, <<<__PHP__
 <?php
 
 /**
@@ -161,17 +173,14 @@ Route::get('/', function () {
 })->middleware('auth')->name('home');
 __PHP__
       );
+
       return $routesPath.' generated.';
-    }
-    else {
-      return $routesPath.' already exists.';
-    }
   }
 
   public function makeConfigFile()
   {
     $configFilePath = base_path('config/tucle.php');
-    if (File::exists($configFilePath)) {
+    if (!$this->force && File::exists($configFilePath)) {
       return $configFilePath . ' already exists.';
     }
 
@@ -179,6 +188,8 @@ __PHP__
 <?php
 
 return [
+  
+  'brand' => 'TUCLE5',
   
   'modules' => [],
   
