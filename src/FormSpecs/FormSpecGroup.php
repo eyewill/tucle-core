@@ -1,5 +1,8 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
+use Eyewill\TucleCore\Forms\FormGroup;
+use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
+
 class FormSpecGroup extends FormSpec
 {
   public function __construct($spec = [])
@@ -7,8 +10,14 @@ class FormSpecGroup extends FormSpec
     $attributes = [
       'forms' => array_get($spec, 'forms', []),
     ];
+    $attributes['name'] = array_pluck($attributes['forms'], 'name');
 
     parent::__construct($spec, $attributes);
+  }
+
+  public function make(ModelPresenter $presenter)
+  {
+    return app()->make(FormGroup::class, [$presenter, $this]);
   }
 
   /**

@@ -1,8 +1,9 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
-use Eyewill\TucleCore\Form\FormAttributes;
+use Eyewill\TucleCore\Forms\FormAttributes;
+use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpec
+abstract class FormSpec
 {
   protected $attributes;
 
@@ -13,10 +14,15 @@ class FormSpec
       'name'       => array_get($spec, 'name', ''),
       'required'   => array_get($spec, 'required', false),
       'label'      => array_get($spec, 'label', ''),
+      'width'      => array_get($spec, 'width', 'col-xs-12'),
       'help'       => array_get($spec, 'help', ''),
       'group'      => array_get($spec, 'group', true),
       'attributes' => new FormAttributes(array_get($spec, 'attributes', [])),
     ], $mergeAttributes);
+  }
+
+  public function make(ModelPresenter $presenter)
+  {
   }
 
   /**
@@ -65,5 +71,13 @@ class FormSpec
   public function getAttributes()
   {
     return array_get($this->attributes, 'attributes');
+  }
+
+  /**
+   * @return string
+   */
+  public function getWidth()
+  {
+    return array_get($this->attributes, 'width');
   }
 }

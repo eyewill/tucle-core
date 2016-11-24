@@ -1,17 +1,7 @@
 <?php namespace Eyewill\TucleCore\Factories;
 
-use Eyewill\TucleCore\Form\FormGroup;
-use Eyewill\TucleCore\Form\FormImage;
-use Eyewill\TucleCore\Form\FormInput;
-use Eyewill\TucleCore\Form\FormPublished;
-use Eyewill\TucleCore\Form\FormSelect;
-use Eyewill\TucleCore\Form\FormText;
-use Eyewill\TucleCore\Form\FormTextarea;
-use Eyewill\TucleCore\FormSpecs\FormSpecGroup;
-use Eyewill\TucleCore\FormSpecs\FormSpecPublished;
-use Eyewill\TucleCore\FormSpecs\FormSpecSelect;
+use Eyewill\TucleCore\Forms\FormInput;
 use Eyewill\TucleCore\FormSpecs\FormSpecText;
-use Eyewill\TucleCore\FormSpecs\FormSpecTextarea;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormInputFactory
@@ -25,29 +15,16 @@ class FormInputFactory
   {
     $type = array_get($spec, 'type', 'text');
 
-    switch ($type)
+    $class = 'Eyewill\\TucleCore\\FormSpecs\\FormSpec'.studly_case($type);
+    if (class_exists($class))
     {
-      case 'group':
-        $form = new FormGroup($presenter, new FormSpecGroup($spec));
-        break;
-      case 'published':
-        $form = new FormPublished($presenter, new FormSpecPublished($spec));
-        break;
-      case 'select':
-        $form = new FormSelect($presenter, new FormSpecSelect($spec));
-        break;
-      case 'textarea':
-        $form = new FormTextarea($presenter, new FormSpecTextarea($spec));
-        break;
-      case 'image':
-        $form = new FormImage($presenter, new FormSpecTextarea($spec));
-        break;
-      case 'text':
-      default:
-        $form = new FormText($presenter, new FormSpecText($spec));
-        break;
+      $formSpec = app()->make($class, [$spec]);
+    }
+    else
+    {
+      $formSpec = new FormSpecText($spec);
     }
 
-    return $form;
+    return $formSpec->make($presenter);
   }
 }

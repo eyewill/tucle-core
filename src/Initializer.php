@@ -91,14 +91,24 @@ class Initializer
 
   public function copyAssetsSass()
   {
-    if (!$this->force && File::exists(resource_path('assets/sass')))
+    $path = resource_path('assets/sass/app.scss');
+    $dest = __DIR__.'/../files/assets/sass/app.scss';
+    if (!$this->force && File::exists($path))
     {
-      return resource_path('assets/sass').' already exists';
+      return $path.' already exists';
     }
 
-    File::copyDirectory(__DIR__.'/../files/assets/sass', resource_path('assets/sass'));
+    $scss = '';
+    $pos = strpos(__DIR__, 'packages');
+    if ($pos === false)
+      $pos = strpos(__DIR__, 'vendor');
+    $dir = substr(__DIR__, $pos).'/../resources/assets/sass';
+    $scss.= '@import "'.$dir.'/tucle";'.PHP_EOL;
 
-    return 'assets/sass copied.';
+    $scss.= File::get($dest);
+    File::put($path, $scss);
+
+    return $path.' copied.';
   }
 
   public function copyAssetsCKEditor()

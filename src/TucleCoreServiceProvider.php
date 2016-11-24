@@ -1,8 +1,8 @@
 <?php namespace Eyewill\TucleCore;
 
 use Eyewill\TucleCore\Contracts\Presenter\ModelEditPresenter as EditModelPresenterContracts;
-use Eyewill\TucleCore\Form\FormGroup;
-use Eyewill\TucleCore\Form\FormInput;
+use Eyewill\TucleCore\Forms\FormGroup;
+use Eyewill\TucleCore\Forms\FormInput;
 use Eyewill\TucleCore\Http\Presenters\ModelEditPresenter;
 use Eyewill\TucleCore\Http\Presenters\TucleIndexPresenter;
 use File;

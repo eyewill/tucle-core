@@ -1,4 +1,4 @@
-<?php namespace Eyewill\TucleCore\Form;
+<?php namespace Eyewill\TucleCore\Forms;
 
 class FormSpec
 {

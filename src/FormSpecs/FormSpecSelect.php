@@ -1,5 +1,8 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
+use Eyewill\TucleCore\Forms\FormSelect;
+use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
+
 class FormSpecSelect extends FormSpec
 {
   public function __construct($spec = [])
@@ -10,6 +13,11 @@ class FormSpecSelect extends FormSpec
     ];
 
     parent::__construct($spec, $attributes);
+  }
+
+  public function make(ModelPresenter $presenter)
+  {
+    return app()->make(FormSelect::class, [$presenter, $this]);
   }
 
   public function getEmptyLabel()

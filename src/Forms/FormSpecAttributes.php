@@ -1,5 +1,5 @@
 <?php
-namespace Eyewill\TucleCore\Form;
+namespace Eyewill\TucleCore\Forms;
 
 
 class FormSpecAttributes

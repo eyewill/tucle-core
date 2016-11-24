@@ -1,5 +1,8 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
+use Eyewill\TucleCore\Forms\FormPublished;
+use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
+
 class FormSpecPublished extends FormSpec
 {
   public function __construct($spec = [])
@@ -25,9 +28,15 @@ class FormSpecPublished extends FormSpec
           ],
         ],
       ],
+      'name' => ['published_at', 'terminated_at'],
     ];
 
     parent::__construct($spec, $attributes);
+  }
+
+  public function make(ModelPresenter $presenter)
+  {
+    return app()->make(FormPublished::class, [$presenter, $this]);
   }
 
   /**

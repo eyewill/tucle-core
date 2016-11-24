@@ -1,4 +1,4 @@
-<?php namespace Eyewill\TucleCore\Form;
+<?php namespace Eyewill\TucleCore\Forms;
 
 use Eyewill\TucleCore\Factories\FormInputFactory;
 use Eyewill\TucleCore\FormSpecs\FormSpecGroup;
@@ -10,11 +10,13 @@ class FormGroup extends FormInput
 
   public function render()
   {
-    $html = $this->label();
-
-    $html.= '<div class="row">';
-    $html.= $this->renderGroupForms();
+    $html = '';
+    $html.= '<div class="col-xs-12">';
+    $html.= $this->label();
     $html.= '</div>';
+    $html.= $this->renderGroupForms();
+
+    $html = $this->grouping($html);
 
     return $html;
   }
@@ -23,15 +25,14 @@ class FormGroup extends FormInput
   {
     $html = '';
     $forms = $this->spec->getForms();
-    foreach ($forms as $form)
+    foreach ($forms as $spec)
     {
-      $width = array_get($form, 'width', 'col-xs-12');
-      $html.= '<div class="'.$width.'">';
-      $form = FormInputFactory::make($this->presenter, $form);
+      $spec['group'] = false;
+      $form = FormInputFactory::make($this->presenter, $spec);
       $html.= $form->render();
-      $html.= '</div>';
     }
 
     return $html;
   }
+
 }

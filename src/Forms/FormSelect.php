@@ -1,4 +1,4 @@
-<?php namespace Eyewill\TucleCore\Form;
+<?php namespace Eyewill\TucleCore\Forms;
 
 use Eyewill\TucleCore\FormSpecs\FormSpec;
 use Eyewill\TucleCore\FormSpecs\FormSpecSelect;
@@ -31,6 +31,7 @@ class FormSelect extends FormInput
     /** @var FormSpecSelect $type */
     $type = $this->spec;
     $name = $type->getName();
+    $width = $type->getWidth();
     $attributes = $type->getAttributes()->merge([
       'class' => 'form-control',
     ])->get();
@@ -40,10 +41,15 @@ class FormSelect extends FormInput
       $values = ['' => $this->emptyLabel]+$values;
     }
 
-    $html = $this->label();
+    $html = '';
+
+    $html.= '<div class="'.$width.'">';
+    $html.= $this->label();
     $html.= $this->presenter->getForm()->select($name, $values, null, $attributes)->toHtml();
     $html.= $this->renderHelp();
     $html.= $this->renderError();
+    $html.= '</div>';
+
     if ($type->getGroup())
     {
       $html = $this->grouping($html);

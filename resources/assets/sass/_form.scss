@@ -5,3 +5,8 @@ label.required:before {
   margin-right: 4px;
   content: '\f023'; // circle-o
 }
+
+.form-group .radio, .form-group .checkbox {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
