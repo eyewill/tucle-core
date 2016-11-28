@@ -19,6 +19,10 @@
   @endif
   <link rel="stylesheet" href="/assets/css/animate.min.css">
   <link rel="stylesheet" href="/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+
+  <!-- Scripts -->
+  <script src="/assets/jquery/js/jquery.min.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 @show
 
 </head>
@@ -81,13 +85,11 @@
 
 <!-- JavaScripts -->
 @section('script')
-  <script src="/assets/jquery/js/jquery.min.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-  <script src="/assets/js/bootstrap-notify/bootstrap-notify.min.js"></script>
   <script src="/assets/moment/js/moment-with-locales.min.js"></script>
   <script src="/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
   @include('tucle::partial.scripts')
+  @include('tucle::module.notify')
 
   <script>
     $('[data-provider=datetimepicker]').datetimepicker({

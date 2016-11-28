@@ -28,48 +28,5 @@
 
     }).removeClass('disabled').prop('disabled', false);
 
-
-    /**
-     * 通知
-     */
-    var notifications = {
-      success: {
-        icon: 'fa fa-check',
-        type: 'success'
-      },
-      error: {
-        icon: 'fa fa-times',
-        type: 'danger'
-      },
-      notice: {
-        icon: 'fa fa-info',
-        type: 'info'
-      },
-      warning: {
-        icon: 'fa fa-exclamation-triangle',
-        type: 'warning'
-      }
-    };
-
-    @foreach (['success', 'error', 'notice', 'warning'] as $name)
-      @if (session()->has($name))
-      $.notify({
-        icon: notifications['{{ $name }}'].icon,
-        message: '{{ session()->get($name) }}'
-      }, {
-        type: notifications['{{ $name }}'].type,
-        placement: {
-          from: 'top',
-          align: 'center'
-        },
-        offset: {
-          y: 96
-        },
-        timer: 1000,
-        z_index: 0
-      });
-      @endif
-    @endforeach
-
   });
 </script>

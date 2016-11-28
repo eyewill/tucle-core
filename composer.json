@@ -3,7 +3,6 @@
     "description": "Tucle Core",
     "author": "Hiroshi Kawai <kawai@primalbase.jp>",
     "require": {
-        "intervention/image": "^2.3"
     },
     "autoload": {
         "psr-4": {

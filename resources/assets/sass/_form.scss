@@ -10,3 +10,21 @@ label.required:before {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+.form-group .file-preview,
+.form-group .file-preview:hover {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  text-align: center;
+}
+
+.form-group .file-preview-frame {
+  margin: 0 0 8px 0;
+}
+
+.form-group .file-input {
+  display: table-cell;
+}
+

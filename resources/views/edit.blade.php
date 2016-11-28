@@ -16,8 +16,8 @@
     <div class="row">
       <div class="col-md-12">
 
-        {{ $presenter->getForm()->model($model, ['route' => [$presenter->routeName('show'), $model], 'method' => 'put']) }}
-          {{ $presenter->renderForm() }}
+        {{ $presenter->getForm()->model($model, ['route' => [$presenter->routeName('show'), $model], 'method' => 'put', 'files' => true]) }}
+          {{ $presenter->renderForm($model) }}
 
           <div class="form-separator"></div>
           <button type="submit" class="btn btn-primary">更新</button>

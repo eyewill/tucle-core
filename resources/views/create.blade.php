@@ -16,11 +16,10 @@
   <div class="row">
     <div class="col-md-12">
 
-      <form action="{{ $presenter->route('index') }}" method="POST">
-        {{ csrf_field() }}
+      {{ $presenter->getForm()->open(['url' => $presenter->route('index'), 'method' => 'post', 'files' => true]) }}
         {{ $presenter->renderForm() }}
         <button type="submit" class="btn btn-primary">作成</button>
-      </form>
+      {{ $presenter->getForm()->close() }}
 
     </div>
   </div>

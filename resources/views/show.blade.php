@@ -4,7 +4,7 @@
 <div class="container">
   {{ $presenter->renderBreadCrumbs(['label' => $model->title]) }}
 
-  {{ $presenter->renderPageActions($model, ['back', 'edit']) }}
+  {{ $presenter->renderPageActions($model, ['back', 'edit', 'create']) }}
 
   <div class="page-header">
     <h1>{{ $model->title }}</h1>
