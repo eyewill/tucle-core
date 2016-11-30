@@ -67,7 +67,7 @@ class Initializer
     if (in_array('composer', $this->tasks))
     {
       yield $this->composer->add('laravelcollective/html', '5.2.*');
-      yield $this->composer->add('codesleeve/stapler', '1.0.*');
+      yield $this->composer->add('codesleeve/laravel-stapler', '1.0.*');
       yield $this->composer->add('barryvdh/laravel-debugbar', '^2.3');
       yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
       yield $this->composer->scripts('php artisan ide-helper:generate', 1);

@@ -19,6 +19,7 @@ class TucleCoreServiceProvider extends ServiceProvider
 
   protected $providers = [
     'Collective\Html\HtmlServiceProvider',
+    'Codesleeve\LaravelStapler\Providers\L5ServiceProvider',
   ];
 
   protected $providersLocal = [
