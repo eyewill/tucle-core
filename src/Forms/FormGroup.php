@@ -18,8 +18,10 @@ class FormGroup extends FormInput
     if ($label) {
       $html.= '<label>'.$label.'</label>';
     }
-    $html.= '</div>';
+    $html.= '<div class="row">';
     $html.= $this->renderGroupForms();
+    $html.= '</div>';
+    $html.= '</div>';
 
     $html = $this->grouping($html);
 

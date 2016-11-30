@@ -28,6 +28,9 @@ label.required:before {
   display: table-cell;
 }
 
+.form-group .group {
+  margin-bottom: 14px;
+}
 .form-group .group > label {
   border-left: #50555b solid 4px;
   display: block;
