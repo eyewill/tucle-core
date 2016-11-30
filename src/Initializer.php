@@ -72,7 +72,7 @@ class Initializer
       yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
       yield $this->composer->scripts('php artisan ide-helper:generate', 1);
       yield $this->composer->scripts('php artisan ide-helper:meta', 2);
-      yield $this->composer->add('primalbase/laravel5-migrate-build', '0.0.0.*');
+      yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
       yield $this->composer->update();
     }
 

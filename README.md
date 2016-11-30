@@ -55,7 +55,7 @@ $ php artisan tucle:init --force --only=assets,packages
 
 <pre>
 # after run in console on windows
-$ bower install
 $ npm install
+$ bower install
 $ gulp
 </pre>
