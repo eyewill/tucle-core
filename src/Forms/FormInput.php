@@ -42,15 +42,15 @@ class FormInput
    */
   public function render()
   {
-    $type = $this->spec;
-    $name = $type->getName();
-    $width = $type->getWidth();
-    $attributes = $type->getAttributes()->merge([
+    $spec = $this->spec;
+    $name = $spec->getName();
+    $class = $spec->getClass();
+    $attributes = $spec->getAttributes()->merge([
       'class' => 'form-control',
     ])->get();
 
     $html = '';
-    $html.= '<div class="'.$width.'">';
+    $html.= '<div class="'.$class.'">';
     $html.= $this->label();
     $html.= $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
     $html.= $this->renderHelp();

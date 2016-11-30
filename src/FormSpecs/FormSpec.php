@@ -10,14 +10,14 @@ abstract class FormSpec
   public function __construct($spec = [], $mergeAttributes = [])
   {
     $this->attributes = array_merge([
-      'type'       => array_get($spec, 'type', 'text'),
-      'name'       => array_get($spec, 'name', ''),
-      'required'   => array_get($spec, 'required', false),
-      'label'      => array_get($spec, 'label', ''),
-      'width'      => array_get($spec, 'width', 'col-xs-12'),
-      'help'       => array_get($spec, 'help', ''),
-      'group'      => array_get($spec, 'group', true),
-      'attributes' => new FormAttributes(array_get($spec, 'attributes', [])),
+      'type'     => array_get($spec, 'type', 'text'),
+      'name'     => array_get($spec, 'name', ''),
+      'required' => array_get($spec, 'required', false),
+      'label'    => array_get($spec, 'label', ''),
+      'class'    => array_get($spec, 'class', 'col-xs-12'),
+      'help'     => array_get($spec, 'help', ''),
+      'group'    => array_get($spec, 'group', true),
+      'attr'     => new FormAttributes(array_get($spec, 'attr', [])),
     ], $mergeAttributes);
   }
 
@@ -70,14 +70,14 @@ abstract class FormSpec
    */
   public function getAttributes()
   {
-    return array_get($this->attributes, 'attributes');
+    return array_get($this->attributes, 'attr');
   }
 
   /**
    * @return string
    */
-  public function getWidth()
+  public function getClass()
   {
-    return array_get($this->attributes, 'width');
+    return array_get($this->attributes, 'class');
   }
 }

@@ -10,10 +10,10 @@ class FormCheckbox extends FormInput
   public function render()
   {
     $label = $this->spec->getLabel();
-    $width = $this->spec->getWidth();
+    $class = $this->spec->getClass();
 
     $html = '';
-    $html.= '<div class="'.$width.'">';
+    $html.= '<div class="'.$class.'">';
     if ($label) {
       $html.= '<label>'.$label.'</label>';
     }

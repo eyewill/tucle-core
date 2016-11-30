@@ -7,10 +7,10 @@ class FormSpecDatetime extends FormSpec
 {
   public function __construct($spec = [])
   {
-    $spec['attributes'] = array_merge([
+    $spec['attr'] = array_merge([
       'data-provider' => 'datetimepicker',
       'data-date-format' => 'YYYY/MM/DD HH:mm',
-    ], array_get($spec, 'attributes', []));
+    ], array_get($spec, 'attr', []));
 
     parent::__construct($spec);
   }

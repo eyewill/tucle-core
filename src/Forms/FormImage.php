@@ -9,14 +9,14 @@ class FormImage extends FormInput
     /** @var FormSpecImage $spec */
     $spec = $this->spec;
     $name = $spec->getName();
-    $width = $spec->getWidth();
+    $class = $spec->getClass();
     $attributes = $spec->getAttributes()->merge([
       'class' => 'file-loading',
       'data-allowed-file-extensions' => '["jpg", "png", "gif"]'
     ])->get();
 
     $html = '';
-    $html.= '<div class="'.$width.'">';
+    $html.= '<div class="'.$class.'">';
     $html.= $this->label();
     $html.= $this->presenter->getForm()->file($name, $attributes)->toHtml();
     $html.= $this->renderHelp();

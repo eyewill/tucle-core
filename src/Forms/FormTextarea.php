@@ -9,13 +9,13 @@ class FormTextarea extends FormInput
     /** @var FormSpecTextarea $spec */
     $spec = $this->spec;
     $name = $spec->getName();
-    $width = $spec->getWidth();
+    $class = $spec->getClass();
     $attributes = $spec->getAttributes()->merge([
       'class' => 'form-control',
     ])->get();
 
     $html = '';
-    $html.= '<div class="'.$width.'">';
+    $html.= '<div class="'.$class.'">';
     $html.= $this->label();
     $html.= $this->presenter->getForm()->textarea($name, null, $attributes)->toHtml();
     $html.= $this->renderHelp();

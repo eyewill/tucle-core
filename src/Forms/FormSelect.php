@@ -46,11 +46,11 @@ class FormSelect extends FormInput
 
   public function render()
   {
-    /** @var FormSpecSelect $type */
-    $type = $this->spec;
-    $name = $type->getName();
-    $width = $type->getWidth();
-    $attributes = $type->getAttributes()->merge([
+    /** @var FormSpecSelect $spec */
+    $spec = $this->spec;
+    $name = $spec->getName();
+    $class = $spec->getClass();
+    $attributes = $spec->getAttributes()->merge([
       'class' => 'form-control',
     ])->get();
     $values = $this->values;
@@ -61,14 +61,14 @@ class FormSelect extends FormInput
 
     $html = '';
 
-    $html.= '<div class="'.$width.'">';
+    $html.= '<div class="'.$class.'">';
     $html.= $this->label();
     $html.= $this->presenter->getForm()->select($name, $values, null, $attributes)->toHtml();
     $html.= $this->renderHelp();
     $html.= $this->renderError();
     $html.= '</div>';
 
-    if ($type->getGroup())
+    if ($spec->getGroup())
     {
       $html = $this->grouping($html);
     }

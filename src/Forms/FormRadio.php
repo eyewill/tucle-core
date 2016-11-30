@@ -9,11 +9,11 @@ class FormRadio extends FormInput
     /** @var FormSpecImage $spec */
     $spec = $this->spec;
     $name = $spec->getName();
-    $width = $spec->getWidth();
+    $class = $spec->getClass();
     $attributes = $spec->getAttributes()->get();
 
     $html = '';
-    $html.= '<div class="'.$width.'">';
+    $html.= '<div class="'.$class.'">';
     $html.= '<label>&nbsp;</label>';
     $html.= '<div class="radio">';
     $html.= '<label>';

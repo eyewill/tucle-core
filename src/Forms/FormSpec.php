@@ -20,14 +20,14 @@ class FormSpec
     $label = array_get($spec, 'label');
     $help = array_get($spec, 'help');
     $group = array_get($spec, 'group', true);
-    $attributes = array_get($spec, 'attributes', []);
+    $attr = array_get($spec, 'attr', []);
     $this->setName($name);
     $this->setType($type);
     $this->setRequired($required);
     $this->setLabel($label);
     $this->setHelp($help);
     $this->setRenderGroup($group);
-    $this->setFormSpecAttributes(new FormSpecAttributes($attributes));
+    $this->setFormSpecAttributes(new FormSpecAttributes($attr));
   }
 
   public function setType($type)
