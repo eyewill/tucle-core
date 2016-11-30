@@ -9,11 +9,24 @@ class FormSelect extends FormInput
   protected $emptyLabel;
   protected $values = [];
 
-  public function __construct(ModelPresenter $presenter, FormSpec $type)
+  public function __construct(ModelPresenter $presenter, FormSpec $spec)
   {
-    $this->setValues($type->getValues());
-    $this->setEmptyLabel($type->getEmptyLabel());
-    parent::__construct($presenter, $type);
+    $values = $spec->getValues();
+    if (!is_array($values))
+    {
+      $func = camel_case($spec->getName()).'Values';
+      if (is_callable([$presenter, $func]))
+      {
+        $values = $presenter->{$func}();
+      }
+      else
+      {
+        $values = [];
+      }
+    }
+    $this->setValues($values);
+    $this->setEmptyLabel($spec->getEmptyLabel());
+    parent::__construct($presenter, $spec);
   }
 
   public function setValues($values = [])

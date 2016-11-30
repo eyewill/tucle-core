@@ -15,10 +15,10 @@ class FormInput
   /** @var ModelPresenter */
   protected $presenter;
 
-  public function __construct(ModelPresenter $presenter, FormSpec $type)
+  public function __construct(ModelPresenter $presenter, FormSpec $spec)
   {
     $this->presenter = $presenter;
-    $this->spec = $type;
+    $this->spec = $spec;
   }
 
   /**

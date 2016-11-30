@@ -59,3 +59,25 @@ $ npm install
 $ bower install
 $ gulp
 </pre>
+
+### Presenter
+
+<pre>
+  // セレクトボックス
+  public $forms = [
+    ...
+    [
+      'type' => 'select',
+      'name' => 'category_id',
+      // 未選択時のラベルを定義(未選択状態が不要な場合はfalseをセット)
+      'empty_label' => '選択してください',
+    ],
+    ...
+  ],
+  ...
+  // フィールド名のキャメルケース+Valuesでセレクトボックスの値を定義できる
+  public function categoryIdValues()
+  {
+    return ['1' => 'fuga', 2 => 'fuga'];
+  }
+</pre>

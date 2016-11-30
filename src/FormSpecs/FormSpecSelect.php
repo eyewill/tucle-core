@@ -9,7 +9,7 @@ class FormSpecSelect extends FormSpec
   {
     $attributes = [
       'empty_label' => array_get($spec, 'empty_label', false),
-      'values' => array_get($spec, 'values', []),
+      'values' => array_get($spec, 'values'),
     ];
 
     parent::__construct($spec, $attributes);
