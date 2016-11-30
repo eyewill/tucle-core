@@ -3,6 +3,7 @@
 use Eyewill\TucleCore\FormSpecs\FormSpec;
 use Eyewill\TucleCore\FormSpecs\FormSpecSelect;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
+use Illuminate\Support\Collection;
 
 class FormSelect extends FormInput
 {
@@ -17,7 +18,11 @@ class FormSelect extends FormInput
       $func = camel_case($spec->getName()).'Values';
       if (is_callable([$presenter, $func]))
       {
-        $values = $presenter->{$func}();
+        $values = (array)$presenter->{$func}();
+        if ($values instanceof Collection)
+        {
+          $values = $values->toArray();
+        }
       }
       else
       {
