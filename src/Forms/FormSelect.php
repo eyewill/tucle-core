@@ -18,7 +18,7 @@ class FormSelect extends FormInput
       $func = camel_case($spec->getName()).'Values';
       if (is_callable([$presenter, $func]))
       {
-        $values = (array)$presenter->{$func}();
+        $values = $presenter->{$func}();
         if ($values instanceof Collection)
         {
           $values = $values->toArray();
