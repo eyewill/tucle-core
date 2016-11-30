@@ -13,19 +13,13 @@ class FormSpecPublished extends FormSpec
           'name' => 'published_at',
           'label' => '公開開始日',
           'width' => 'col-sm-3',
-          'attributes' => [
-            'data-provider' => 'datetimepicker',
-            'data-date-format' => 'YYYY/MM/DD HH:mm',
-          ],
+          'type' => 'datetime',
         ],
         [
           'name' => 'terminated_at',
           'label' => '公開終了日',
           'width' => 'col-sm-3',
-          'attributes' => [
-            'data-provider' => 'datetimepicker',
-            'data-date-format' => 'YYYY/MM/DD HH:mm',
-          ],
+          'type' => 'datetime',
         ],
       ],
       'name' => ['published_at', 'terminated_at'],
