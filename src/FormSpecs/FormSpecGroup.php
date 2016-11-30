@@ -9,6 +9,7 @@ class FormSpecGroup extends FormSpec
   {
     $attributes = [
       'forms' => array_get($spec, 'forms', []),
+      'class' => array_get($spec, 'group', 'col-xs-12 group'),
     ];
     $attributes['name'] = array_pluck($attributes['forms'], 'name');
 

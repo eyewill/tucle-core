@@ -10,9 +10,14 @@ class FormGroup extends FormInput
 
   public function render()
   {
+    $label = $this->spec->getLabel();
+    $class = $this->spec->getClass();
+
     $html = '';
-    $html.= '<div class="col-xs-12">';
-    $html.= $this->label();
+    $html.= '<div class="'.$class.'">';
+    if ($label) {
+      $html.= '<label>'.$label.'</label>';
+    }
     $html.= '</div>';
     $html.= $this->renderGroupForms();
 

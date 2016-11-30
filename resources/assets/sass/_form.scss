@@ -28,3 +28,10 @@ label.required:before {
   display: table-cell;
 }
 
+.form-group .group > label {
+  border-bottom: #50555b solid 1px;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.25em;
+  padding: 4px;
+}
