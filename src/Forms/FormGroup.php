@@ -3,12 +3,14 @@
 use Eyewill\TucleCore\Factories\FormInputFactory;
 use Eyewill\TucleCore\FormSpecs\FormSpecGroup;
 
+/**
+ * Class FormGroup
+ * @package Eyewill\TucleCore\Forms
+ * @property FormSpecGroup $spec
+ */
 class FormGroup extends FormInput
 {
-  /** @var FormSpecGroup */
-  protected $spec;
-
-  public function render()
+  public function render($model = null)
   {
     $label = $this->spec->getLabel();
     $class = $this->spec->getClass();

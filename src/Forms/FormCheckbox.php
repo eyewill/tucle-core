@@ -7,7 +7,7 @@ class FormCheckbox extends FormInput
   /** @var FormSpecCheckbox */
   protected $spec;
 
-  public function render()
+  public function render($model = null)
   {
     $label = $this->spec->getLabel();
     $class = $this->spec->getClass();

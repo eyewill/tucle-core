@@ -55,73 +55,7 @@ class ModelPresenter
     foreach ($this->forms as $spec)
     {
       $form = FormInputFactory::make($this, $spec);
-      $html.= $form->render();
-      $name = array_get($spec, 'name');
-      $type = array_get($spec, 'type');
-      if ($type == 'image')
-      {
-        if (!is_null($model))
-        {
-          $url = $model->{$name}->url();
-          $deleteUrl = $model->route().'/'.$model->id.'/'.$name;
-          $filename = $model->{$name}->getOriginalFilename();
-          $token = csrf_token();
-          $html.=<<< __SCRIPT__
-<script>
-    $(function(){
-      $('[name=$name]').fileinput({
-        overwriteInitial: true,
-        language: 'ja',
-        showClose: false,
-        showUpload: false,
-        showCaption: false,
-        showRemove: false,
-        maxImageWidth: 150,
-        maxFileCount: 1,
-        resizeImage: true,
-        initialPreview: ['$url'],
-        initialPreviewAsData: true,
-        initialPreviewConfig: [{
-          showDrag: false,
-          caption: '$filename',
-          url: '$deleteUrl',
-          extra: {
-            _token: '$token',
-            _method: 'DELETE'
-          }
-        }]
-      }).on('filepredelete', function() {
-        return !confirm("ファイルを削除します。よろしいですか？");
-      }).on('filedeleted', function(e, k, xhr,data) {
-        $.notify({
-          icon: 'fa fa-check',
-          message: xhr.responseJSON.message
-        });
-      });
-    });
-</script>
-__SCRIPT__;
-        }
-        else
-        {
-          $html.=<<< __SCRIPT__
-<script>
-    $(function(){
-      $('[name=$name]').fileinput({
-        language: 'ja',
-        showClose: false,
-        showUpload: false,
-        showCaption: false,
-        showRemove: false,
-        maxImageWidth: 150,
-        maxFileCount: 1,
-        resizeImage: true
-      });
-    });
-</script>
-__SCRIPT__;
-        }
-      }
+      $html.= $form->render($model);
     }
 
     return new HtmlString($html);

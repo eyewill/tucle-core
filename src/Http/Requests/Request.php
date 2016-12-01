@@ -3,6 +3,7 @@
 namespace Eyewill\TucleCore\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
 
 abstract class Request extends FormRequest
 {
@@ -17,9 +18,19 @@ abstract class Request extends FormRequest
     return auth()->check();
   }
 
+  protected function validationData()
+  {
+    $this->merge(array_map('trim', $this->input()));
+    return $this->all();
+  }
+
   public function response(array $errors)
   {
-    $this->merge(array_map('trim', $this->all()));
+    $response = parent::response($errors);
+    if ($response instanceof JsonResponse)
+    {
+      return $response;
+    }
 
     return parent::response($errors)
       ->with('error', $this->errorMessage);

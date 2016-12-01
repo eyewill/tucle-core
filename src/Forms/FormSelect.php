@@ -5,6 +5,11 @@ use Eyewill\TucleCore\FormSpecs\FormSpecSelect;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 use Illuminate\Support\Collection;
 
+/**
+ * Class FormSelect
+ * @package Eyewill\TucleCore\Forms
+ * @property FormSpecSelect $spec
+ */
 class FormSelect extends FormInput
 {
   protected $emptyLabel;
@@ -44,9 +49,8 @@ class FormSelect extends FormInput
     $this->emptyLabel = $emptyLabel;
   }
 
-  public function render()
+  public function render($model = null)
   {
-    /** @var FormSpecSelect $spec */
     $spec = $this->spec;
     $name = $spec->getName();
     $class = $spec->getClass();

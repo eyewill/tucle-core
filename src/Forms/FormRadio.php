@@ -1,12 +1,16 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\FormSpecs\FormSpecImage;
+use Eyewill\TucleCore\FormSpecs\FormSpecRadio;
 
+/**
+ * Class FormRadio
+ * @package Eyewill\TucleCore\Forms
+ * @property FormSpecRadio $spec
+ */
 class FormRadio extends FormInput
 {
-  public function render()
+  public function render($model = null)
   {
-    /** @var FormSpecImage $spec */
     $spec = $this->spec;
     $name = $spec->getName();
     $class = $spec->getClass();

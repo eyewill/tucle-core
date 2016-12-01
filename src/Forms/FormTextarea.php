@@ -2,11 +2,15 @@
 
 use Eyewill\TucleCore\FormSpecs\FormSpecTextarea;
 
+/**
+ * Class FormTextarea
+ * @package Eyewill\TucleCore\Forms
+ * @property FormSpecTextarea $spec
+ */
 class FormTextarea extends FormInput
 {
-  public function render()
+  public function render($model = null)
   {
-    /** @var FormSpecTextarea $spec */
     $spec = $this->spec;
     $name = $spec->getName();
     $class = $spec->getClass();

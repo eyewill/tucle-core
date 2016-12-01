@@ -38,9 +38,10 @@ class FormInput
   }
 
   /**
+   * @param null $model
    * @return string
    */
-  public function render()
+  public function render($model = null)
   {
     $spec = $this->spec;
     $name = $spec->getName();
