@@ -13,14 +13,9 @@ class FormImage extends FormInput
   {
     $spec = $this->spec;
     $name = $spec->getName();
-    $class = $spec->getClass();
-    $attributes = $spec->getAttributes()->merge([
-      'class' => 'file-loading',
-      'data-allowed-file-extensions' => '["jpg", "png", "gif"]'
-    ])->get();
+    $attributes = $spec->getAttributes()->get();
 
     $html = '';
-    $html.= '<div class="'.$class.'">';
     $html.= $this->label();
     if (!is_null($model) && $model->{$name}->originalFilename())
     {
@@ -29,7 +24,6 @@ class FormImage extends FormInput
     $html.= $this->renderFile($name, $attributes);
     $html.= $this->renderHelp();
     $html.= $this->renderError();
-    $html.= '</div>';
 
     if ($spec->getGroup())
     {

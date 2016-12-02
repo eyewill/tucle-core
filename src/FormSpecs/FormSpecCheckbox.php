@@ -5,14 +5,11 @@ use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecCheckbox extends FormSpec
 {
-  public function __construct($spec = [])
+  public function __construct($attributes = [], $mergeAttributes = [])
   {
-    $attributes = [
-      'checkboxes' => array_get($spec, 'checkboxes', []),
-    ];
-    $attributes['name'] = array_pluck($attributes['checkboxes'], 'name');
+    array_set($attributes, 'name', array_pluck(array_get($attributes, 'checkboxes', []), 'name'));
 
-    parent::__construct($spec, $attributes);
+    parent::__construct($attributes, $mergeAttributes);
   }
 
   public function makeForm(ModelPresenter $presenter)

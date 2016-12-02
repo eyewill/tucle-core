@@ -45,18 +45,13 @@ class FormInput
   {
     $spec = $this->spec;
     $name = $spec->getName();
-    $class = $spec->getClass();
-    $attributes = $spec->getAttributes()->merge([
-      'class' => 'form-control',
-    ])->get();
+    $attributes = $spec->getAttributes()->get();
 
     $html = '';
-    $html.= '<div class="'.$class.'">';
     $html.= $this->label();
     $html.= $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
     $html.= $this->renderHelp();
     $html.= $this->renderError();
-    $html.= '</div>';
 
     if ($this->spec->getGroup())
     {
@@ -78,16 +73,9 @@ class FormInput
     {
       $class .= ' has-error';
     }
-
-    $attributes = [
-        'class' => $class,
-      ];
-
     $html = '';
-    $html.= '<div'.$this->presenter->getHtml()->attributes($attributes).'>';
-    $html.= '<div class="row">';
+    $html.= '<div class="'.$class.'">';
     $html.= $source;
-    $html.= '</div>';
     $html.= '</div>';
 
     return $html;

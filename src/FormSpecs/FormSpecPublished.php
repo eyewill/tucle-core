@@ -3,11 +3,11 @@
 use Eyewill\TucleCore\Forms\FormPublished;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecPublished extends FormSpec
+class FormSpecPublished extends FormSpecGroup
 {
-  public function __construct($spec = [])
+  public function __construct($attributes = [], $mergeAttributes = [])
   {
-    $attributes = [
+    $attributes = array_merge([
       'forms' => [
         [
           'name' => 'published_at',
@@ -23,22 +23,8 @@ class FormSpecPublished extends FormSpec
         ],
       ],
       'name' => ['published_at', 'terminated_at'],
-    ];
+    ], $attributes);
 
-    parent::__construct($spec, $attributes);
+    parent::__construct($attributes, $mergeAttributes);
   }
-
-  public function makeForm(ModelPresenter $presenter)
-  {
-    return app()->make(FormPublished::class, [$presenter, $this]);
-  }
-
-  /**
-   * @return array
-   */
-  public function getForms()
-  {
-    return array_get($this->attributes, 'forms');
-  }
-
 }

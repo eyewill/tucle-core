@@ -8,18 +8,13 @@ abstract class FormSpec
 {
   protected $attributes;
 
-  public function __construct($spec = [], $mergeAttributes = [])
+  public function __construct($attributes = [], $mergeAttributes = [])
   {
-    $this->attributes = array_merge([
-      'type'     => array_get($spec, 'type', 'text'),
-      'name'     => array_get($spec, 'name', ''),
-      'required' => array_get($spec, 'required', false),
-      'label'    => array_get($spec, 'label', ''),
-      'class'    => array_get($spec, 'class', 'col-xs-12'),
-      'help'     => array_get($spec, 'help', ''),
-      'group'    => array_get($spec, 'group', true),
-      'attr'     => new FormAttributes(array_get($spec, 'attr', [])),
-    ], $mergeAttributes);
+    array_set($attributes, 'group', array_get($attributes, 'group', true));
+    array_set($attributes, 'class', array_get($attributes, 'class', 'col-xs-12'));
+    array_set($attributes, 'attr.class', array_get($attributes, 'attr.class', 'form-control'));
+
+    $this->attributes = array_merge_recursive($attributes, $mergeAttributes);
   }
 
   /**
@@ -81,7 +76,7 @@ abstract class FormSpec
    */
   public function getAttributes()
   {
-    return array_get($this->attributes, 'attr');
+    return new FormAttributes(array_get($this->attributes, 'attr', []));
   }
 
   /**

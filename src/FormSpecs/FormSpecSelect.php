@@ -5,14 +5,12 @@ use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecSelect extends FormSpec
 {
-  public function __construct($spec = [])
+  public function __construct($attributes = [], $mergeAttributes = [])
   {
-    $attributes = [
-      'empty_label' => array_get($spec, 'empty_label', false),
-      'values' => array_get($spec, 'values'),
-    ];
+    array_set($attributes, 'empty_label', array_get($attributes, 'empty_label', false));
+    array_set($attributes, 'values', array_get($attributes, 'values', []));
 
-    parent::__construct($spec, $attributes);
+    parent::__construct($attributes, $mergeAttributes);
   }
 
   public function makeForm(ModelPresenter $presenter)

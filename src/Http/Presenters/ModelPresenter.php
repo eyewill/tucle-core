@@ -244,7 +244,6 @@ class ModelPresenter
     foreach ($this->forms as $spec)
     {
       $formSpec = FormSpecFactory::make($spec);
-      debug($formSpec->getAttributeNames());
       $attributeNames += $formSpec->getAttributeNames();
     }
 

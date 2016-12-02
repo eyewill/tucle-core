@@ -53,10 +53,7 @@ class FormSelect extends FormInput
   {
     $spec = $this->spec;
     $name = $spec->getName();
-    $class = $spec->getClass();
-    $attributes = $spec->getAttributes()->merge([
-      'class' => 'form-control',
-    ])->get();
+    $attributes = $spec->getAttributes()->get();
     $values = $this->values;
     if ($this->emptyLabel)
     {
@@ -65,12 +62,10 @@ class FormSelect extends FormInput
 
     $html = '';
 
-    $html.= '<div class="'.$class.'">';
     $html.= $this->label();
     $html.= $this->presenter->getForm()->select($name, $values, null, $attributes)->toHtml();
     $html.= $this->renderHelp();
     $html.= $this->renderError();
-    $html.= '</div>';
 
     if ($spec->getGroup())
     {

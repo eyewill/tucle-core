@@ -6,15 +6,12 @@ use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecGroup extends FormSpec
 {
-  public function __construct($spec = [])
+  public function __construct($attributes = [], $mergeAttributes = [])
   {
-    $attributes = [
-      'forms' => array_get($spec, 'forms', []),
-      'class' => array_get($spec, 'group', 'col-xs-12 group'),
-    ];
-    $attributes['name'] = array_pluck($attributes['forms'], 'name');
+    array_set($attributes, 'forms', array_get($attributes, 'forms', []));
+    array_set($attributes, 'name', array_pluck(array_get($attributes, 'forms', []), 'name'));
 
-    parent::__construct($spec, $attributes);
+    parent::__construct($attributes, $mergeAttributes);
   }
 
   public function makeForm(ModelPresenter $presenter)
