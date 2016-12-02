@@ -5,7 +5,7 @@ use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecImage extends FormSpec
 {
-  public function make(ModelPresenter $presenter)
+  public function makeForm(ModelPresenter $presenter)
   {
     return app()->make(FormImage::class, [$presenter, $this]);
   }

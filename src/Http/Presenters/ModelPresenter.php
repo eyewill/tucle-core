@@ -2,7 +2,7 @@
 
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
-use Eyewill\TucleCore\Factories\FormInputFactory;
+use Eyewill\TucleCore\Factories\FormSpecFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 
@@ -54,7 +54,8 @@ class ModelPresenter
 
     foreach ($this->forms as $spec)
     {
-      $form = FormInputFactory::make($this, $spec);
+      $formSpec = FormSpecFactory::make($spec);
+      $form = $formSpec->makeForm($this);
       $html.= $form->render($model);
     }
 
@@ -235,5 +236,18 @@ class ModelPresenter
   {
     $url = $this->route('show', $model);
     return new HtmlString('<a href="'.$url.'" class="btn btn-primary">表示</a>');
+  }
+
+  public function getAttributeNames()
+  {
+    $attributeNames = [];
+    foreach ($this->forms as $spec)
+    {
+      $formSpec = FormSpecFactory::make($spec);
+      debug($formSpec->getAttributeNames());
+      $attributeNames += $formSpec->getAttributeNames();
+    }
+
+    return $attributeNames;
   }
 }

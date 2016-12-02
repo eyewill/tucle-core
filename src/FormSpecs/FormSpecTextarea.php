@@ -5,7 +5,7 @@ use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecTextarea extends FormSpec
 {
-  public function make(ModelPresenter $presenter)
+  public function makeForm(ModelPresenter $presenter)
   {
     return app()->make(FormTextarea::class, [$presenter, $this]);
   }

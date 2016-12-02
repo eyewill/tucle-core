@@ -28,7 +28,7 @@ class FormSpecPublished extends FormSpec
     parent::__construct($spec, $attributes);
   }
 
-  public function make(ModelPresenter $presenter)
+  public function makeForm(ModelPresenter $presenter)
   {
     return app()->make(FormPublished::class, [$presenter, $this]);
   }

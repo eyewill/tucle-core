@@ -5,7 +5,7 @@ use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecText extends FormSpec
 {
-  public function make(ModelPresenter $presenter)
+  public function makeForm(ModelPresenter $presenter)
   {
     return app()->make(FormText::class, [$presenter, $this]);
   }

@@ -5,7 +5,7 @@ use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecRadio extends FormSpec
 {
-  public function make(ModelPresenter $presenter)
+  public function makeForm(ModelPresenter $presenter)
   {
     return app()->make(FormRadio::class, [$presenter, $this]);
   }

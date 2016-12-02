@@ -1,6 +1,6 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\Factories\FormInputFactory;
+use Eyewill\TucleCore\Factories\FormSpecFactory;
 use Eyewill\TucleCore\FormSpecs\FormSpecGroup;
 
 /**
@@ -37,7 +37,8 @@ class FormGroup extends FormInput
     foreach ($forms as $spec)
     {
       $spec['group'] = false;
-      $form = FormInputFactory::make($this->presenter, $spec);
+      $formSpec = FormSpecFactory::make($spec);
+      $form = $formSpec->makeForm($this->presenter);
       $html.= $form->render();
     }
 

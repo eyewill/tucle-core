@@ -9,6 +9,8 @@ abstract class Request extends FormRequest
 {
   protected $errorMessage = '入力内容をご確認ください';
 
+  protected $presenter;
+
   /**
    * 認証状態を返す
    * @return bool
@@ -22,6 +24,18 @@ abstract class Request extends FormRequest
   {
     $this->merge(array_map('trim', $this->input()));
     return $this->all();
+  }
+
+  protected function getValidatorInstance()
+  {
+    $validator = parent::getValidatorInstance();
+    if (!is_null($this->presenter))
+    {
+      $presenter = app()->make($this->presenter);
+      debug($presenter->getAttributeNames());
+      $validator->setAttributeNames($presenter->getAttributeNames());
+    }
+    return $validator;
   }
 
   public function response(array $errors)

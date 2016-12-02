@@ -1,17 +1,16 @@
 <?php namespace Eyewill\TucleCore\Factories;
 
-use Eyewill\TucleCore\Forms\FormInput;
+use Eyewill\TucleCore\FormSpecs\FormSpec;
 use Eyewill\TucleCore\FormSpecs\FormSpecText;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormInputFactory
+class FormSpecFactory
 {
   /**
-   * @param ModelPresenter $presenter
    * @param $spec
-   * @return FormInput
+   * @return FormSpec
    */
-  public static function make(ModelPresenter $presenter, $spec)
+  public static function make($spec)
   {
     $type = array_get($spec, 'type', 'text');
 
@@ -25,6 +24,6 @@ class FormInputFactory
       $formSpec = new FormSpecText($spec);
     }
 
-    return $formSpec->make($presenter);
+    return $formSpec;
   }
 }

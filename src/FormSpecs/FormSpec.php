@@ -1,6 +1,7 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
 use Eyewill\TucleCore\Forms\FormAttributes;
+use Eyewill\TucleCore\Forms\FormInput;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 abstract class FormSpec
@@ -21,8 +22,18 @@ abstract class FormSpec
     ], $mergeAttributes);
   }
 
-  public function make(ModelPresenter $presenter)
+  /**
+   * @param ModelPresenter $presenter
+   * @return FormInput
+   */
+  public function makeForm(ModelPresenter $presenter)
   {
+    return new FormInput($presenter, $this);
+  }
+
+  public function getAttributeNames()
+  {
+    return [$this->getName() => $this->getLabel()];
   }
 
   /**

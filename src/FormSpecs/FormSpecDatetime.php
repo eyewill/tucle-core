@@ -15,7 +15,7 @@ class FormSpecDatetime extends FormSpec
     parent::__construct($spec);
   }
 
-  public function make(ModelPresenter $presenter)
+  public function makeForm(ModelPresenter $presenter)
   {
     return app()->make(FormDatetime::class, [$presenter, $this]);
   }
