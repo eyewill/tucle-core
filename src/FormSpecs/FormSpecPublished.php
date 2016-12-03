@@ -1,13 +1,11 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
-use Eyewill\TucleCore\Forms\FormPublished;
-use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
-
 class FormSpecPublished extends FormSpecGroup
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
     $attributes = array_merge([
+      'label' => '公開期間',
       'forms' => [
         [
           'name' => 'published_at',
@@ -23,6 +21,7 @@ class FormSpecPublished extends FormSpecGroup
         ],
       ],
       'name' => ['published_at', 'terminated_at'],
+      'position' => 'sub',
     ], $attributes);
 
     parent::__construct($attributes, $mergeAttributes);

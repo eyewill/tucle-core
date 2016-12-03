@@ -10,6 +10,7 @@ abstract class FormSpec
 
   public function __construct($attributes = [], $mergeAttributes = [])
   {
+    array_set($attributes, 'position', array_get($attributes, 'position', 'main'));
     array_set($attributes, 'group', array_get($attributes, 'group', true));
     array_set($attributes, 'class', array_get($attributes, 'class', 'col-xs-12'));
     array_set($attributes, 'attr.class', array_get($attributes, 'attr.class', 'form-control'));
@@ -85,5 +86,10 @@ abstract class FormSpec
   public function getClass()
   {
     return array_get($this->attributes, 'class');
+  }
+
+  public function isPosition($position)
+  {
+    return (array_get($this->attributes, 'position') == $position);
   }
 }

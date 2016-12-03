@@ -43,20 +43,27 @@ class ModelPresenter
     $this->pageTitle = $pageTitle;
   }
 
-  public function getPageTitle()
+  public function getPageTitle($model = null)
   {
+    if (!is_null($model))
+    {
+      return new HtmlString($model->title ? e($model->title) : '<span class="text-muted">(未定義)</span>');
+    }
     return $this->pageTitle;
   }
 
-  public function renderForm($model = null)
+  public function renderForm($model = null, $position = 'main')
   {
     $html = '';
 
     foreach ($this->forms as $spec)
     {
       $formSpec = FormSpecFactory::make($spec);
-      $form = $formSpec->makeForm($this);
-      $html.= $form->render($model);
+      if ($formSpec->isPosition($position))
+      {
+        $form = $formSpec->makeForm($this);
+        $html.= $form->render($model);
+      }
     }
 
     return new HtmlString($html);

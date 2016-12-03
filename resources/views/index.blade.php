@@ -7,14 +7,18 @@
 
   {{ $presenter->renderBreadCrumbs(['label' => '一覧']) }}
 
-  {{ $presenter->renderPageActions(null, ['create']) }}
-
+  @section('page-header')
   <div class="page-header">
-    <h1>{{ $presenter->getPageTitle() }}</h1>
+    <div class="row">
+      <div class="col-sm-8">
+        <h1 class="form-title">{{ $presenter->getPageTitle() }}</h1>
+      </div>
+      <div class="col-sm-4">
+        {{ $presenter->renderPageActions(null, ['create']) }}
+      </div>
+    </div>
   </div>
-
-  <div class="form-separator"></div>
-
+  @show
 
   {{ $presenter->entries($entries) }}
 

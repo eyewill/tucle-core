@@ -34,7 +34,7 @@ class FormGroup extends FormInput
     $forms = $this->spec->getForms();
     foreach ($forms as $spec)
     {
-      $spec['group'] = false;
+//      $spec['group'] = false;
       $class = array_get($spec, 'class', 'col-xs-12');
       $formSpec = FormSpecFactory::make($spec);
       $form = $formSpec->makeForm($this->presenter);
