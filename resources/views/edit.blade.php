@@ -26,11 +26,11 @@
     <div class="row">
       <div class="col-sm-8">
 
-        {{ $presenter->renderForm() }}
+        {{ $presenter->renderForm($model) }}
         <button type="submit" class="btn btn-primary">更新</button>
       </div>
       <div class="col-sm-4">
-        {{ $presenter->renderForm(null, 'sub') }}
+        {{ $presenter->renderForm($model, 'sub') }}
         <button type="submit" class="btn btn-primary">更新</button>
       </div>
     </div>

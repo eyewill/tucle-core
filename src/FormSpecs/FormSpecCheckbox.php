@@ -7,7 +7,8 @@ class FormSpecCheckbox extends FormSpec
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
-    array_set($attributes, 'name', array_pluck(array_get($attributes, 'checkboxes', []), 'name'));
+    array_set($attributes, 'name',
+      array_pluck(array_get($attributes, 'checkboxes', []), 'name'));
 
     parent::__construct($attributes, $mergeAttributes);
   }

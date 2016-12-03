@@ -7,8 +7,10 @@ class FormSpecSelect extends FormSpec
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
-    array_set($attributes, 'empty_label', array_get($attributes, 'empty_label', false));
-    array_set($attributes, 'values', array_get($attributes, 'values', []));
+    array_set($attributes, 'empty_label',
+      array_get($attributes, 'empty_label', false));
+    array_set($attributes, 'values',
+      array_get($attributes, 'values', []));
 
     parent::__construct($attributes, $mergeAttributes);
   }

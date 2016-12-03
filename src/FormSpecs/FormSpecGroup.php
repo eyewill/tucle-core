@@ -8,8 +8,10 @@ class FormSpecGroup extends FormSpec
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
-    array_set($attributes, 'forms', array_get($attributes, 'forms', []));
-    array_set($attributes, 'name', array_pluck(array_get($attributes, 'forms', []), 'name'));
+    array_set($attributes, 'forms',
+      array_get($attributes, 'forms', []));
+    array_set($attributes, 'name',
+      array_pluck(array_get($attributes, 'forms', []), 'name'));
 
     parent::__construct($attributes, $mergeAttributes);
   }

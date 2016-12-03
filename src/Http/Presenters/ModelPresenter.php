@@ -1,5 +1,6 @@
 <?php namespace Eyewill\TucleCore\Http\Presenters;
 
+use Codesleeve\Stapler\Attachment;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Eyewill\TucleCore\Factories\FormSpecFactory;
@@ -193,7 +194,15 @@ class ModelPresenter
       $html.= array_get($column, 'label');
       $html.= '</dt>';
       $html.= '<dd>';
-      $html.= $model->{array_get($column, 'name')};
+      $value = $model->{array_get($column, 'name')};
+      if ($value instanceof Attachment)
+      {
+        $html.= $value->originalFilename();
+      }
+      else
+      {
+        $html.= $value;
+      }
       $html.= '</dd>';
     }
     $html.= '</div>';
