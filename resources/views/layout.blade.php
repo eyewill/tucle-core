@@ -12,13 +12,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
   <!-- Styles -->
-  @if (app()->environment('local'))
-    <link rel="stylesheet" href="/assets/css/app.css">
-  @else
-    <link rel="stylesheet" href="/assets/css/app.css">
-  @endif
   <link rel="stylesheet" href="/assets/css/animate.min.css">
   <link rel="stylesheet" href="/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 
   <!-- Scripts -->
   <script src="/assets/jquery/js/jquery.min.js"></script>
