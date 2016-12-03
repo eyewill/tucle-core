@@ -12,6 +12,8 @@ class FormSpecImage extends FormSpec
     array_set($attributes, 'attr.data-allowed-file-extensions', array_get($attributes, 'attr.data-allowed-file-extensions', '["jpg", "png", "gif"]'));
 
     $this->attributes = array_merge_recursive($attributes, $mergeAttributes);
+
+    parent::__construct($attributes, $mergeAttributes);
   }
 
   public function makeForm(ModelPresenter $presenter)
