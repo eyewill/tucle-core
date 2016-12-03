@@ -14,16 +14,15 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
   mix
     .sass(['app.scss'], 'public/css/app.css')
+    .copy('bower_components/font-awesome/fonts', 'public/build/fonts')
+    .copy('bower_components/bootstrap/fonts', 'public/build/bootstrap/fonts')
     .version('css/app.css');
 
   mix
-    .copy('bower_components/font-awesome/fonts', 'public/assets/fonts')
-    .copy('bower_components/bootstrap/fonts', 'public/assets/bootstrap/fonts')
     .copy('bower_components/bootstrap/dist/js/bootstrap.min.js', 'public/assets/bootstrap/js/bootstrap.min.js')
     .copy('bower_components/remarkable-bootstrap-notify/dist', 'public/assets/js/bootstrap-notify')
     .copy('bower_components/animate.css/animate.min.css', 'public/assets/css/animate.min.css')
     .copy('bower_components/moment/min/moment-with-locales.min.js', 'public/assets/moment/js/moment-with-locales.min.js')
-    .copy('bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css', 'public/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')
     .copy('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js', 'public/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js');
 
   /* jQuery */

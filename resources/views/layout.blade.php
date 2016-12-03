@@ -13,12 +13,10 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/animate.min.css">
-  <link rel="stylesheet" href="/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
   <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 
   <!-- Scripts -->
   <script src="/assets/jquery/js/jquery.min.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 @show
 
 </head>
@@ -81,6 +79,7 @@
 
 <!-- JavaScripts -->
 @section('script')
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
   <script src="/assets/moment/js/moment-with-locales.min.js"></script>
   <script src="/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
