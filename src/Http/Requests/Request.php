@@ -30,7 +30,7 @@ abstract class Request extends FormRequest
   {
     if (is_array($input)) // checkboxes
     {
-      return array_filter($input);
+      return array_filter($input, 'strlen');
     }
     return trim($input);
   }

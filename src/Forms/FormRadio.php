@@ -5,24 +5,42 @@ use Eyewill\TucleCore\FormSpecs\FormSpecRadio;
 /**
  * Class FormRadio
  * @package Eyewill\TucleCore\Forms
- * @property FormSpecRadio $spec
  */
 class FormRadio extends FormInput
 {
+  /** @var  FormSpecRadio */
+  protected $spec;
+
   protected function renderComponent($model)
   {
     $spec = $this->spec;
     $name = $spec->getName();
-    $attributes = $spec->getAttributes()->get();
-
+debug($spec->getValues());
     $html = '';
-    $html.= '<label>&nbsp;</label>';
-    $html.= '<div class="radio">';
-    $html.= '<label>';
-    $html.= '<input type="hidden" name="'.$name.'" value="">';
-    $html.= $this->presenter->getForm()->radio($name, 1, null, $attributes)->toHtml();
-    $html.= $spec->getLabel();
-    $html.= '</label>';
+    if ($spec->getInline())
+    {
+      $html.= '<div>';
+      foreach ($spec->getValues() as $value => $label)
+      {
+        $html.= '<label class="radio-inline">';
+        $html.= $this->presenter->getForm()->radio($name, $value)->toHtml();
+        $html.= e($label);
+        $html.= '</label>';
+      }
+      $html.= '</div>';
+    }
+    else
+    {
+      foreach ($spec->getValues() as $value => $label)
+      {
+        $html.= '<div class="radio">';
+        $html.= '<label>';
+        $html.= $this->presenter->getForm()->radio($name, $value)->toHtml();
+        $html.= e($label);
+        $html.= '</label>';
+        $html.= '</div>';
+      }
+    }
 
     return $html;
   }

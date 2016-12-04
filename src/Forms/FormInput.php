@@ -101,7 +101,7 @@ class FormInput
 
   public function label()
   {
-    $class = '';
+    $class = 'control-label';
 
     if ($this->spec->getRequired())
     {

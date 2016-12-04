@@ -15,13 +15,13 @@ class FormGroup extends FormInput
     $spec = $this->spec;
 
     $html = '';
+    $html.= $this->label();
     if ($row)
     {
       $html.= '<div class="row">';
       $html.= '<div class="'.$spec->getClass().'">';
     }
 
-    $html.= $this->label();
     $html.= $this->renderComponent($model);
     $html.= $this->renderHelp();
 
@@ -55,19 +55,15 @@ class FormGroup extends FormInput
     return $html;
   }
 
-  public function label()
+  protected function formGroup($source = '')
   {
-    $class = 'group ';
+    $class = 'form-group group';
 
-    if ($this->spec->getRequired())
-    {
-      $class .= 'required';
-    }
+    $html = '';
+    $html .= '<div class="' . $class . '">';
+    $html .= $source;
+    $html .= '</div>';
 
-    $attributes = [
-      'class' => $class,
-    ];
-    return $this->presenter->getForm()->label($this->spec->getLabel(), null, $attributes);
+    return $html;
   }
-
 }

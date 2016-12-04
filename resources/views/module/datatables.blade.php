@@ -17,6 +17,12 @@
       });
       $('[data-provider=datatables]').each(function () {
         $(this).DataTable();
+        $(this).attr('width', '100%');
+      });
+      $('[data-action-clear]').on('click', function (e) {
+        e.preventDefault();
+        $($(this).data('action-clear')).dataTable().api().state.clear();
+        window.location.reload();
       });
     });
   </script>

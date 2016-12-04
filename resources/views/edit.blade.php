@@ -24,14 +24,21 @@
 
     {{ $presenter->getForm()->model($model, ['route' => [$presenter->routeName('show'), $model], 'method' => 'put', 'files' => true]) }}
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-9">
 
         {{ $presenter->renderForm($model) }}
-        <button type="submit" class="btn btn-primary">更新</button>
+
+        <hr class="form-separator">
+
+        <button type="submit" class="hidden-xs btn btn-primary btn-block btn-lg">更新</button>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-3">
+
         {{ $presenter->renderForm($model, 'sub') }}
-        <button type="submit" class="btn btn-primary">更新</button>
+
+        <hr class="form-separator">
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">更新</button>
       </div>
     </div>
     {{ $presenter->getForm()->close() }}
