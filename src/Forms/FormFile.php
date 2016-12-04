@@ -11,27 +11,17 @@ use File;
  */
 class FormFile extends FormInput
 {
-  public function render($model = null)
+  protected function renderComponent($model)
   {
     $spec = $this->spec;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
-
     $html = '';
-    $html.= $this->label();
     if (!is_null($model) && $model->{$name}->originalFilename())
     {
       $html.= $this->renderFileExists($name, $model, $attributes);
     }
     $html.= $this->renderFile($name, $attributes);
-    $html.= $this->renderHelp();
-    $html.= $this->renderError();
-
-    if ($spec->getGroup())
-    {
-      $html = $this->grouping($html);
-    }
-
     return $html;
   }
 

@@ -10,56 +10,64 @@ use Eyewill\TucleCore\FormSpecs\FormSpecGroup;
  */
 class FormGroup extends FormInput
 {
-  public function render($model = null)
+  public function render($model = null, $row = true)
   {
-    $label = $this->spec->getLabel();
-    $class = $this->spec->getClass();
+    $spec = $this->spec;
 
     $html = '';
-    if ($label) {
-      $html.= '<label>'.$label.'</label>';
+    if ($row)
+    {
+      $html.= '<div class="row">';
+      $html.= '<div class="'.$spec->getClass().'">';
     }
-    $html.= '<div class="row">';
-    $html.= $this->renderGroupForms();
-    $html.= '</div>';
 
-    $html = $this->grouping($html);
+    $html.= $this->label();
+    $html.= $this->renderComponent($model);
+    $html.= $this->renderHelp();
+
+    if ($row)
+    {
+      $html.= '</div>';
+      $html.= '</div>';
+    }
+
+    $html = $this->formGroup($html);
 
     return $html;
   }
 
-  public function renderGroupForms()
+  public function renderComponent($model)
   {
     $html = '';
     $forms = $this->spec->getForms();
+    $html.= '<div class="row">';
     foreach ($forms as $spec)
     {
-//      $spec['group'] = false;
       $class = array_get($spec, 'class', 'col-xs-12');
       $formSpec = FormSpecFactory::make($spec);
       $form = $formSpec->makeForm($this->presenter);
       $html.= '<div class="'.$class.'">';
-      $html.= $form->render();
+      $html.= $form->render($model, false);
       $html.= '</div>';
-    }
+     }
+     $html.= '</div>';
 
     return $html;
   }
 
-  protected function grouping($source = '')
+  public function label()
   {
-    $class = 'form-group group';
+    $class = 'group ';
 
-    if ($this->hasError())
+    if ($this->spec->getRequired())
     {
-      $class .= ' has-error';
+      $class .= 'required';
     }
-    $html = '';
-    $html.= '<div class="'.$class.'">';
-    $html.= $source;
-    $html.= '</div>';
 
-    return $html;
+    $attributes = [
+      'class' => $class,
+    ];
+    return $this->presenter->getForm()->label($this->spec->getLabel(), null, $attributes);
   }
 
 }

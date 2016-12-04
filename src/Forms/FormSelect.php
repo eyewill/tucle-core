@@ -1,77 +1,26 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\FormSpecs\FormSpec;
 use Eyewill\TucleCore\FormSpecs\FormSpecSelect;
-use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
-use Illuminate\Support\Collection;
 
 /**
  * Class FormSelect
  * @package Eyewill\TucleCore\Forms
- * @property FormSpecSelect $spec
  */
 class FormSelect extends FormInput
 {
-  protected $emptyLabel;
-  protected $values = [];
+  /** @var  FormSpecSelect */
+  protected $spec;
 
-  public function __construct(ModelPresenter $presenter, FormSpec $spec)
-  {
-    $values = $spec->getValues();
-    if (!is_array($values))
-    {
-      $func = camel_case($spec->getName()).'Values';
-      if (is_callable([$presenter, $func]))
-      {
-        $values = $presenter->{$func}();
-        if ($values instanceof Collection)
-        {
-          $values = $values->toArray();
-        }
-      }
-      else
-      {
-        $values = [];
-      }
-    }
-    $this->setValues($values);
-    $this->setEmptyLabel($spec->getEmptyLabel());
-    parent::__construct($presenter, $spec);
-  }
-
-  public function setValues($values = [])
-  {
-    $this->values = $values;
-  }
-
-  public function setEmptyLabel($emptyLabel)
-  {
-    $this->emptyLabel = $emptyLabel;
-  }
-
-  public function render($model = null)
+  protected function renderComponent($model)
   {
     $spec = $this->spec;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
-    $values = $this->values;
-    if ($this->emptyLabel)
+    $values = $spec->getValues();
+    if ($spec->getEmptyLabel())
     {
-      $values = ['' => $this->emptyLabel]+$values;
+      $values = ['' => $spec->getEmptyLabel()]+$values;
     }
-
-    $html = '';
-
-    $html.= $this->label();
-    $html.= $this->presenter->getForm()->select($name, $values, null, $attributes)->toHtml();
-    $html.= $this->renderHelp();
-    $html.= $this->renderError();
-
-    if ($spec->getGroup())
-    {
-      $html = $this->grouping($html);
-    }
-
-    return $html;
+    return $this->presenter->getForm()->select($name, $values, null, $attributes)->toHtml();
   }
 }

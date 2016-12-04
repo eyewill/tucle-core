@@ -1,5 +1,6 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
+use Eyewill\TucleCore\Contracts\FormSpecContract;
 use Eyewill\TucleCore\FormSpecs\FormSpec;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 use Illuminate\Support\MessageBag;
@@ -15,7 +16,7 @@ class FormInput
   /** @var ModelPresenter */
   protected $presenter;
 
-  public function __construct(ModelPresenter $presenter, FormSpec $spec)
+  public function __construct(ModelPresenter $presenter, FormSpecContract $spec)
   {
     $this->presenter = $presenter;
     $this->spec = $spec;
@@ -39,33 +40,49 @@ class FormInput
 
   /**
    * @param null $model
+   * @param bool $row
    * @return string
    */
-  public function render($model = null)
+  public function render($model = null, $row = true)
+  {
+    $spec = $this->spec;
+
+    $html = '';
+    if ($row)
+    {
+      $html.= '<div class="row">';
+      $html.= '<div class="'.$spec->getClass().'">';
+    }
+
+    $html.= $this->label();
+    $html.= $this->renderComponent($model);
+    $html.= $this->renderHelp();
+    $html.= $this->renderError();
+
+    if ($row)
+    {
+      $html.= '</div>';
+      $html.= '</div>';
+    }
+
+    $html = $this->formGroup($html);
+
+    return $html;
+  }
+
+  protected function renderComponent($model)
   {
     $spec = $this->spec;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
-
-    $html = '';
-    $html.= $this->label();
-    $html.= $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
-    $html.= $this->renderHelp();
-    $html.= $this->renderError();
-
-    if ($this->spec->getGroup())
-    {
-      $html = $this->grouping($html);
-    }
-
-    return $html;
+    return $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
   }
 
   /**
    * @param string $source
    * @return string
    */
-  protected function grouping($source = '')
+  protected function formGroup($source = '')
   {
     $class = 'form-group';
 
@@ -88,7 +105,7 @@ class FormInput
 
     if ($this->spec->getRequired())
     {
-      $class .= 'required';
+      $class .= ' required';
     }
 
     $attributes = [

@@ -7,44 +7,39 @@ class FormCheckbox extends FormInput
   /** @var FormSpecCheckbox */
   protected $spec;
 
-  public function render($model = null)
+  protected function renderComponent($model)
   {
-    $label = $this->spec->getLabel();
-    $class = $this->spec->getClass();
-
+    $spec = $this->spec;
+    $name = $spec->getName();
     $html = '';
-    $html.= '<div class="'.$class.'">';
-    if ($label) {
-      $html.= '<label>'.$label.'</label>';
-    }
-    foreach ($this->spec->getCheckboxes() as $spec)
+    if ($spec->getInline())
     {
-      $html.= $this->renderCheckbox($spec);
+      $html.= '<div>';
+      foreach ($spec->getValues() as $value => $label)
+      {
+        $inputName =  $name.'[]';
+        $html.= '<input type="hidden" name="'.$inputName.'" value="">';
+        $html.= '<label class="checkbox-inline">';
+        $html.= $this->presenter->getForm()->checkbox($inputName, $value)->toHtml();
+        $html.= e($label);
+        $html.= '</label> ';
+      }
+      $html.= '</div>';
     }
-    $html.= $this->renderHelp();
-    $html.= $this->renderError();
-    $html.= '</div>';
-
-    if ($this->spec->getGroup())
+    else
     {
-      $html = $this->grouping($html);
+      foreach ($spec->getValues() as $value => $label)
+      {
+        $html.= '<div class="checkbox">';
+        $inputName =  $name.'[]';
+        $html.= '<input type="hidden" name="'.$inputName.'" value="">';
+        $html.= '<label>';
+        $html.= $this->presenter->getForm()->checkbox($inputName, 1)->toHtml();
+        $html.= e($label);
+        $html.= '</label>';
+        $html.= '</div>';
+      }
     }
-
-    return $html;
-  }
-
-  public function renderCheckbox($spec)
-  {
-    $name = array_get($spec, 'name');
-    $label = array_get($spec, 'label');
-    $html = '';
-    $html.= '<div class="checkbox">';
-    $html.= '<input type="hidden" name="'.$name.'" value="">';
-    $html.= '<label>';
-    $html.= $this->presenter->getForm()->checkbox($name, 1)->toHtml();
-    $html.= $label;
-    $html.= '</label>';
-    $html.= '</div>';
 
     return $html;
   }

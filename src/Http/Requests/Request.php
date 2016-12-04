@@ -22,8 +22,17 @@ abstract class Request extends FormRequest
 
   protected function validationData()
   {
-    $this->merge(array_map('trim', $this->input()));
+    $this->merge(array_map([$this, 'trim'], $this->input()));
     return $this->all();
+  }
+
+  protected function trim($input)
+  {
+    if (is_array($input)) // checkboxes
+    {
+      return array_filter($input);
+    }
+    return trim($input);
   }
 
   protected function getValidatorInstance()

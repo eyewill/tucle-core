@@ -1,17 +1,17 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
-use Eyewill\TucleCore\Forms\FormAttributes;
+use Eyewill\TucleCore\Contracts\FormSpecContract;
+use Eyewill\TucleCore\Forms\Attributes;
 use Eyewill\TucleCore\Forms\FormInput;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-abstract class FormSpec
+abstract class FormSpec implements FormSpecContract
 {
   protected $attributes;
 
   public function __construct($attributes = [], $mergeAttributes = [])
   {
     array_set($attributes, 'position', array_get($attributes, 'position', 'main'));
-    array_set($attributes, 'group', array_get($attributes, 'group', true));
     array_set($attributes, 'class', array_get($attributes, 'class', 'col-xs-12'));
     array_set($attributes, 'attr.class', array_get($attributes, 'attr.class', 'form-control'));
 
@@ -41,14 +41,6 @@ abstract class FormSpec
   }
 
   /**
-   * @return string
-   */
-  public function getGroup()
-  {
-    return array_get($this->attributes, 'group');
-  }
-
-  /**
    * @return boolean
    */
   public function getRequired()
@@ -73,11 +65,11 @@ abstract class FormSpec
   }
 
   /**
-   * @return FormAttributes
+   * @return Attributes
    */
   public function getAttributes()
   {
-    return new FormAttributes(array_get($this->attributes, 'attr', []));
+    return new Attributes(array_get($this->attributes, 'attr', []));
   }
 
   /**

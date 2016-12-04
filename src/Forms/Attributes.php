@@ -1,6 +1,6 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-class FormAttributes
+class Attributes
 {
   protected $attributes = [];
 

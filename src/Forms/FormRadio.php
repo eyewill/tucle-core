@@ -9,15 +9,13 @@ use Eyewill\TucleCore\FormSpecs\FormSpecRadio;
  */
 class FormRadio extends FormInput
 {
-  public function render($model = null)
+  protected function renderComponent($model)
   {
     $spec = $this->spec;
     $name = $spec->getName();
-    $class = $spec->getClass();
     $attributes = $spec->getAttributes()->get();
 
     $html = '';
-    $html.= '<div class="'.$class.'">';
     $html.= '<label>&nbsp;</label>';
     $html.= '<div class="radio">';
     $html.= '<label>';
@@ -25,17 +23,7 @@ class FormRadio extends FormInput
     $html.= $this->presenter->getForm()->radio($name, 1, null, $attributes)->toHtml();
     $html.= $spec->getLabel();
     $html.= '</label>';
-    $html.= $this->renderHelp();
-    $html.= $this->renderError();
-    $html.= '</div>';
-    $html.= '</div>';
-
-    if ($spec->getGroup())
-    {
-      $html = $this->grouping($html);
-    }
 
     return $html;
   }
-
 }
