@@ -11,14 +11,14 @@ class FormCheckbox extends FormInput
   {
     $spec = $this->spec;
     $name = $spec->getName();
+    $inputName =  $name.'[]';
     $html = '';
+    $html.= '<input type="hidden" name="'.$inputName.'" value="">';
     if ($spec->getInline())
     {
       $html.= '<div>';
       foreach ($spec->getValues() as $value => $label)
       {
-        $inputName =  $name.'[]';
-        $html.= '<input type="hidden" name="'.$inputName.'" value="">';
         $html.= '<label class="checkbox-inline">';
         $html.= $this->presenter->getForm()->checkbox($inputName, $value)->toHtml();
         $html.= e($label);
@@ -31,8 +31,6 @@ class FormCheckbox extends FormInput
       foreach ($spec->getValues() as $value => $label)
       {
         $html.= '<div class="checkbox">';
-        $inputName =  $name.'[]';
-        $html.= '<input type="hidden" name="'.$inputName.'" value="">';
         $html.= '<label>';
         $html.= $this->presenter->getForm()->checkbox($inputName, 1)->toHtml();
         $html.= e($label);
