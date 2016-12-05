@@ -80,17 +80,10 @@
 <!-- JavaScripts -->
 @section('script')
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-  <script src="/assets/moment/js/moment-with-locales.min.js"></script>
-  <script src="/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
   @include('tucle::partial.scripts')
   @include('tucle::module.notify')
 
-  <script>
-    $('[data-provider=datetimepicker]').datetimepicker({
-      locale: 'ja'
-    });
-  </script>
   {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 @show
 

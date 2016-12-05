@@ -2,6 +2,7 @@
 
 @include('tucle::module.ckeditor')
 @include('tucle::module.fileinput')
+@include('tucle::module.datetimepicker')
 
 @section('content')
   <div class="container">
