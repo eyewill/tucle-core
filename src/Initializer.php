@@ -73,6 +73,7 @@ class Initializer
       yield $this->composer->scripts('php artisan ide-helper:generate', 1);
       yield $this->composer->scripts('php artisan ide-helper:meta', 2);
       yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
+      yield $this->composer->add('primalbase/laravel5-view-builder', 'dev-master');
       yield $this->composer->update();
     }
 
