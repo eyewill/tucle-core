@@ -11,6 +11,9 @@
     $(function(){
       $.extend($.fn.dataTable.defaults, {
         stateSave: true,
+        columnDefs: [
+          { type: "html", targets: "_all" }
+        ],
         language: {
           url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
         }
