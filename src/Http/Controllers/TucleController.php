@@ -4,6 +4,6 @@ class TucleController extends Controller
 {
   public function index()
   {
-    return view('tucle::tucle.index');
+    return view('tucle::home.index');
   }
 }

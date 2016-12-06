@@ -265,4 +265,9 @@ class ModelPresenter
 
     return $attributeNames;
   }
+
+  public function url()
+  {
+    return '#';
+  }
 }

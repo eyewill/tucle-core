@@ -180,7 +180,7 @@ class Initializer
  * name home
 */
 Route::get('/', function () {
-  return view('tucle::tucle.index');
+  return view('tucle::home.index');
 })->middleware('auth')->name('home');
 __PHP__
       );

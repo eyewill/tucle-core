@@ -4,8 +4,7 @@
     @foreach ($tableColumns as $column)
       <th>{{ $column['label'] }}</th>
     @endforeach
-    <th data-orderable="false" data-searchable="false" data-class-name="text-center hidden-xs" data-width="240px"></th>
-      <th data-orderable="false" data-searchable="false" data-class-name="text-center visible-xs"></th>
+    <th data-orderable="false" data-searchable="false" data-class-name="text-center" data-width="1px"></th>
   </tr>
   </thead>
 
@@ -16,19 +15,15 @@
         {{ $presenter->entry($column, $entry) }}
       @endforeach
 
-      <td class="hidden-xs">
-        <div class="btn-group">
-          <a href="{{ $entry->url() }}" class="btn btn-primary">ウェブサイトを表示</a>
-          <a href="{{ $presenter->route('edit', [$entry]) }}" class="btn btn-primary">編集</a>
-        </div>
-      </td>
-      <td class="visible-xs">
-        <div class="btn-group">
-          <a href="{{ $entry->url() }}" class="btn btn-primary" title="ウェブサイトを表示">
+      <td>
+        <div class="btn-actions">
+          <a href="{{ $entry->url() }}" class="btn btn-primary" target="_blank" title="ウェブサイトを表示">
             <i class="fa fa-globe"></i>
+            <span class="hidden-xs">ウェブサイトを表示</span>
           </a>
-          <a href="{{ $presenter->route('edit', [$entry]) }}" class="btn btn-primary" title="編集">
+          <a href="{{ $presenter->route('edit', [$entry]) }}" class="btn btn-primary">
             <i class="fa fa-edit"></i>
+            <span class="hidden-xs">編集</span>
           </a>
         </div>
       </td>

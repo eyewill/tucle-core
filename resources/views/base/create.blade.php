@@ -1,4 +1,4 @@
-@extends('tucle::layout')
+@extends('tucle::base.layout')
 
 @include('tucle::module.ckeditor')
 @include('tucle::module.fileinput')

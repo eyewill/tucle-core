@@ -58,3 +58,11 @@ hr.form-separator {
 .form-group.group + hr.form-separator {
   margin-top: 15px;
 }
+
+.btn-actions {
+  white-space: nowrap;
+  > .btn {
+    float: none;
+    display: inline-block;
+  }
+}
