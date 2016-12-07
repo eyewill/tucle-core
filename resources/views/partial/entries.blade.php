@@ -12,11 +12,10 @@
   <tbody>
   @foreach ($entries as $entry)
     <tr>
-      <td></td>
+      <td>{{ $entry->id }}</td>
       @foreach ($presenter->tableColumns() as $column)
         {{ $presenter->renderEntry($column, $entry) }}
       @endforeach
-
       <td>
         <div class="btn-actions">
           @include($presenter->viewListActions())
