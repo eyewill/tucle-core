@@ -219,6 +219,7 @@ return [
   
   'modules' => [],
   
+  'front_url' => env('FRONT_URL', 'http://localhost')
 ];
 __PHP__
     );

@@ -1,5 +1,5 @@
 @if ($entry->candidates())
-  <a href="{{ $entry->url() }}" class="btn btn-primary btn-sm" target="_blank" title="プレビュー">
+  <a href="{{ $presenter->route('preview', $entry) }}" class="btn btn-primary btn-sm" target="_blank" title="プレビュー">
     <i class="fa fa-globe fa-lg"></i>
     <span class="hidden-xs">プレビュー</span>
   </a>

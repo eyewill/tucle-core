@@ -3,7 +3,7 @@
     <div class="btn-toolbar pull-right">
       <a href="{{ $presenter->route('index') }}" class="btn btn-default">一覧に戻る</a>
       @if ($model->candidates())
-        <a href="{{ $model->url(true) }}" class="btn btn-primary" target="_blank">プレビュー</a>
+        <a href="{{ $presenter->route('preview', $model) }}" class="btn btn-primary" target="_blank">プレビュー</a>
       @elseif ($model->published())
         <a href="{{ $model->url() }}" class="btn btn-primary" target="_blank">サイト</a>
       @else
