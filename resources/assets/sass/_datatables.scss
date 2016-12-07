@@ -1,3 +1,7 @@
 table.dataTable .align-middle {
   vertical-align: middle;
 }
+
+table.dataTable tr.selected {
+  background: #FCFCFC;
+}

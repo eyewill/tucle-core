@@ -1,8 +1,10 @@
 @section('stylesheet')
   @parent
   <link rel="stylesheet" href="/assets/datatables/css/dataTables.bootstrap.min.css">
-  <link rel="stylesheet" href="/assets/datatables/css/select.bootstrap.css">
+  {{--<link rel="stylesheet" href="/assets/datatables/css/select.bootstrap.css">--}}
   <link rel="stylesheet" href="/assets/datatables/css/dataTables.checkboxes.css">
+  <style>
+  </style>
 @endsection
 
 @section('script')
@@ -24,7 +26,8 @@
           { type: "html", targets: "_all" }
         ],
         select: {
-          style: 'multi'
+          style: 'multi',
+          selector: 'td:first-child'
         },
         autoWidth: false,
         stateSave: true,
