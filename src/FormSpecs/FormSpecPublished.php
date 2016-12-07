@@ -12,12 +12,18 @@ class FormSpecPublished extends FormSpecGroup
           'label' => '公開開始日',
           'width' => 'col-sm-3',
           'type' => 'datetime',
+          'attr' => [
+            'data-clearable' => true,
+          ],
         ],
         [
           'name' => 'terminated_at',
           'label' => '公開終了日',
           'width' => 'col-sm-3',
           'type' => 'datetime',
+          'attr' => [
+            'data-clearable' => true,
+          ],
         ],
       ],
       'name' => ['published_at', 'terminated_at'],

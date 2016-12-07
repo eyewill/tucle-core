@@ -66,3 +66,15 @@ hr.form-separator {
     display: inline-block;
   }
 }
+
+.btn-clear-input {
+   position: absolute;
+   font-size: 120%;
+   z-index: 99999;
+   cursor: pointer;
+   color: #ccc;
+}
+
+.btn-clear-input:hover {
+  color: #999;
+}

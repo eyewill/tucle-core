@@ -28,5 +28,25 @@
 
     }).removeClass('disabled').prop('disabled', false);
 
+    /**
+     * form input clear
+     */
+    $('input:text[data-clearable]').each(function(e) {
+      var input = $(this);
+      var top = input.position().top+9;
+      var padding = Number(input.parent().css('padding-right').replace('px', ''));
+      input.parent().css('position', 'relative');
+      var right = input.parent().innerWidth()-input.outerWidth()-padding + 9;
+      $(this).after(
+        $('<span class="btn-clear-input fa fa-times-circle"></span>')
+          .css({
+            top: top+'px',
+            right: right+'px'
+          })
+          .on('click', function (e) {
+            input.val('');
+          })
+      );
+    });
   });
 </script>

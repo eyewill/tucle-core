@@ -28,7 +28,7 @@
 
       <hr class="form-separator">
 
-      <button type="submit" class="btn btn-primary btn-block btn-lg">作成</button>
+      <button type="submit" class="hidden-xs btn btn-primary btn-block btn-lg">作成</button>
     </div>
     <div class="col-sm-3">
 
