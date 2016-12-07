@@ -4,7 +4,7 @@ use Eyewill\TucleCore\Contracts\Presenter\ModelEditPresenter as EditModelPresent
 use Eyewill\TucleCore\Forms\FormGroup;
 use Eyewill\TucleCore\Forms\FormInput;
 use Eyewill\TucleCore\Http\Presenters\ModelEditPresenter;
-use Eyewill\TucleCore\Http\Presenters\TucleIndexPresenter;
+use Eyewill\TucleCore\Http\Presenters\TucleHomePresenter;
 use File;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -90,7 +90,7 @@ class TucleCoreServiceProvider extends ServiceProvider
   public function register()
   {
     $this->app->singleton(EditModelPresenterContracts::class, ModelEditPresenter::class);
-    $this->app->singleton('TucleIndexPresenter', TucleIndexPresenter::class);
+    $this->app->singleton('TucleIndexPresenter', TucleHomePresenter::class);
 
     $this->commands($this->commands);
   }

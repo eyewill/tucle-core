@@ -2,7 +2,7 @@
   <thead>
   <tr>
     <th></th>
-    @foreach ($tableColumns as $column)
+    @foreach ($presenter->tableColumns() as $column)
       <th>{{ $column['label'] }}</th>
     @endforeach
     <th data-orderable="false" data-searchable="false" data-class-name="text-center" data-width="1px"></th>
@@ -13,20 +13,15 @@
   @foreach ($entries as $entry)
     <tr>
       <td></td>
-      @foreach ($tableColumns as $column)
-        {{ $presenter->entry($column, $entry) }}
+      @foreach ($presenter->tableColumns() as $column)
+        {{ $presenter->renderEntry($column, $entry) }}
       @endforeach
 
       <td>
         <div class="btn-actions">
-          <a href="{{ $entry->url() }}" class="btn btn-primary btn-sm" target="_blank" title="ウェブサイトを表示">
-            <i class="fa fa-globe fa-lg"></i>
-            <span class="hidden-xs">ウェブサイトを表示</span>
-          </a>
-          <a href="{{ $presenter->route('edit', [$entry]) }}" class="btn btn-primary btn-sm">
-            <i class="fa fa-edit fa-lg"></i>
-            <span class="hidden-xs">編集</span>
-          </a>
+          @include($presenter->viewActions(), [
+            'entry' => $entry,
+          ])
         </div>
       </td>
     </tr>

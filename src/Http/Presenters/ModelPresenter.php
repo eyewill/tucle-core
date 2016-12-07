@@ -70,18 +70,12 @@ class ModelPresenter
     return new HtmlString($html);
   }
 
-  public function entries(Collection $entries)
+  public function tableColumns()
   {
-    $view = array_get($this->views, 'entries', 'tucle::partial.entries');
-
-    return new HtmlString(view()->make($view, [
-      'presenter'    => $this,
-      'tableColumns' => $this->entryTableColumns,
-      'entries'      => $entries,
-    ])->render());
+    return $this->entryTableColumns;
   }
 
-  public function entry($column, $entry)
+  public function renderEntry($column, $entry)
   {
     $name  = array_get($column, 'name');
     $links = array_get($column, 'links', false);
@@ -269,5 +263,10 @@ class ModelPresenter
   public function url()
   {
     return '#';
+  }
+
+  public function viewActions()
+  {
+    return 'tucle::partial.actions';
   }
 }

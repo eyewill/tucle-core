@@ -181,8 +181,21 @@ class Initializer
  * route GET /
  * name home
 */
-Route::get('/', function () {
-  return view('tucle::home.index');
+use Eyewill\TucleCore\Http\Presenters\TucleHomePresenter;
+
+Route::get('/', function (TucleHomePresenter \$presenter) {
+
+  \$modules = config('tucle.modules', []);
+  \$entries = [];
+  foreach (\$modules as \$module)
+  {
+    \$entries[] = app('App\\\\Http\\\\Presenters\\\\'.studly_case(\$module).'Presenter');
+  }
+
+  return view('tucle::home.index', [
+    'entries' => \$entries,
+    'presenter' => \$presenter,
+  ]);
 })->middleware('auth')->name('home');
 __PHP__
       );

@@ -20,7 +20,12 @@
   </div>
   @show
 
-  {{ $presenter->entries($entries) }}
+  @section('entries')
+    @include('tucle::partial.entries', [
+      'entries' => $entries,
+      'presenter' => $presenter,
+    ])
+  @show
 
 </div>
 @endsection
