@@ -50,7 +50,9 @@ class Initializer
     if (in_array('assets', $this->tasks))
     {
       yield $this->copyAssetsSass();
-      yield $this->copyAssetsCKEditor();
+      yield $this->copyAssets('ckeditor');
+      yield $this->copyAssets('datatables-i18n');
+      yield $this->copyAssets('jquery-datatables-checkboxes');
     }
 
     if (in_array('packages', $this->tasks))
@@ -112,16 +114,16 @@ class Initializer
     return $path.' copied.';
   }
 
-  public function copyAssetsCKEditor()
+  public function copyAssets($asset)
   {
-    if (!$this->force && File::exists(resource_path('assets/ckeditor')))
+    if (!$this->force && File::exists(resource_path('assets/'.$asset)))
     {
-      return resource_path('assets/ckeditor').' already exists';
+      return resource_path('assets/'.$asset).' already exists';
     }
 
-    File::copyDirectory(__DIR__.'/../files/assets/ckeditor', resource_path('assets/ckeditor'));
+    File::copyDirectory(__DIR__.'/../files/assets/'.$asset, resource_path('assets/'.$asset));
 
-    return 'assets/ckeditor copied.';
+    return 'assets/'.$asset.' copied.';
   }
 
   public function copyAuthView()

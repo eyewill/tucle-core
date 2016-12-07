@@ -8,9 +8,10 @@
       <h1>{{ config('tucle.brand', 'TUCLE5') }}</h1>
     </div>
 
-    <table class="table" data-provider="datatables">
+    <table id="entries" class="table" data-provider="datatables">
       <thead>
         <tr>
+          <th></th>
           <th>
             module
           </th>
@@ -18,24 +19,27 @@
           </th>
         </tr>
       </thead>
-      @foreach (app('TucleIndexPresenter')->entries() as $presenter)
       <tbody>
+      @foreach (app('TucleIndexPresenter')->entries() as $presenter)
       <tr>
+        <td></td>
         <td>
-          <div class="form-control-static">
-            <a href="{{ $presenter->route('index') }}">
-              {{ $presenter->getPageTitle() }}
-            </a>
-          </div>
+          <a href="{{ $presenter->route('index') }}">
+            {{ $presenter->getPageTitle() }}
+          </a>
         </td>
         <td>
-          <a href="{{ $presenter->url() }}" class="btn btn-primary" target="_blank">
+          <a href="{{ $presenter->url() }}" class="btn btn-primary btn-sm" target="_blank">
+            <span class="fa fa-globe fa-lg"></span>
             サイトを表示
           </a>
         </td>
       </tr>
-      </tbody>
       @endforeach
+      </tbody>
     </table>
+    @if (config('app.debug'))
+      <a href="#" data-action-clear="#entries">クリア</a>
+    @endif
   </div>
 @endsection

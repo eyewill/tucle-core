@@ -1,6 +1,7 @@
 <table id="entries" class="table" data-provider="datatables">
   <thead>
   <tr>
+    <th></th>
     @foreach ($tableColumns as $column)
       <th>{{ $column['label'] }}</th>
     @endforeach
@@ -11,18 +12,19 @@
   <tbody>
   @foreach ($entries as $entry)
     <tr>
+      <td></td>
       @foreach ($tableColumns as $column)
         {{ $presenter->entry($column, $entry) }}
       @endforeach
 
       <td>
         <div class="btn-actions">
-          <a href="{{ $entry->url() }}" class="btn btn-primary" target="_blank" title="ウェブサイトを表示">
-            <i class="fa fa-globe"></i>
+          <a href="{{ $entry->url() }}" class="btn btn-primary btn-sm" target="_blank" title="ウェブサイトを表示">
+            <i class="fa fa-globe fa-lg"></i>
             <span class="hidden-xs">ウェブサイトを表示</span>
           </a>
-          <a href="{{ $presenter->route('edit', [$entry]) }}" class="btn btn-primary">
-            <i class="fa fa-edit"></i>
+          <a href="{{ $presenter->route('edit', [$entry]) }}" class="btn btn-primary btn-sm">
+            <i class="fa fa-edit fa-lg"></i>
             <span class="hidden-xs">編集</span>
           </a>
         </div>
