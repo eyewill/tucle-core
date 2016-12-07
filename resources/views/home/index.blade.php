@@ -9,10 +9,7 @@
     </div>
 
     @section('entries')
-      @include('tucle::partial.entries', [
-        'entries' => $entries,
-        'presenter' => $presenter,
-      ])
+      @include('tucle::partial.entries')
     @show
 
   </div>

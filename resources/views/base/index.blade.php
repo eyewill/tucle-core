@@ -14,7 +14,9 @@
         <h1 class="form-title">{{ $presenter->getPageTitle() }}</h1>
       </div>
       <div class="col-sm-4">
-        {{ $presenter->renderPageActions(null, ['create']) }}
+        @section('actions')
+          @include($presenter->viewIndexActions())
+        @show
       </div>
     </div>
   </div>

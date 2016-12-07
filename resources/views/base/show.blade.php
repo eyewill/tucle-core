@@ -11,7 +11,9 @@
         <h1 class="form-title">{{ $presenter->getPageTitle($model) }}</h1>
       </div>
       <div class="col-sm-4">
-        {{ $presenter->renderPageActions($model, ['back', 'edit', 'create']) }}
+        @section('actions')
+          @include($presenter->viewShowActions())
+        @show
       </div>
     </div>
   </div>

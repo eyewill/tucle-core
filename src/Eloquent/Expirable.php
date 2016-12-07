@@ -1,0 +1,98 @@
+<?php namespace Eyewill\TucleCore\Eloquent;
+use Carbon\Carbon;
+
+/**
+ * Class Expirable
+ * @package Eyewill\TucleCore\Eloquent
+ *
+ * @property array $attributes
+ * @property Carbon|null $published_at
+ * @property Carbon|null $terminated_at
+ */
+trait Expirable
+{
+  public function getPublishedAtAttribute($value)
+  {
+    if (is_null($value))
+      return null;
+
+    return Carbon::parse($value);
+  }
+
+  public function getTerminatedAtAttribute($value)
+  {
+    if (is_null($value))
+      return null;
+
+    return Carbon::parse($value);
+  }
+
+  public function setPublishedAtAttribute($value)
+  {
+    if (empty($value))
+      $value = null;
+
+    $this->attributes['published_at'] = $value;
+  }
+
+  public function setTerminatedAtAttribute($value)
+  {
+    if (empty($value))
+      $value = null;
+
+    $this->attributes['terminated_at'] = $value;
+  }
+
+  /**
+   * 公開前
+   */
+  public function candidates()
+  {
+    if (is_null($this->published_at) && is_null($this->terminated_at))
+    {
+      return true;
+    }
+
+    return isset($this->published_at) && Carbon::now()->lte($this->published_at);
+  }
+
+  public function scopeCandidates($query)
+  {
+
+  }
+
+  /**
+   * 公開中
+   */
+  public function published()
+  {
+    if (!isset($this->published_at) || Carbon::now()->lte($this->published_at))
+    {
+      return false;
+    }
+
+    if (isset($this->terminated_at) && Carbon::now()->gte($this->terminated_at))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public function scopePublished($query)
+  {
+
+  }
+
+  /**
+   * 公開前＋公開中
+   */
+  public function effective()
+  {
+    return ($this->candidates() || $this->published());
+  }
+
+  public function scopeEffective($query)
+  {
+  }
+}

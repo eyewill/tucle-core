@@ -265,8 +265,24 @@ class ModelPresenter
     return '#';
   }
 
-  public function viewActions()
+  public function viewIndexActions()
   {
-    return 'tucle::partial.actions';
+    return 'tucle::partial.actions.index';
   }
+
+  public function viewListActions()
+  {
+    return 'tucle::partial.actions.list';
+  }
+
+  public function viewEditActions()
+  {
+    return 'tucle::partial.actions.edit';
+  }
+
+  public function viewShowActions()
+  {
+    return 'tucle::partial.actions.show';
+  }
+
 }

@@ -19,9 +19,7 @@
 
       <td>
         <div class="btn-actions">
-          @include($presenter->viewActions(), [
-            'entry' => $entry,
-          ])
+          @include($presenter->viewListActions())
         </div>
       </td>
     </tr>

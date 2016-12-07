@@ -26,8 +26,13 @@ class TucleHomePresenter
     return new HtmlString($html);
   }
 
-  public function viewActions()
+  public function viewIndexActions()
   {
-    return 'tucle::home.partial.actions';
+    return 'tucle::home.partial.actions.index';
+  }
+
+  public function viewListActions()
+  {
+    return 'tucle::home.partial.actions.list';
   }
 }
