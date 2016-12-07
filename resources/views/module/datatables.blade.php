@@ -14,6 +14,18 @@
   <script>
     $(function(){
       $.extend($.fn.dataTable.defaults, {
+        order: [],
+        columnDefs: [
+          { className: 'align-middle', targets: '_all' },
+          { width: '1px', targets: 0 },
+          { orderable: false, targets: 0 },
+          { searchable: false, targets: 0 },
+          { checkboxes: { selectRow: true }, targets: 0 },
+          { type: "html", targets: "_all" }
+        ],
+        select: {
+          style: 'multi'
+        },
         autoWidth: false,
         stateSave: true,
         language: {
@@ -21,20 +33,7 @@
         }
       });
       $('[data-provider=datatables]').each(function () {
-        $(this).DataTable({
-          order: [[1, 'desc']],
-          columnDefs: [
-            { className: 'align-middle', targets: 0 },
-            { width: '1px', targets: 0 },
-            { orderable: false, targets: 0 },
-            { searchable: false, targets: 0 },
-            { checkboxes: { selectRow: true }, targets: 0 },
-            { type: "html", targets: "_all" }
-          ],
-          select: {
-            style: 'multi'
-          },
-        });
+        $(this).DataTable();
       });
       $('[data-action-clear]').on('click', function (e) {
         e.preventDefault();
