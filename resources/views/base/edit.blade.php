@@ -7,7 +7,7 @@
 @section('content')
   <div class="container">
 
-    {{ $presenter->renderBreadCrumbs(['label' => $presenter->getPageTitle($model), 'route' => ['show', $model]], ['label' => '編集']) }}
+    {{ $presenter->renderBreadCrumbs(['label' => $presenter->getPageTitle($model), 'route' => ['update', $model]], ['label' => '編集']) }}
 
     @section('page-header')
     <div class="page-header">
