@@ -35,6 +35,9 @@ class FormFile extends FormInput
     $filename = $attachment->originalFilename();
     $contentType = $model->{$name}->contentType();
     $preview = json_encode([$url]);
+    $attributes = array_merge($attributes, [
+      'data-'
+    ]);
     if (preg_match('/^image/', $contentType))
     {
       $type = 'image';
@@ -123,9 +126,9 @@ __SCRIPT__;
         textEncoding: 'SJIS',
       }).on('fileselect', function (e) {
         console.log($('[name=${name}_uploaded]'));
-        $('[name=${name}_uploaded]').prev().hide(500);
+        $('[name=${name}_uploaded]').data().fileinput.\$container.hide(1000);
       }).on('fileclear', function (e) {
-        $('[name=${name}_uploaded]').prev().show(500);
+        $('[name=${name}_uploaded]').data().fileinput.\$container.show(500);
       });
     });
 </script>
