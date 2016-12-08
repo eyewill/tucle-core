@@ -66,6 +66,8 @@
   $(function () {
     $('#entries').DataTable({
       columnDefs: [
+        { className: 'align-middle', targets: '_all' },
+        { type: "html", targets: "_all" },
         { width: '1px', targets: 0 },
         { orderable: false, targets: 0 },
         { searchable: false, targets: 0 },

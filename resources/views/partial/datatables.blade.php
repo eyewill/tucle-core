@@ -2,10 +2,6 @@
   $(function(){
     $.extend($.fn.dataTable.defaults, {
       order: [],
-      columnDefs: [
-        { className: 'align-middle', targets: '_all' },
-        { type: "html", targets: "_all" }
-      ],
       autoWidth: false,
       stateSave: true,
       language: {
