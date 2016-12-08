@@ -3,6 +3,8 @@
     "description": "Tucle Core",
     "author": "Hiroshi Kawai <kawai@primalbase.jp>",
     "require": {
+        "codesleeve/laravel-stapler": "^1.0",
+        "laravelcollective/html": "5.2.*"
     },
     "autoload": {
         "psr-4": {

@@ -7,7 +7,9 @@
 @section('content')
 <div class="container">
 
+  @section('breadcrumbs')
   {{ $presenter->renderBreadCrumbs(['label' => '新規作成']) }}
+  @show
 
   @section('page-header')
   <div class="row page-header">

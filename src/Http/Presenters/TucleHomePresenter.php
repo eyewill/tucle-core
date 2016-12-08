@@ -26,14 +26,16 @@ class TucleHomePresenter
     return new HtmlString($html);
   }
 
-  public function viewIndexActions()
-  {
-    return 'tucle::home.partial.actions.index';
-  }
+  protected $views = [
+    'actions' => [
+      'index' => 'tucle::home.partial.actions.index',
+      'rows' => 'tucle::home.partial.actions.rows'
+    ],
+  ];
 
-  public function viewListActions()
+  public function view($view)
   {
-    return 'tucle::home.partial.actions.list';
+    return array_get($this->views, $view);
   }
 
   public function showCheckbox()

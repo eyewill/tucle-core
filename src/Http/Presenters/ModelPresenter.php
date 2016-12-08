@@ -14,9 +14,17 @@ class ModelPresenter
   protected $forms = [];
   protected $entryTableColumns = [];
   protected $showColumns = [];
-  protected $views = [];
   protected $routes = [];
   protected $breadCrumbs = [];
+
+  protected $views = [
+    'actions' => [
+      'index' => 'tucle::partial.actions.index',
+      'rows' => 'tucle::partial.actions.rows',
+      'edit' => 'tucle::partial.actions.edit',
+      'show' => 'tucle::partial.actions.show',
+    ],
+  ];
 
   public function __construct(FormBuilder $form, HtmlBuilder $html)
   {
@@ -36,6 +44,11 @@ class ModelPresenter
   public function getHtml()
   {
     return $this->html;
+  }
+
+  public function view($view)
+  {
+    return array_get($this->views, $view);
   }
 
   public function setPageTitle($pageTitle)
@@ -262,26 +275,6 @@ class ModelPresenter
   public function url()
   {
     return '#';
-  }
-
-  public function viewIndexActions()
-  {
-    return 'tucle::partial.actions.index';
-  }
-
-  public function viewListActions()
-  {
-    return 'tucle::partial.actions.list';
-  }
-
-  public function viewEditActions()
-  {
-    return 'tucle::partial.actions.edit';
-  }
-
-  public function viewShowActions()
-  {
-    return 'tucle::partial.actions.show';
   }
 
   public function showCheckbox()

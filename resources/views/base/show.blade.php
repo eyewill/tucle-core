@@ -2,7 +2,10 @@
 
 @section('content')
 <div class="container">
+
+  @section('breadcrumbs')
   {{ $presenter->renderBreadCrumbs(['label' => $presenter->getPageTitle($model)]) }}
+  @show
 
   @section('page-header')
   <div class="page-header">
@@ -12,7 +15,7 @@
       </div>
       <div class="col-md-6">
         @section('actions')
-          @include($presenter->viewShowActions())
+          @include($presenter->view('actions.show'))
         @show
       </div>
     </div>

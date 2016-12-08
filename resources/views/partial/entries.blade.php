@@ -22,7 +22,7 @@
       @endforeach
       <td>
         <div class="btn-actions">
-          @include($presenter->viewListActions())
+          @include($presenter->view('actions.rows'))
         </div>
       </td>
     </tr>

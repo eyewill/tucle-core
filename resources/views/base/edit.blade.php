@@ -7,7 +7,9 @@
 @section('content')
   <div class="container">
 
-    {{ $presenter->renderBreadCrumbs(['label' => $presenter->getPageTitle($model), 'route' => ['update', $model]], ['label' => '編集']) }}
+    @section('breadcrumbs')
+    {{ $presenter->renderBreadCrumbs(['label' => $presenter->getPageTitle($model), 'route' => ['show', $model]], ['label' => '編集']) }}
+    @show
 
     @section('page-header')
     <div class="page-header">
@@ -17,7 +19,7 @@
         </div>
         <div class="col-md-6">
           @section('actions')
-            @include($presenter->viewEditActions())
+            @include($presenter->view('actions.edit'))
           @show
         </div>
       </div>
