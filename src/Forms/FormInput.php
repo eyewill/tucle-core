@@ -101,17 +101,17 @@ class FormInput
 
   public function label()
   {
-    $class = 'control-label';
 
+    $html = '';
+    $html.= '<label class="control-label">';
+    $html.= e($this->spec->getLabel());
     if ($this->spec->getRequired())
     {
-      $class .= ' required';
+      $html.= ' <span class="label label-require">必須</span>';
     }
+    $html.= '</label>';
 
-    $attributes = [
-      'class' => $class,
-    ];
-    return $this->presenter->getForm()->label($this->spec->getLabel(), null, $attributes);
+    return $html;
   }
 
   public function renderHelp()

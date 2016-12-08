@@ -11,10 +11,10 @@
 
   @section('page-header')
   <div class="row page-header">
-    <div class="col-sm-8">
+    <div class="col-md-6">
       <h1 class="form-title">新規作成</h1>
     </div>
-    <div class="col-sm-4">
+    <div class="col-md-6">
       {{ $presenter->renderPageActions(null, ['back']) }}
     </div>
   </div>
