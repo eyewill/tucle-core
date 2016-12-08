@@ -20,10 +20,6 @@
     "ckeditor": "~4.5.11",
     "moment": "~2.15.2",
     "eonasdan-bootstrap-datetimepicker": "~4.17.43",
-    "datatables.net": "~1.10.12",
-    "datatables.net-bs": "~1.10.12",
-    "bootstrap-fileinput": "^4.3.5",
-    "datatables.net-select": "^1.2.1",
-    "datatables.net-select-bs": "^1.2.1"
+    "bootstrap-fileinput": "^4.3.5"
   }
 }

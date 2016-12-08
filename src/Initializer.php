@@ -51,6 +51,7 @@ class Initializer
     {
       yield $this->copyAssetsSass();
       yield $this->copyAssets('ckeditor');
+      yield $this->copyAssets('datatables');
       yield $this->copyAssets('datatables-i18n');
       yield $this->copyAssets('jquery-datatables-checkboxes');
     }

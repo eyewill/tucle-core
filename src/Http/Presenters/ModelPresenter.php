@@ -5,6 +5,7 @@ use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Eyewill\TucleCore\Factories\FormSpecFactory;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 
 class ModelPresenter
@@ -285,4 +286,24 @@ class ModelPresenter
     return 'tucle::partial.actions.show';
   }
 
+  public function batch($class, $entries = [])
+  {
+    foreach ($entries as $entry)
+    {
+      $type = array_get($entry, 'type');
+      $id = array_get($entry, 'id');
+      if ($type == 'delete')
+      {
+        $model = app()->make($class)->find($id);
+        $model->delete();
+      }
+      elseif ($type == 'put')
+      {
+        $attributes = array_get($entry, 'attributes');
+        $model = app()->make($class)->find($id);
+        $model->fill($attributes);
+        $model->save();
+      }
+    }
+  }
 }

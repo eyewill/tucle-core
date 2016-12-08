@@ -30,17 +30,17 @@ trait Expirable
   public function setPublishedAtAttribute($value)
   {
     if (empty($value))
-      $value = null;
-
-    $this->attributes['published_at'] = $value;
+      $this->attributes['published_at'] = null;
+    else
+      $this->attributes['published_at'] = Carbon::parse($value)->toDateTimeString();
   }
 
   public function setTerminatedAtAttribute($value)
   {
     if (empty($value))
-      $value = null;
-
-    $this->attributes['terminated_at'] = $value;
+      $this->attributes['terminated_at'] = null;
+    else
+      $this->attributes['terminated_at'] = Carbon::parse($value)->toDateTimeString();
   }
 
   /**
@@ -48,6 +48,11 @@ trait Expirable
    */
   public function candidates()
   {
+    if (isset($this->terminated_at) && Carbon::now()->gte($this->terminated_at))
+    {
+      return false;
+    }
+
     if (is_null($this->published_at) && is_null($this->terminated_at))
     {
       return true;
@@ -66,11 +71,13 @@ trait Expirable
    */
   public function published()
   {
-    if (!isset($this->published_at) || Carbon::now()->lte($this->published_at))
+    // now < published_at
+    if (is_null($this->published_at) || Carbon::now()->lt($this->published_at))
     {
       return false;
     }
 
+    // now >= terminated_at
     if (isset($this->terminated_at) && Carbon::now()->gte($this->terminated_at))
     {
       return false;

@@ -48,5 +48,44 @@
           })
       );
     });
+
+    /**
+     * jQuery拡張
+     * static
+     */
+    $.extend({
+      /**
+       * バッチリクエスト
+       */
+      batchRequest: function (url, data, reload) {
+        reload = reload !== false;
+        $.ajax({
+          url: url,
+          method: 'POST',
+          contentType: 'application/json',
+          dataType: 'json',
+          headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+          data: JSON.stringify(data)
+        }).done(function (data) {
+          $.notify({
+            icon: 'fa fa-success',
+            message: data.message
+          }, {
+            onShown: function () {
+              if (reload)
+                window.location.reload();
+            }
+          });
+        }).fail(function () {
+          $.notify({
+            icon: 'fa fa-times',
+            message: '一括処理は実行できませんでした'
+          }, {
+            type: 'danger'
+          });
+        });
+      }
+    });
+
   });
 </script>

@@ -22,7 +22,8 @@ abstract class Request extends FormRequest
 
   protected function validationData()
   {
-    $this->merge(array_map([$this, 'trim'], $this->input()));
+    if (!$this->isJson())
+      $this->merge(array_map([$this, 'trim'], $this->input()));
     return $this->all();
   }
 
@@ -41,7 +42,6 @@ abstract class Request extends FormRequest
     if (!is_null($this->presenter))
     {
       $presenter = app()->make($this->presenter);
-      debug($presenter->getAttributeNames());
       $validator->setAttributeNames($presenter->getAttributeNames());
     }
     return $validator;

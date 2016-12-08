@@ -31,11 +31,8 @@ elixir(function(mix) {
 
   /* DataTables */
   mix
-    .copy('bower_components/datatables.net/js', 'public/assets/datatables/js')
-    .copy('bower_components/datatables.net-bs/js', 'public/assets/datatables/js')
-    .copy('bower_components/datatables.net-bs/css', 'public/assets/datatables/css')
-    .copy('bower_components/datatables.net-select/js', 'public/assets/datatables/js')
-    .copy('bower_components/datatables.net-select-bs/css', 'public/assets/datatables/css')
+    .copy('resources/assets/datatables/*.js', 'public/assets/datatables/js')
+    .copy('resources/assets/datatables/*.css', 'public/assets/datatables/css')
     .copy('resources/assets/datatables-i18n/Japanese.json', 'public/assets/datatables/i18n/Japanese.json')
     .copy('resources/assets/jquery-datatables-checkboxes/js', 'public/assets/datatables/js')
     .copy('resources/assets/jquery-datatables-checkboxes/css', 'public/assets/datatables/css');
