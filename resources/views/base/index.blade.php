@@ -114,7 +114,7 @@
                 attributes: attributes
               })
             });
-            $.batchRequest(url, data, false);
+            $.batchRequest(url, data);
           }
         });
 
