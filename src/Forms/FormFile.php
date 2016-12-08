@@ -35,9 +35,6 @@ class FormFile extends FormInput
     $filename = $attachment->originalFilename();
     $contentType = $model->{$name}->contentType();
     $preview = json_encode([$url]);
-    $attributes = array_merge($attributes, [
-      'data-'
-    ]);
     if (preg_match('/^image/', $contentType))
     {
       $type = 'image';
