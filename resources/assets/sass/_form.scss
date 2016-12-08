@@ -22,13 +22,12 @@
 }
 
 .form-group .label-require {
+  position: absolute;
+  top: 3px;
+  right: 15px;
   background-color: #d9534f;
   border-radius: .25em;
 }
-
-//.form-group .file-input {
-//  display: table-cell;
-//}
 
 .form-group.group > label {
   border-left: #50555b solid 4px;
