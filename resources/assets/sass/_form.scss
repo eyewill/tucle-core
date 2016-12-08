@@ -29,6 +29,14 @@
   border-radius: .25em;
 }
 
+.form-group.group {
+  margin-bottom: 0;
+}
+
+.form-group.group > .row {
+  margin-bottom: -15px;
+}
+
 .form-group.group > label {
   border-left: #50555b solid 4px;
   display: block;
@@ -50,10 +58,6 @@ hr.form-separator {
   background-image:     -ms-linear-gradient(left, rgba(153,153,153,0), rgba(153,153,153,0.75), rgba(153,153,153,0));
   background-image:      -o-linear-gradient(left, rgba(153,153,153,0), rgba(153,153,153,0.75), rgba(153,153,153,0));
   background-image:      linear-gradient(to left, rgba(153,153,153,0), rgba(153,153,153,0.75), rgba(153,153,153,0));
-}
-
-.form-group.group + hr.form-separator {
-  margin-top: 15px;
 }
 
 .btn-actions {
