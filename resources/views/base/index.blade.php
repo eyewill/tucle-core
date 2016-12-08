@@ -65,6 +65,16 @@
 <script>
   $(function () {
     $('#entries').DataTable({
+      columnDefs: [
+        { width: '1px', targets: 0 },
+        { orderable: false, targets: 0 },
+        { searchable: false, targets: 0 },
+        { checkboxes: { selectRow: true, selectAllPages: false }, targets: 0 },
+      ],
+      select: {
+        style: 'multi',
+        selector: 'td:first-child'
+      },
       initComplete: function(settings, json) {
         var dt = this.api();
         this.api().on('select', function (e, dt, type, indexes) {

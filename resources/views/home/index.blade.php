@@ -14,3 +14,21 @@
 
   </div>
 @endsection
+
+
+@section('script')
+  @parent
+
+  @include('tucle::partial.datatables')
+
+@section('datatables')
+  <script>
+    $(function () {
+      $('#entries').DataTable({
+        select: false
+      });
+    });
+  </script>
+@show
+
+@endsection

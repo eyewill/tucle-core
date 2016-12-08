@@ -35,4 +35,9 @@ class TucleHomePresenter
   {
     return 'tucle::home.partial.actions.list';
   }
+
+  public function showCheckbox()
+  {
+    return false;
+  }
 }

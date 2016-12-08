@@ -1,7 +1,9 @@
 <table id="entries" class="table" data-provider="datatables">
   <thead>
   <tr>
+    @if ($presenter->showCheckbox())
     <th></th>
+    @endif
     @foreach ($presenter->tableColumns() as $column)
       <th>{{ $column['label'] }}</th>
     @endforeach
@@ -12,7 +14,9 @@
   <tbody>
   @foreach ($entries as $entry)
     <tr>
-      <td>{{ $entry->id }}</td>
+      @if ($presenter->showCheckbox())
+      <td>{{ $presenter->checkboxId($entry) }}</td>
+      @endif
       @foreach ($presenter->tableColumns() as $column)
         {{ $presenter->renderEntry($column, $entry) }}
       @endforeach
@@ -29,3 +33,4 @@
 @if (config('app.debug'))
 <a href="#" data-action-clear="#entries">クリア</a>
 @endif
+

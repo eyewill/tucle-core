@@ -283,4 +283,15 @@ class ModelPresenter
   {
     return 'tucle::partial.actions.show';
   }
+
+  public function showCheckbox()
+  {
+    return true;
+  }
+
+  public function checkboxId($model)
+  {
+    return $model->id;
+  }
+
 }
