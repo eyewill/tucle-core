@@ -121,11 +121,14 @@ __SCRIPT__;
         maxFileCount: 1,
         resizeImage: true,
         textEncoding: 'SJIS',
-      }).on('fileselect', function (e) {
-        console.log($('[name=${name}_uploaded]'));
-        $('[name=${name}_uploaded]').data().fileinput.\$container.hide(1000);
+      }).on('fileloaded', function (e) {
+        if ($('[name=${name}_uploaded]').length > 0) {
+          $('[name=${name}_uploaded]').data().fileinput.\$container.hide(500);
+        }
       }).on('fileclear', function (e) {
-        $('[name=${name}_uploaded]').data().fileinput.\$container.show(500);
+        if ($('[name=${name}_uploaded]').length > 0) {
+          $('[name=${name}_uploaded]').data().fileinput.\$container.show(500);
+        }
       });
     });
 </script>
