@@ -2,29 +2,13 @@
 
 use Illuminate\Support\HtmlString;
 
-class TucleHomePresenter
+class TucleHomePresenter extends Presenter
 {
   protected $entryTableColumns = [
     [
       'label' => '機能',
     ],
   ];
-
-  public function tableColumns()
-  {
-    return $this->entryTableColumns;
-  }
-
-  public function renderEntry($column, $presenter)
-  {
-    $html = '';
-    $html.= '<td>';
-    $html.= '<a href="'.$presenter->route('index').'">';
-    $html.= e($presenter->getPageTitle());
-    $html.= '</td>';
-
-    return new HtmlString($html);
-  }
 
   protected $views = [
     'actions' => [
@@ -33,13 +17,14 @@ class TucleHomePresenter
     ],
   ];
 
-  public function view($view)
+  public function renderTableColumn($column, $presenter)
   {
-    return array_get($this->views, $view);
-  }
+    $html = '';
+    $html.= '<td>';
+    $html.= '<a href="'.$presenter->route('index').'">';
+    $html.= e($presenter->getPageTitle());
+    $html.= '</td>';
 
-  public function showCheckbox()
-  {
-    return false;
+    return new HtmlString($html);
   }
 }

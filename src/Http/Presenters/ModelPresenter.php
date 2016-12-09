@@ -6,16 +6,16 @@ use Collective\Html\HtmlBuilder;
 use Eyewill\TucleCore\Factories\FormSpecFactory;
 use Illuminate\Support\HtmlString;
 
-class ModelPresenter
+class ModelPresenter extends Presenter
 {
   protected $pageTitle;
   protected $form;
   protected $html;
   protected $forms = [];
-  protected $entryTableColumns = [];
   protected $showColumns = [];
   protected $routes = [];
   protected $breadCrumbs = [];
+  protected $showCheckbox = true;
 
   protected $views = [
     'actions' => [
@@ -44,11 +44,6 @@ class ModelPresenter
   public function getHtml()
   {
     return $this->html;
-  }
-
-  public function view($view)
-  {
-    return array_get($this->views, $view);
   }
 
   public function setPageTitle($pageTitle)
@@ -80,11 +75,6 @@ class ModelPresenter
     }
 
     return new HtmlString($html);
-  }
-
-  public function tableColumns()
-  {
-    return $this->entryTableColumns;
   }
 
   public function renderTableColumn($column, $model)
@@ -285,14 +275,8 @@ class ModelPresenter
     return '#';
   }
 
-  public function showCheckbox()
-  {
-    return true;
-  }
-
   public function checkboxId($model)
   {
     return $model->id;
   }
-
 }
