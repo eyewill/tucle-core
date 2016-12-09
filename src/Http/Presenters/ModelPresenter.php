@@ -80,29 +80,25 @@ class ModelPresenter extends Presenter
   public function renderTableColumn($column, $model)
   {
     $name  = array_get($column, 'name');
+    $template = array_get($column, 'template', '<td>%s</td>');
 
     $method = camel_case($name).'TableColumn';
     if (method_exists($this, $method))
     {
-      return $this->$method($model);
-    }
-
-    $links = array_get($column, 'links', false);
-    $value = $model->{$name};
-
-    $html = '';
-    $html.= '<td>';
-    if ($links)
-    {
-      $html.= '<a href="'.$this->route('show', [$model]).'">'.$value.'</a>';
+      $value = $this->$method($model);
     }
     else
     {
-      $html.= $value;
-    }
-    $html.= '</td>';
+      $links = array_get($column, 'links', false);
+      $value = $model->{$name};
 
-    return new HtmlString($html);
+      if ($links)
+      {
+        $value = '<a href="'.$this->route('show', [$model]).'">'.$value.'</a>';
+      }
+    }
+
+    return new HtmlString(sprintf($template, $value));
   }
 
   function routeName($action = null)
