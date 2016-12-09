@@ -15,6 +15,8 @@ class TucleHomePresenter extends Presenter
       'index' => 'tucle::home.partial.actions.index',
       'rows' => 'tucle::home.partial.actions.rows'
     ],
+    'datatables' => 'tucle::home.partial.datatables',
+
   ];
 
   public function renderTableColumn($column, $presenter)

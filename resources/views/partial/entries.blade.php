@@ -7,7 +7,7 @@
     @foreach ($presenter->tableColumns() as $column)
       <th>{{ $column['label'] }}</th>
     @endforeach
-    <th data-orderable="false" data-searchable="false" data-class-name="text-center" data-width="1px"></th>
+    <th data-orderable="false" data-searchable="false" data-width="1px"></th>
   </tr>
   </thead>
 

@@ -24,6 +24,7 @@ class ModelPresenter extends Presenter
       'edit' => 'tucle::partial.actions.edit',
       'show' => 'tucle::partial.actions.show',
     ],
+    'datatables' => 'tucle::partial.datatables',
   ];
 
   public function __construct(FormBuilder $form, HtmlBuilder $html)
