@@ -27,7 +27,7 @@ class Presenter
   {
     if (!$this->views instanceof Collection)
     {
-      $this->views = collect($this->defaultViews)->merge($this->views);
+      $this->views = collect(array_replace_recursive($this->defaultViews, $this->views));
     }
     return array_get($this->views, $view);
   }
