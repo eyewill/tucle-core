@@ -1,4 +1,5 @@
 <?php namespace Eyewill\TucleCore\Eloquent;
+
 use Carbon\Carbon;
 
 /**
@@ -6,41 +7,37 @@ use Carbon\Carbon;
  * @package Eyewill\TucleCore\Eloquent
  *
  * @property array $attributes
- * @property Carbon|null $published_at
- * @property Carbon|null $terminated_at
  */
 trait Expirable
 {
-  public function getPublishedAtAttribute($value)
+  /**
+   * @return null|Carbon
+   */
+  public function publishedAt()
   {
-    if (is_null($value))
+    $value = $this->attributes['published_at'];
+
+    if (empty($value))
+    {
       return null;
+    }
 
     return Carbon::parse($value);
   }
 
-  public function getTerminatedAtAttribute($value)
+  /**
+   * @return null|Carbon
+   */
+  public function terminatedAt()
   {
-    if (is_null($value))
+    $value = $this->attributes['terminated_at'];
+
+    if (empty($value))
+    {
       return null;
+    }
 
     return Carbon::parse($value);
-  }
-
-  public function setPublishedAtAttribute($value)
-  {
-    if (empty($value))
-      $this->attributes['published_at'] = null;
-    else
-      $this->attributes['published_at'] = Carbon::parse($value)->toDateTimeString();
-  }
-
-  public function setTerminatedAtAttribute($value)
-  {
-    if (empty($value))
-      $this->attributes['terminated_at'] = null;
-    else
-      $this->attributes['terminated_at'] = Carbon::parse($value)->toDateTimeString();
   }
 
   /**
@@ -48,17 +45,17 @@ trait Expirable
    */
   public function candidates()
   {
-    if (isset($this->terminated_at) && Carbon::now()->gte($this->terminated_at))
+    if (!is_null($this->terminatedAt()) && Carbon::now()->gte($this->terminatedAt()))
     {
       return false;
     }
 
-    if (is_null($this->published_at) && is_null($this->terminated_at))
+    if (is_null($this->publishedAt()) && is_null($this->terminatedAt()))
     {
       return true;
     }
 
-    return isset($this->published_at) && Carbon::now()->lte($this->published_at);
+    return !is_null($this->publishedAt()) && Carbon::now()->lte($this->publishedAt());
   }
 
   public function scopeCandidates($query)
@@ -72,13 +69,13 @@ trait Expirable
   public function published()
   {
     // now < published_at
-    if (is_null($this->published_at) || Carbon::now()->lt($this->published_at))
+    if (is_null($this->publishedAt()) || Carbon::now()->lt($this->publishedAt()))
     {
       return false;
     }
 
     // now >= terminated_at
-    if (isset($this->terminated_at) && Carbon::now()->gte($this->terminated_at))
+    if (!is_null($this->terminatedAt()) && Carbon::now()->gte($this->terminatedAt()))
     {
       return false;
     }
