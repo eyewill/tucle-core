@@ -1,5 +1,6 @@
 <?php namespace Eyewill\TucleCore\Http\Presenters;
 
+use Carbon\Carbon;
 use Codesleeve\Stapler\Attachment;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
@@ -16,6 +17,7 @@ class ModelPresenter extends Presenter
   protected $routes = [];
   protected $breadCrumbs = [];
   protected $showCheckbox = true;
+  protected $dateFormat = [];
 
   public function __construct(FormBuilder $form, HtmlBuilder $html)
   {
@@ -25,6 +27,19 @@ class ModelPresenter extends Presenter
       'label' => config('tucle.brand', 'TUCLE5'),
       'url' => '/',
     ]], $this->breadCrumbs);
+  }
+
+  public function date($model, $name)
+  {
+    $value = $model->$name;
+    if (is_null($value))
+    {
+      return '';
+    }
+
+    $format = array_get($this->dateFormat, $name, 'Y/m/d H:i');
+
+    return Carbon::parse($value)->format($format);
   }
 
   public function getForm()
@@ -80,8 +95,14 @@ class ModelPresenter extends Presenter
     }
     else
     {
+      $type = array_get($column, 'type');
       $links = array_get($column, 'links', false);
       $value = $model->{$name};
+
+      if ($type == 'date')
+      {
+        $value = $this->date($model, $name);
+      }
 
       if ($links)
       {
