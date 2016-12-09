@@ -77,7 +77,7 @@
       ],
       select: {
         style: 'multi',
-        selector: 'td:first-child'
+        selector: false
       },
       initComplete: function(settings, json) {
         var dt = this.api();

@@ -5,3 +5,12 @@ table.dataTable .align-middle {
 table.dataTable tr.selected {
   background: #FCFCFC;
 }
+
+#cms table.dataTable.dt-checkboxes-select tbody tr {
+  cursor: default;
+}
+
+table.dataTable thead .dt-checkboxes-select-all [type=checkbox],
+table.dataTable.dt-checkboxes-select tbody tr .dt-checkboxes {
+  cursor: pointer;
+}

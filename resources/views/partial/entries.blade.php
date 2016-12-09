@@ -18,7 +18,7 @@
       <td>{{ $presenter->checkboxId($entry) }}</td>
       @endif
       @foreach ($presenter->tableColumns() as $column)
-        {{ $presenter->renderEntry($column, $entry) }}
+        {{ $presenter->renderTableColumn($column, $entry) }}
       @endforeach
       <td>
         <div class="btn-actions">

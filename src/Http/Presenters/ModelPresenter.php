@@ -87,20 +87,28 @@ class ModelPresenter
     return $this->entryTableColumns;
   }
 
-  public function renderEntry($column, $entry)
+  public function renderTableColumn($column, $model)
   {
     $name  = array_get($column, 'name');
+
+    $method = camel_case($name).'TableColumn';
+    if (method_exists($this, $method))
+    {
+      return $this->$method($model);
+    }
+
     $links = array_get($column, 'links', false);
+    $value = $model->{$name};
 
     $html = '';
     $html.= '<td>';
     if ($links)
     {
-      $html.= '<a href="'.$this->route('show', [$entry]).'">'.e($entry->{$name}).'</a>';
+      $html.= '<a href="'.$this->route('show', [$model]).'">'.$value.'</a>';
     }
     else
     {
-      $html.= e($entry->{$name});
+      $html.= $value;
     }
     $html.= '</td>';
 
