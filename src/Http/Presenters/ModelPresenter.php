@@ -17,16 +17,6 @@ class ModelPresenter extends Presenter
   protected $breadCrumbs = [];
   protected $showCheckbox = true;
 
-  protected $views = [
-    'actions' => [
-      'index' => 'tucle::partial.actions.index',
-      'rows' => 'tucle::partial.actions.rows',
-      'edit' => 'tucle::partial.actions.edit',
-      'show' => 'tucle::partial.actions.show',
-    ],
-    'datatables' => 'tucle::partial.datatables',
-  ];
-
   public function __construct(FormBuilder $form, HtmlBuilder $html)
   {
     $this->form = $form;
