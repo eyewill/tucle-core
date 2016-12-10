@@ -1,6 +1,8 @@
 @section('stylesheet')
   @parent
   <link rel="stylesheet" href="/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+@endsection
+
 @section('script')
   @parent
   <script src="/assets/moment/js/moment-with-locales.min.js"></script>
