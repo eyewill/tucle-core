@@ -83,6 +83,11 @@ class ModelPresenter extends Presenter
     return new HtmlString($html);
   }
 
+  public function tableColumn($value, $template)
+  {
+    return sprintf($template, $value);
+  }
+
   public function renderTableColumn($column, $model)
   {
     $name  = array_get($column, 'name');
@@ -91,7 +96,7 @@ class ModelPresenter extends Presenter
     $method = camel_case($name).'TableColumn';
     if (method_exists($this, $method))
     {
-      $value = $this->$method($model);
+      $html = $this->$method($model, $template);
     }
     else
     {
@@ -108,9 +113,11 @@ class ModelPresenter extends Presenter
       {
         $value = '<a href="'.$this->route('show', [$model]).'">'.$value.'</a>';
       }
+
+      $html = $this->tableColumn($value, $template);
     }
 
-    return new HtmlString(sprintf($template, $value));
+    return new HtmlString($html);
   }
 
   function routeName($action = null)
