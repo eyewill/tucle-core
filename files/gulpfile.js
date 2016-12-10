@@ -23,7 +23,8 @@ elixir(function(mix) {
     .copy('bower_components/remarkable-bootstrap-notify/dist', 'public/assets/js/bootstrap-notify')
     .copy('bower_components/animate.css/animate.min.css', 'public/assets/css/animate.min.css')
     .copy('bower_components/moment/min/moment-with-locales.min.js', 'public/assets/moment/js/moment-with-locales.min.js')
-    .copy('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js', 'public/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js');
+    .copy('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js', 'public/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')
+    .copy('bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css', 'public/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css');
 
   /* jQuery */
   mix

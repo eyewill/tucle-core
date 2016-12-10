@@ -11,8 +11,6 @@ class FormSpecDate extends FormSpec
       array_get($attributes, 'attr.data-provider', 'datetimepicker'));
     array_set($attributes, 'attr.data-date-format',
       array_get($attributes, 'attr.data-date-format', 'YYYY/MM/DD'));
-    array_set($attributes, 'attr.data-date-disabled-hours',
-      array_get($attributes, 'attr.data-date-disabled-hours', '[true]'));
 
     parent::__construct($attributes, $mergeAttributes);
   }

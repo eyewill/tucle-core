@@ -15,9 +15,10 @@
   <link rel="stylesheet" href="/assets/css/animate.min.css">
   <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 
+@show
+
   <!-- Scripts -->
   <script src="/assets/jquery/js/jquery.min.js"></script>
-@show
 
 </head>
 <body id="cms">
