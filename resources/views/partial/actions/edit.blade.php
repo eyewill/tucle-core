@@ -5,18 +5,25 @@
         <span class="fa fa-list"></span>
         一覧に戻る
       </a>
-      @if ($model->candidates())
-        <a href="{{ $presenter->route('preview', $model) }}" class="btn btn-primary" target="_blank">
-          <span class="fa fa-globe"></span>
-          プレビュー
-        </a>
-      @elseif ($model->published())
+      @if ($model instanceof \Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface)
+        @if ($model->candidates())
+          <a href="{{ $presenter->route('preview', $model) }}" class="btn btn-primary" target="_blank">
+            <span class="fa fa-globe"></span>
+            プレビュー
+          </a>
+        @elseif ($model->published())
+          <a href="{{ $model->url() }}" class="btn btn-primary" target="_blank">
+            <span class="fa fa-globe"></span>
+            サイト
+          </a>
+        @else
+          <button class="btn btn-default" disabled>公開期間は終了しました</button>
+        @endif
+      @else
         <a href="{{ $model->url() }}" class="btn btn-primary" target="_blank">
           <span class="fa fa-globe"></span>
           サイト
         </a>
-      @else
-        <a href="#" class="btn btn-default" disabled>公開期間は終了しました</a>
       @endif
       <a href="{{ $presenter->route('show', $model) }}" class="btn btn-primary">
         <span class="fa fa-file-text-o"></span>

@@ -83,11 +83,6 @@ class ModelPresenter extends Presenter
     return new HtmlString($html);
   }
 
-  public function tableColumn($value, $template)
-  {
-    return sprintf($template, $value);
-  }
-
   public function renderTableColumn($column, $model)
   {
     $name  = array_get($column, 'name');
@@ -114,7 +109,7 @@ class ModelPresenter extends Presenter
         $value = '<a href="'.$this->route('show', [$model]).'">'.$value.'</a>';
       }
 
-      $html = $this->tableColumn($value, $template);
+      $html = sprintf($template, $value);
     }
 
     return new HtmlString($html);

@@ -44,6 +44,7 @@ abstract class Request extends FormRequest
       $presenter = app()->make($this->presenter);
       $validator->setAttributeNames($presenter->getAttributeNames());
     }
+
     return $validator;
   }
 
