@@ -1,7 +1,6 @@
 <?php namespace Eyewill\TucleCore\Console\Commands;
 
 use Exception;
-use Eyewill\TucleCore\Initializer;
 use Illuminate\Console\Command;
 
 class TucleInit extends Command
@@ -42,25 +41,44 @@ class TucleInit extends Command
     $list = $this->option('list');
 
     try {
-      $factory = new Initializer($force, $only);
+      $factory = app()->make('Eyewill\TucleCore\Factories\InitializerFactory');
+      $initializer = $factory->make(base_path(), public_path(), resource_path(), $force, $only);
+
+      $tasks = $initializer->getAllTasks();
       if ($list)
       {
-        $this->info('all tasks.');
-        $this->info('----------');
-        $this->info(implode(PHP_EOL, $factory->getRegisteredTasks()));
+        $this->showTasks($tasks);
+        return;
       }
-      else
+
+      if (!is_null($only))
       {
-        foreach ($factory->generator() as $message)
+        foreach (explode(',', $only) as $task)
         {
-          $this->info($message);
+          if (!in_array($task, $tasks))
+          {
+            $this->error('task "'.$task.'" is not defined.');
+            $this->showTasks($tasks);
+            return;
+          }
         }
-        $this->info('Tucle apps initialized.');
       }
+
+      foreach ($initializer->generator() as $message)
+      {
+        $this->info($message);
+      }
+      $this->info('Tucle apps initialized.');
+
     } catch (Exception $e) {
 
       $this->error($e->getFile().':'.$e->getLine().' '.$e->getMessage());
       exit(-1);
     }
+  }
+
+  protected function showTasks($tasks)
+  {
+    $this->info('available task is only ['.implode(', ', $tasks).'].');
   }
 }

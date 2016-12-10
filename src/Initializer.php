@@ -1,13 +1,19 @@
 <?php namespace Eyewill\TucleCore;
 
-use File;
-use Route;
+use Illuminate\Container\Container;
 
 class Initializer
 {
+  protected $app;
+  protected $basePath;
+  protected $publicPath;
+  protected $resourcePath;
   protected $composer;
+  protected $filesystem;
+  protected $router;
   protected $force;
-  protected $registeredTasks = [
+  protected $only;
+  protected $allTasks = [
     'assets',
     'packages',
     'auth',
@@ -18,9 +24,15 @@ class Initializer
 
   protected $tasks = [];
 
-  public function __construct($force = false, $only = null)
+  public function __construct(Container $container, ComposerManager $composer, $basePath, $publicPath, $resourcePath, $force = false, $only = null)
   {
-    if (!File::exists(base_path('.tucle')))
+    $this->app = $container;
+    $this->composer = $composer;
+    $this->basePath = $basePath;
+    $this->publicPath = $publicPath;
+    $this->resourcePath = $resourcePath;
+
+    if (!$this->app['files']->exists($this->basePath.'/.tucle'))
     {
       $this->force = true;
     }
@@ -30,19 +42,18 @@ class Initializer
     }
     if (is_null($only))
     {
-      $this->tasks = $this->registeredTasks;
+      $this->tasks = $this->allTasks;
     }
     else
     {
       $this->tasks = explode(',', $only);
     }
 
-    $this->composer = new ComposerManager;
   }
 
-  public function getRegisteredTasks()
+  public function getAllTasks()
   {
-    return $this->registeredTasks;
+    return $this->allTasks;
   }
 
   public function generator()
@@ -90,14 +101,14 @@ class Initializer
       yield $this->updateHttpRoutes();
     }
 
-    File::put(base_path('.tucle'), 'installed.');
+    $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
   }
 
   public function copyAssetsSass()
   {
-    $path = resource_path('assets/sass/app.scss');
+    $path = $this->resourcePath.'/assets/sass/app.scss';
     $dest = __DIR__.'/../files/assets/sass/app.scss';
-    if (!$this->force && File::exists($path))
+    if (!$this->force && $this->app['files']->exists($path))
     {
       return $path.' already exists';
     }
@@ -109,72 +120,72 @@ class Initializer
     $dir = substr(__DIR__, $pos).'/../resources/assets/sass';
     $scss.= '@import "'.$dir.'/tucle";'.PHP_EOL;
 
-    $scss.= File::get($dest);
-    File::put($path, $scss);
+    $scss.= file_get_contents($dest);
+    file_put_contents($path, $scss);
 
     return $path.' copied.';
   }
 
   public function copyAssets($asset)
   {
-    if (!$this->force && File::exists(resource_path('assets/'.$asset)))
+    if (!$this->force && $this->app['files']->exists($this->resourcePath.'/'.'assets/'.$asset))
     {
-      return resource_path('assets/'.$asset).' already exists';
+      return $this->resourcePath.'/'.'assets/'.$asset.' already exists';
     }
 
-    File::copyDirectory(__DIR__.'/../files/assets/'.$asset, resource_path('assets/'.$asset));
+    $this->app['files']->copyDirectory(__DIR__.'/../files/assets/'.$asset, $this->resourcePath.'/'.'assets/'.$asset);
 
     return 'assets/'.$asset.' copied.';
   }
 
   public function copyAuthView()
   {
-    if (!$this->force && File::exists(resource_path('views/auth')))
+    if (!$this->force && $this->app['files']->exists($this->resourcePath.'/'.'views/auth'))
     {
-      return resource_path('views/auth').' already exists';
+      return $this->resourcePath.'/'.'views/auth'.' already exists';
     }
 
-    File::copyDirectory(__DIR__.'/../files/auth', resource_path('views/auth'));
+    $this->app['files']->copyDirectory(__DIR__.'/../files/auth', $this->resourcePath.'/'.'views/auth');
 
     return 'auth view copied.';
   }
 
   public function copyBower()
   {
-    $path = base_path('bower.json');
-    if (!$this->force && File::exists($path))
+    $path = $this->basePath.'/'.'bower.json';
+    if (!$this->force && $this->app['files']->exists($path))
     {
       return $path.' already exists.';
     }
 
-    File::copy(__DIR__.'/../files/bower.json', $path);
+    $this->app['files']->copy(__DIR__.'/../files/bower.json', $path);
 
     return $path.' copied.';
   }
 
   public function copyGulpfile()
   {
-    $path = base_path('gulpfile.js');
-    if (!$this->force && File::exists($path))
+    $path = $this->basePath.'/'.'gulpfile.js';
+    if (!$this->force && $this->app['files']->exists($path))
     {
       return $path.' already exists.';
     }
 
-    File::copy(__DIR__.'/../files/gulpfile.js', $path);
+    $this->app['files']->copy(__DIR__.'/../files/gulpfile.js', $path);
 
     return $path.' copied.';
   }
 
   public function updateHttpRoutes()
   {
-    $homeRoute = Route::getRoutes()->getByName('home');
-    $routesPath = app_path().'/Http/routes.php';
+    $homeRoute = $this->app['router']->getRoutes()->getByName('home');
+    $routesPath = $this->app['path'].'/Http/routes.php';
     if (!$this->force && !is_null($homeRoute))
     {
       return $routesPath.' already exists.';
     }
 
-    File::put($routesPath, <<<__PHP__
+    $this->app['files']->put($routesPath, <<<__PHP__
 <?php
 
 /**
@@ -206,12 +217,12 @@ __PHP__
 
   public function makeConfigFile()
   {
-    $configFilePath = base_path('config/tucle.php');
-    if (!$this->force && File::exists($configFilePath)) {
+    $configFilePath = $this->basePath.'/'.'config/tucle.php';
+    if (!$this->force && $this->app['files']->exists($configFilePath)) {
       return $configFilePath . ' already exists.';
     }
 
-    File::put($configFilePath, <<<__PHP__
+    $this->app['files']->put($configFilePath, <<<__PHP__
 <?php
 
 return [
