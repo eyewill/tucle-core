@@ -1,7 +1,12 @@
 @import "mixins/placeholder";
 
 input.form-control {
-  @include placeholderColor(#CCC);
+  @include placeholder {
+    color: #CCC;
+    font-style: italic;
+    letter-spacing: .028em;
+    text-indent: .028em;
+  };
 }
 
 .form-group .radio, .form-group .checkbox {
