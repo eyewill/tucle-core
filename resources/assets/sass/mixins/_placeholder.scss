@@ -1,0 +1,28 @@
+/*
+ * Mixin for placeholder
+ * @include placeholderColor(#00ff00);
+ */
+@mixin placeholderColor($color) {
+  &::placeholder {
+    color:$color;
+    font-style: italic;
+  }
+  &::-webkit-input-placeholder {
+    color:$color;
+    font-style: italic;
+  }
+  &:-moz-placeholder {
+    color:$color;
+    opacity: 1;
+    font-style: italic;
+  }
+  &::-moz-placeholder {
+    color:$color;
+    opacity: 1;
+    font-style: italic;
+  }
+  &:-ms-input-placeholder {
+    color:$color;
+    font-style: italic;
+  }
+}

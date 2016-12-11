@@ -1,3 +1,9 @@
+@import "mixins/placeholder";
+
+input.form-control {
+  @include placeholderColor(#CCC);
+}
+
 .form-group .radio, .form-group .checkbox {
   margin-top: 5px;
   margin-bottom: 5px;
