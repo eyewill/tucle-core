@@ -1,11 +1,11 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
-use Eyewill\TucleCore\Contracts\FormSpecs\FormSpec as FormSpecContract;
+use Eyewill\TucleCore\Contracts\Forms\Factory as FactoryContracts;
 use Eyewill\TucleCore\Forms\Attributes;
 use Eyewill\TucleCore\Forms\FormInput;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-abstract class FormSpec implements FormSpecContract
+abstract class Factory implements FactoryContracts
 {
   protected $attributes;
 
@@ -22,7 +22,7 @@ abstract class FormSpec implements FormSpecContract
    * @param ModelPresenter $presenter
    * @return FormInput
    */
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return new FormInput($presenter, $this);
   }

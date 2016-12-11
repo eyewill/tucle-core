@@ -1,12 +1,15 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\FormSpecs\FormSpecCheckbox;
+use Eyewill\TucleCore\Factories\Forms\CheckboxFactory;
 
+/**
+ * Class FormCheckbox
+ * @package Eyewill\TucleCore\Forms
+ *
+ * @property CheckboxFactory $spec
+ */
 class FormCheckbox extends FormInput
 {
-  /** @var FormSpecCheckbox */
-  protected $spec;
-
   protected function renderComponent($model)
   {
     $spec = $this->spec;

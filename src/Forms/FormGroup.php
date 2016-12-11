@@ -1,12 +1,12 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\Factories\FormSpecFactory;
-use Eyewill\TucleCore\FormSpecs\FormSpecGroup;
+use Eyewill\TucleCore\Factories\Forms\GroupFactory;
 
 /**
  * Class FormGroup
  * @package Eyewill\TucleCore\Forms
- * @property FormSpecGroup $spec
+ * 
+ * @property GroupFactory $spec
  */
 class FormGroup extends FormInput
 {
@@ -43,9 +43,10 @@ class FormGroup extends FormInput
     $html.= '<div class="row">';
     foreach ($forms as $spec)
     {
+      $type = array_get($spec, 'type', 'text');
       $class = array_get($spec, 'class', 'col-xs-12');
-      $formSpec = FormSpecFactory::make($spec);
-      $form = $formSpec->makeForm($this->presenter);
+      $factory = app()->make('form.'.$type, [$spec]);
+      $form = $factory->make($this->presenter);
       $html.= '<div class="'.$class.'">';
       $html.= $form->render($model, false);
       $html.= '</div>';

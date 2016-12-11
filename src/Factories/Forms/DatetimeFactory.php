@@ -1,9 +1,9 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormDatetime;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecDatetime extends FormSpec
+class DatetimeFactory extends Factory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
@@ -15,7 +15,7 @@ class FormSpecDatetime extends FormSpec
     parent::__construct($attributes, $mergeAttributes);
   }
 
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return app()->make(FormDatetime::class, [$presenter, $this]);
   }

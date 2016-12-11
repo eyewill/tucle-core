@@ -1,9 +1,9 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormTextarea;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecTextarea extends FormSpec
+class TextareaFactory extends Factory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
@@ -15,7 +15,7 @@ class FormSpecTextarea extends FormSpec
     parent::__construct($attributes, $mergeAttributes);
   }
 
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return app()->make(FormTextarea::class, [$presenter, $this]);
   }

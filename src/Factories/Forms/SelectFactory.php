@@ -1,10 +1,10 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormSelect;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 use Illuminate\Support\Collection;
 
-class FormSpecSelect extends FormSpec
+class SelectFactory extends Factory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
@@ -16,7 +16,7 @@ class FormSpecSelect extends FormSpec
     parent::__construct($attributes, $mergeAttributes);
   }
 
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     $this->setValues($presenter);
     return app()->make(FormSelect::class, [$presenter, $this]);

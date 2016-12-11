@@ -1,6 +1,20 @@
 <?php namespace Eyewill\TucleCore;
 
+use Eyewill\TucleCore\Contracts\Initializer;
 use Eyewill\TucleCore\Factories\InitializerFactory;
+use Eyewill\TucleCore\Factories\Forms\CheckboxFactory;
+use Eyewill\TucleCore\Factories\Forms\DateFactory;
+use Eyewill\TucleCore\Factories\Forms\DatetimeFactory;
+use Eyewill\TucleCore\Factories\Forms\FileFactory;
+use Eyewill\TucleCore\Factories\Forms\GroupFactory;
+use Eyewill\TucleCore\Factories\Forms\ImageFactory;
+use Eyewill\TucleCore\Factories\Forms\PriceFactory;
+use Eyewill\TucleCore\Factories\Forms\PublishedFactory;
+use Eyewill\TucleCore\Factories\Forms\RadioFactory;
+use Eyewill\TucleCore\Factories\Forms\SelectFactory;
+use Eyewill\TucleCore\Factories\Forms\SeparatorFactory;
+use Eyewill\TucleCore\Factories\Forms\TextFactory;
+use Eyewill\TucleCore\Factories\Forms\TextareaFactory;
 use Illuminate\Support\ServiceProvider;
 
 class TucleCoreServiceProvider extends ServiceProvider
@@ -20,6 +34,22 @@ class TucleCoreServiceProvider extends ServiceProvider
     'Barryvdh\Debugbar\ServiceProvider',
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
     'Primalbase\Migrate\MigrateServiceProvider',
+  ];
+
+  protected $formFactories = [
+    'checkbox' => CheckboxFactory::class,
+    'date' => DateFactory::class,
+    'datetime' => DatetimeFactory::class,
+    'file' => FileFactory::class,
+    'group' => GroupFactory::class,
+    'image' => ImageFactory::class,
+    'price' => PriceFactory::class,
+    'published' => PublishedFactory::class,
+    'radio' => RadioFactory::class,
+    'select' => SelectFactory::class,
+    'separator' => SeparatorFactory::class,
+    'text' => TextFactory::class,
+    'textarea' => TextareaFactory::class,
   ];
 
   /**
@@ -83,7 +113,11 @@ class TucleCoreServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    $this->app->singleton(\Eyewill\TucleCore\Contracts\Initializer::class, InitializerFactory::class);
+    $this->app->singleton(Initializer::class, InitializerFactory::class);
+    foreach ($this->formFactories as $type => $concrete)
+    {
+      $this->app->bind('form.'.$type, $concrete);
+    }
 
     $this->commands($this->commands);
   }

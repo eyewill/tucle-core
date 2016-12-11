@@ -1,11 +1,11 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormSeparator;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecSeparator extends FormSpec
+class SeparatorFactory extends Factory
 {
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return app()->make(FormSeparator::class, [$presenter, $this]);
   }

@@ -1,11 +1,11 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormText;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecText extends FormSpec
+class TextFactory extends Factory
 {
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return app()->make(FormText::class, [$presenter, $this]);
   }

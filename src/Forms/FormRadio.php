@@ -1,21 +1,19 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\FormSpecs\FormSpecRadio;
+use Eyewill\TucleCore\Factories\Forms\RadioFactory;
 
 /**
  * Class FormRadio
  * @package Eyewill\TucleCore\Forms
+ *
+ * @property RadioFactory $spec
  */
 class FormRadio extends FormInput
 {
-  /** @var  FormSpecRadio */
-  protected $spec;
-
   protected function renderComponent($model)
   {
     $spec = $this->spec;
     $name = $spec->getName();
-debug($spec->getValues());
     $html = '';
     if ($spec->getInline())
     {

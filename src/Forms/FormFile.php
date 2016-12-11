@@ -1,13 +1,13 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
 use Codesleeve\Stapler\Attachment;
-use Eyewill\TucleCore\FormSpecs\FormSpecFile;
-use File;
+use Eyewill\TucleCore\Factories\Forms\FileFactory;
 
 /**
  * Class FormImage
  * @package Eyewill\TucleCore\Forms
- * @property FormSpecFile $spec
+ *
+ * @property FileFactory $spec
  */
 class FormFile extends FormInput
 {
@@ -42,7 +42,7 @@ class FormFile extends FormInput
     elseif (preg_match('/text/', $contentType))
     {
       $type = 'text';
-      $text = File::get($attachment->path());
+      $text = app()->make('files')->get($attachment->path());
       $encoding = mb_detect_encoding($text, 'SJIS,UTF-8');
       $preview = json_encode([mb_convert_encoding($text, 'UTF-8', $encoding)]);
     }

@@ -1,11 +1,11 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormRadio;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecRadio extends FormSpecCheckbox
+class RadioFactory extends CheckboxFactory
 {
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     $this->setValues($presenter);
     return app()->make(FormRadio::class, [$presenter, $this]);

@@ -1,10 +1,9 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
-use Eyewill\TucleCore\Factories\FormSpecFactory;
 use Eyewill\TucleCore\Forms\FormGroup;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecGroup extends FormSpec
+class GroupFactory extends Factory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
@@ -16,7 +15,7 @@ class FormSpecGroup extends FormSpec
     parent::__construct($attributes, $mergeAttributes);
   }
 
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return app()->make(FormGroup::class, [$presenter, $this]);
   }
@@ -34,8 +33,9 @@ class FormSpecGroup extends FormSpec
     $attributeNames = [];
     foreach ($this->getForms() as $spec)
     {
-      $formSpec = FormSpecFactory::make($spec);
-      $attributeNames += $formSpec->getAttributeNames();
+      $type = array_get($spec, 'type', 'text');
+      $factory = app()->make('form.'.$type, [$spec]);
+      $attributeNames += $factory->getAttributeNames();
     }
     return $attributeNames;
   }

@@ -1,13 +1,13 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\Contracts\FormSpecs\FormSpec;
+use Eyewill\TucleCore\Contracts\Forms\Factory;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 
 class FormInput
 {
-  /** @var FormSpec */
+  /** @var Factory */
   protected $spec;
 
   protected $attributes;
@@ -15,7 +15,7 @@ class FormInput
   /** @var ModelPresenter */
   protected $presenter;
 
-  public function __construct(ModelPresenter $presenter, FormSpec $spec)
+  public function __construct(ModelPresenter $presenter, Factory $spec)
   {
     $this->presenter = $presenter;
     $this->spec = $spec;

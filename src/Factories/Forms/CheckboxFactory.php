@@ -1,10 +1,10 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormCheckbox;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 use Illuminate\Support\Collection;
 
-class FormSpecCheckbox extends FormSpec
+class CheckboxFactory extends Factory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
@@ -16,7 +16,7 @@ class FormSpecCheckbox extends FormSpec
     parent::__construct($attributes, $mergeAttributes);
   }
 
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     $this->setValues($presenter);
     return app()->make(FormCheckbox::class, [$presenter, $this]);

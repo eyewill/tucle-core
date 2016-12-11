@@ -1,6 +1,6 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
-class FormSpecImage extends FormSpecFile
+class ImageFactory extends FileFactory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {

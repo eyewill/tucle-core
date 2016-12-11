@@ -1,9 +1,9 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormFile;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecFile extends FormSpec
+class FileFactory extends Factory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {
@@ -17,7 +17,7 @@ class FormSpecFile extends FormSpec
     parent::__construct($attributes, $mergeAttributes);
   }
 
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return app()->make(FormFile::class, [$presenter, $this]);
   }

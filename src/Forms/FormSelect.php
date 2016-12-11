@@ -1,16 +1,15 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\FormSpecs\FormSpecSelect;
+use Eyewill\TucleCore\Factories\Forms\SelectFactory;
 
 /**
  * Class FormSelect
  * @package Eyewill\TucleCore\Forms
+ * 
+ * @property SelectFactory $spec
  */
 class FormSelect extends FormInput
 {
-  /** @var  FormSpecSelect */
-  protected $spec;
-
   protected function renderComponent($model)
   {
     $spec = $this->spec;

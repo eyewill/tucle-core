@@ -4,7 +4,6 @@ use Carbon\Carbon;
 use Codesleeve\Stapler\Attachment;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
-use Eyewill\TucleCore\Factories\FormSpecFactory;
 use Illuminate\Support\HtmlString;
 
 class ModelPresenter extends Presenter
@@ -72,10 +71,11 @@ class ModelPresenter extends Presenter
 
     foreach ($this->forms as $spec)
     {
-      $formSpec = FormSpecFactory::make($spec);
-      if ($formSpec->isPosition($position))
+      $type = array_get($spec, 'type', 'text');
+      $factory = app()->make('form.'.$type, [$spec]);
+      if ($factory->isPosition($position))
       {
-        $form = $formSpec->makeForm($this);
+        $form = $factory->make($this);
         $html.= $form->render($model);
       }
     }
@@ -273,8 +273,9 @@ class ModelPresenter extends Presenter
     $attributeNames = [];
     foreach ($this->forms as $spec)
     {
-      $formSpec = FormSpecFactory::make($spec);
-      $attributeNames += $formSpec->getAttributeNames();
+      $type = array_get($spec, 'type', 'text');
+      $factory = app()->make('form.'.$type, [$spec]);
+      $attributeNames += $factory->getAttributeNames();
     }
 
     return $attributeNames;

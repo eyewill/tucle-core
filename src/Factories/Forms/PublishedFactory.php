@@ -1,6 +1,6 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
-class FormSpecPublished extends FormSpecGroup
+class PublishedFactory extends GroupFactory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {

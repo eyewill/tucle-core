@@ -29,9 +29,9 @@ class Initializer implements InitializerContracts
   {
     $this->app = $container;
     $this->composer = $composer;
-    $this->basePath = base_path();
-    $this->publicPath = public_path();
-    $this->resourcePath = resource_path();
+    $this->basePath = $container->basePath();
+    $this->publicPath = $container['path.public'];
+    $this->resourcePath = $container->basePath().'/resources';
     $this->setForce($force);
     $this->setTasks($only);
   }

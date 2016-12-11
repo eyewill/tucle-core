@@ -1,11 +1,11 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\FormSpecs\FormSpecImage;
+use Eyewill\TucleCore\Factories\Forms\ImageFactory;
 
 /**
  * Class FormImage
  * @package Eyewill\TucleCore\Forms
- * @property FormSpecImage $spec
+ * @property ImageFactory $spec
  */
 class FormImage extends FormFile
 {

@@ -1,11 +1,11 @@
-<?php namespace Eyewill\TucleCore\FormSpecs;
+<?php namespace Eyewill\TucleCore\Factories\Forms;
 
 use Eyewill\TucleCore\Forms\FormPrice;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class FormSpecPrice extends FormSpec
+class PriceFactory extends Factory
 {
-  public function makeForm(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter)
   {
     return app()->make(FormPrice::class, [$presenter, $this]);
   }

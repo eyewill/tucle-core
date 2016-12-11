@@ -1,11 +1,12 @@
 <?php namespace Eyewill\TucleCore\Forms;
 
-use Eyewill\TucleCore\FormSpecs\FormSpecTextarea;
+use Eyewill\TucleCore\Factories\Forms\TextareaFactory;
 
 /**
  * Class FormTextarea
  * @package Eyewill\TucleCore\Forms
- * @property FormSpecTextarea $spec
+ *
+ * @property TextareaFactory $spec
  */
 class FormTextarea extends FormInput
 {
