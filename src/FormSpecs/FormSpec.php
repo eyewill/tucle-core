@@ -1,6 +1,6 @@
 <?php namespace Eyewill\TucleCore\FormSpecs;
 
-use Eyewill\TucleCore\Contracts\FormSpecContract;
+use Eyewill\TucleCore\Contracts\FormSpecs\FormSpec as FormSpecContract;
 use Eyewill\TucleCore\Forms\Attributes;
 use Eyewill\TucleCore\Forms\FormInput;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;

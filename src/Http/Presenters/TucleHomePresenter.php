@@ -4,7 +4,7 @@ use Illuminate\Support\HtmlString;
 
 class TucleHomePresenter extends Presenter
 {
-  protected $entryTableColumns = [
+  protected $tableColumns = [
     [
       'label' => '機能',
     ],

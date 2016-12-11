@@ -1,8 +1,9 @@
 <?php namespace Eyewill\TucleCore;
 
+use Eyewill\TucleCore\Contracts\Initializer as InitializerContracts;
 use Illuminate\Container\Container;
 
-class Initializer
+class Initializer implements InitializerContracts
 {
   protected $app;
   protected $basePath;
@@ -24,31 +25,43 @@ class Initializer
 
   protected $tasks = [];
 
-  public function __construct(Container $container, ComposerManager $composer, $basePath, $publicPath, $resourcePath, $force = false, $only = null)
+  public function __construct(Container $container, ComposerManager $composer, $force = false, $only = null)
   {
     $this->app = $container;
     $this->composer = $composer;
-    $this->basePath = $basePath;
-    $this->publicPath = $publicPath;
-    $this->resourcePath = $resourcePath;
+    $this->basePath = base_path();
+    $this->publicPath = public_path();
+    $this->resourcePath = resource_path();
+    $this->setForce($force);
+    $this->setTasks($only);
+  }
 
+  public function setForce($force)
+  {
     if (!$this->app['files']->exists($this->basePath.'/.tucle'))
     {
       $this->force = true;
+      return;
     }
-    else
-    {
-      $this->force = $force;
-    }
+
+    $this->force = $force;
+  }
+
+  public function setTasks($only = null)
+  {
     if (is_null($only))
     {
       $this->tasks = $this->allTasks;
-    }
-    else
-    {
-      $this->tasks = explode(',', $only);
+      return;
     }
 
+    if (is_array($only))
+    {
+      $this->tasks = $only;
+      return;
+    }
+
+    $this->tasks = explode(',', $only);
   }
 
   public function getAllTasks()

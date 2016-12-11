@@ -4,7 +4,7 @@ use Illuminate\Support\Collection;
 
 class Presenter
 {
-  protected $entryTableColumns = [];
+  protected $tableColumns = [];
   protected $views = [];
   protected $showCheckbox = false;
 
@@ -20,7 +20,7 @@ class Presenter
 
   public function tableColumns()
   {
-    return $this->entryTableColumns;
+    return $this->tableColumns;
   }
 
   public function view($view)

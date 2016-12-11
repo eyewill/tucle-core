@@ -62,10 +62,12 @@ $ gulp
 
 ### Presenter
 
+#### 入力フォームの定義
+
 <pre>
-  // セレクトボックス
   public $forms = [
     ...
+    // セレクトボックス
     [
       'type' => 'select',
       'name' => 'category_id',

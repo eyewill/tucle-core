@@ -2,7 +2,6 @@
 
 use Eyewill\TucleCore\FormSpecs\FormSpec;
 use Eyewill\TucleCore\FormSpecs\FormSpecText;
-use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class FormSpecFactory
 {

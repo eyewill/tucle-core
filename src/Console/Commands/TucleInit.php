@@ -42,7 +42,7 @@ class TucleInit extends Command
 
     try {
       $factory = app()->make('Eyewill\TucleCore\Factories\InitializerFactory');
-      $initializer = $factory->make(base_path(), public_path(), resource_path(), $force, $only);
+      $initializer = $factory->make($force, $only);
 
       $tasks = $initializer->getAllTasks();
       if ($list)

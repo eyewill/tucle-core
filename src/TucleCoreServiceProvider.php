@@ -1,12 +1,6 @@
 <?php namespace Eyewill\TucleCore;
 
-use Eyewill\TucleCore\Contracts\Presenter\ModelEditPresenter as EditModelPresenterContracts;
-use Eyewill\TucleCore\Forms\FormGroup;
-use Eyewill\TucleCore\Forms\FormInput;
-use Eyewill\TucleCore\Http\Presenters\ModelEditPresenter;
-use Eyewill\TucleCore\Http\Presenters\TucleHomePresenter;
-use File;
-use Illuminate\Routing\Router;
+use Eyewill\TucleCore\Factories\InitializerFactory;
 use Illuminate\Support\ServiceProvider;
 
 class TucleCoreServiceProvider extends ServiceProvider
@@ -35,7 +29,7 @@ class TucleCoreServiceProvider extends ServiceProvider
    */
   public function boot()
   {
-    $this->app->view->addNamespace('tucle', [
+    $this->app['view']->addNamespace('tucle', [
       __DIR__ . '/../resources/views',
     ]);
 
@@ -58,23 +52,23 @@ class TucleCoreServiceProvider extends ServiceProvider
       }
     }
 
-    $this->app->view->share('tucle',
+    $this->app['view']->share('tucle',
       $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter')
     );
 
     if (!$this->app->routesAreCached())
     {
-      $this->app->router->group([
+      $this->app['router']->group([
         'middleware' => 'web',
         'namespace' => 'App\Http\Controllers',
-      ], function (Router $router) {
+      ], function ($router) {
         $router->auth();
       });
 
-      $this->app->router->group([
+      $this->app['router']->group([
         'middleware' => ['web', 'auth'],
-      ], function (Router $router) {
-        foreach (File::glob(app_path('Http/routes/*.php')) as $file)
+      ], function ($router) {
+        foreach ($this->app['files']->glob(app_path('Http/routes/*.php')) as $file)
         {
           include $file;
         }
@@ -89,8 +83,7 @@ class TucleCoreServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    $this->app->singleton(EditModelPresenterContracts::class, ModelEditPresenter::class);
-    $this->app->singleton('TucleIndexPresenter', TucleHomePresenter::class);
+    $this->app->singleton(\Eyewill\TucleCore\Contracts\Initializer::class, InitializerFactory::class);
 
     $this->commands($this->commands);
   }

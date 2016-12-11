@@ -15,14 +15,11 @@ class InitializerFactory
     $this->composer = $composer;
   }
 
-  public function make($basePath, $publicPath, $resourcePath, $force = false, $only = null)
+  public function make($force = false, $only = null)
   {
     return new Initializer(
       $this->container,
       $this->composer,
-      $basePath,
-      $publicPath,
-      $resourcePath,
       $force,
       $only
     );
