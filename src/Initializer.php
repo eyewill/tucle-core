@@ -73,7 +73,7 @@ class Initializer implements InitializerContracts
   {
     if (in_array('assets', $this->tasks))
     {
-      yield $this->copyAssetsSass();
+      yield $this->makeAssetsSass();
       yield $this->copyAssets('ckeditor');
       yield $this->copyAssets('datatables');
       yield $this->copyAssets('datatables-i18n');
@@ -117,10 +117,9 @@ class Initializer implements InitializerContracts
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
   }
 
-  public function copyAssetsSass()
+  public function makeAssetsSass()
   {
     $path = $this->resourcePath.'/assets/sass/app.scss';
-    $dest = __DIR__.'/../files/assets/sass/app.scss';
     if (!$this->force && $this->app['files']->exists($path))
     {
       return $path.' already exists';
@@ -133,10 +132,9 @@ class Initializer implements InitializerContracts
     $dir = substr(__DIR__, $pos).'/../resources/assets/sass';
     $scss.= '@import "'.$dir.'/tucle";'.PHP_EOL;
 
-    $scss.= file_get_contents($dest);
     file_put_contents($path, $scss);
 
-    return $path.' copied.';
+    return $path.' created.';
   }
 
   public function copyAssets($asset)
