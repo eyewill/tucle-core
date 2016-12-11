@@ -1,6 +1,37 @@
-@import "base";
+@import "font";
 @import "navbar";
 @import "form";
 @import "alert";
 @import "footer";
 @import "datatables";
+@import "bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "bower_components/bootstrap-flat-sass/sass/bootstrap-flat";
+@import "bower_components/font-awesome/scss/font-awesome";
+
+// IE hack
+@media all and (-ms-high-contrast: none) {
+  body,
+  tooltip,
+  popover {
+    font-family: Verdana, Meiryo, sans-serif;
+  }
+}
+
+html {
+  letter-spacing: .028em;
+  text-indent: .028em;
+}
+
+[data-notify="progressbar"] {
+  margin-bottom: 0px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 5px;
+}
+
+.panel-login {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
