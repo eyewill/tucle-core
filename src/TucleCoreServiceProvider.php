@@ -1,6 +1,7 @@
 <?php namespace Eyewill\TucleCore;
 
 use Eyewill\TucleCore\Contracts\Initializer;
+use Eyewill\TucleCore\Factories\Forms\PasswordFactory;
 use Eyewill\TucleCore\Factories\InitializerFactory;
 use Eyewill\TucleCore\Factories\Forms\CheckboxFactory;
 use Eyewill\TucleCore\Factories\Forms\DateFactory;
@@ -50,6 +51,7 @@ class TucleCoreServiceProvider extends ServiceProvider
     'separator' => SeparatorFactory::class,
     'text' => TextFactory::class,
     'textarea' => TextareaFactory::class,
+    'password' => PasswordFactory::class,
   ];
 
   /**
