@@ -1,5 +1,6 @@
 @import "mixins/placeholder";
 
+textarea.form-control,
 input.form-control {
   @include placeholder {
     color: #CCC;
