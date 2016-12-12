@@ -1,9 +1,13 @@
 <?php namespace Eyewill\TucleCore\Http\Presenters;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 
 class Presenter
 {
+  protected $routes = [];
+  protected $routeParams = [];
+  protected $breadCrumbs = [];
   protected $tableColumns = [];
   protected $views = [];
   protected $showCheckbox = false;
@@ -22,6 +26,14 @@ class Presenter
       ],
     ],
   ];
+
+  public function __construct()
+  {
+    $this->breadCrumbs = array_merge([[
+      'label' => config('tucle.brand', 'TUCLE5'),
+      'url' => '/',
+    ]], $this->breadCrumbs);
+  }
 
   public function tableColumns()
   {
@@ -45,5 +57,73 @@ class Presenter
   public function hasRowActions()
   {
     return true;
+  }
+
+
+  function routeName($action = null)
+  {
+    return $this->routes[$action];
+  }
+
+  function route($route = null, $parameters = [])
+  {
+    if (is_array($route))
+    {
+      $parameters = $route;
+      $route = array_shift($parameters);
+    }
+
+    if (!is_array($parameters))
+    {
+      $parameters = [$parameters];
+    }
+
+    if (isset($this->routeParams[$route]))
+    {
+      $parameters = array_merge($this->routeParams[$route], $parameters);
+    }
+
+    return route($this->routes[$route], $parameters);
+  }
+
+  public function setRouteParams($route, $params)
+  {
+    if (is_array($params))
+    {
+      $this->routeParams[$route] = $params;
+    }
+    else
+    {
+      $this->routeParams[$route] = array_slice(func_get_args(), 1);
+    }
+  }
+
+  public function renderBreadCrumbs($breadCrumb = null)
+  {
+    $breadCrumbs = $this->breadCrumbs;
+    if (func_num_args() > 1)
+    {
+      $breadCrumbs = array_merge($breadCrumbs, func_get_args());
+    }
+    elseif (!is_null($breadCrumb))
+    {
+      $breadCrumbs[] = $breadCrumb;
+    }
+
+    $html = '';
+    $html.= '<ol class="breadcrumb">';
+    foreach ($breadCrumbs as $crumb)
+    {
+      $url = false;
+      if (array_has($crumb, 'url')) $url = $crumb['url'];
+      elseif (array_has($crumb, 'route')) $url = $this->route($crumb['route']);
+      if ($url)
+        $html.= '<li><a href="'.$url.'">'.$crumb['label'].'</a></li>';
+      else
+        $html.= '<li>'.$crumb['label'].'</li>';
+    }
+    $html.= '</ol>';
+
+    return new HtmlString($html);
   }
 }

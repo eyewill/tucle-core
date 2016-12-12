@@ -13,20 +13,15 @@ class ModelPresenter extends Presenter
   protected $html;
   protected $forms = [];
   protected $showColumns = [];
-  protected $routes = [];
-  protected $breadCrumbs = [];
   protected $showCheckbox = true;
   protected $dateFormat = [];
-  protected $routeParams = [];
 
   public function __construct(FormBuilder $form, HtmlBuilder $html)
   {
     $this->form = $form;
     $this->html = $html;
-    $this->breadCrumbs = array_merge([[
-      'label' => config('tucle.brand', 'TUCLE5'),
-      'url' => '/',
-    ]], $this->breadCrumbs);
+
+    parent::__construct();
   }
 
   public function date($model, $name)
@@ -116,29 +111,6 @@ class ModelPresenter extends Presenter
     return new HtmlString($html);
   }
 
-  function routeName($action = null)
-  {
-    return $this->routes[$action];
-  }
-
-  function route($action = null, $parameters = [])
-  {
-    if (is_array($action))
-    {
-      $parameters = $action;
-      $action = array_shift($parameters);
-    }
-
-    if (!is_array($parameters))
-    {
-      $parameters = [$parameters];
-    }
-
-    $parameters = array_merge($this->routeParams, $parameters);
-
-    return route($this->routes[$action], $parameters);
-  }
-
   public function renderValues($attributes = [])
   {
     $html = '';
@@ -175,35 +147,6 @@ class ModelPresenter extends Presenter
     }
 
     return $html;
-  }
-
-  public function renderBreadCrumbs($breadCrumb = null)
-  {
-    $breadCrumbs = $this->breadCrumbs;
-    if (func_num_args() > 1)
-    {
-      $breadCrumbs = array_merge($breadCrumbs, func_get_args());
-    }
-    elseif (!is_null($breadCrumb))
-    {
-      $breadCrumbs[] = $breadCrumb;
-    }
-
-    $html = '';
-    $html.= '<ol class="breadcrumb">';
-    foreach ($breadCrumbs as $crumb)
-    {
-      $url = false;
-      if (array_has($crumb, 'url')) $url = $crumb['url'];
-      elseif (array_has($crumb, 'route')) $url = $this->route($crumb['route']);
-      if ($url)
-        $html.= '<li><a href="'.$url.'">'.$crumb['label'].'</a></li>';
-      else
-        $html.= '<li>'.$crumb['label'].'</li>';
-    }
-    $html.= '</ol>';
-
-    return new HtmlString($html);
   }
 
   public function renderDetails($model)
@@ -297,17 +240,5 @@ class ModelPresenter extends Presenter
   public function checkboxId($model)
   {
     return $model->id;
-  }
-
-  public function setRouteParams($params)
-  {
-    if (is_array($params))
-    {
-      $this->routeParams = $params;
-    }
-    else
-    {
-      $this->routeParams = func_get_args();
-    }
   }
 }
