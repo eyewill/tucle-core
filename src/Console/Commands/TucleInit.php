@@ -1,6 +1,7 @@
 <?php namespace Eyewill\TucleCore\Console\Commands;
 
 use Exception;
+use Eyewill\TucleCore\Factories\InitializerFactory;
 use Illuminate\Console\Command;
 
 class TucleInit extends Command
@@ -41,7 +42,8 @@ class TucleInit extends Command
     $list = $this->option('list');
 
     try {
-      $factory = app()->make('Eyewill\TucleCore\Factories\InitializerFactory');
+      /** @var InitializerFactory $factory */
+      $factory = $this->getLaravel()->make('Eyewill\TucleCore\Factories\InitializerFactory');
       $initializer = $factory->make($force, $only);
 
       $tasks = $initializer->getAllTasks();

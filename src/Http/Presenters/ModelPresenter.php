@@ -17,6 +17,7 @@ class ModelPresenter extends Presenter
   protected $breadCrumbs = [];
   protected $showCheckbox = true;
   protected $dateFormat = [];
+  protected $routeParams = [];
 
   public function __construct(FormBuilder $form, HtmlBuilder $html)
   {
@@ -127,6 +128,13 @@ class ModelPresenter extends Presenter
       $parameters = $action;
       $action = array_shift($parameters);
     }
+
+    if (!is_array($parameters))
+    {
+      $parameters = [$parameters];
+    }
+
+    $parameters = array_merge($this->routeParams, $parameters);
 
     return route($this->routes[$action], $parameters);
   }
@@ -289,5 +297,10 @@ class ModelPresenter extends Presenter
   public function checkboxId($model)
   {
     return $model->id;
+  }
+
+  public function setRouteParams($params)
+  {
+    $this->routeParams = $params;
   }
 }
