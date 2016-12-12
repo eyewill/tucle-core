@@ -7,7 +7,9 @@
     @foreach ($presenter->tableColumns() as $column)
       <th>{{ $column['label'] }}</th>
     @endforeach
+    @if ($presenter->hasRowActions())
     <th data-orderable="false" data-searchable="false" data-width="1px"></th>
+    @endif
   </tr>
   </thead>
 
@@ -20,11 +22,13 @@
       @foreach ($presenter->tableColumns() as $column)
         {{ $presenter->renderTableColumn($column, $entry) }}
       @endforeach
+      @if ($presenter->hasRowActions())
       <td>
         <div class="btn-actions">
           @include($presenter->view('actions.rows'))
         </div>
       </td>
+      @endif
     </tr>
   @endforeach
   </tbody>
