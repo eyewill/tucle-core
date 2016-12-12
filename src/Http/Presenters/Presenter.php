@@ -6,11 +6,12 @@ use Illuminate\Support\HtmlString;
 class Presenter
 {
   protected $routes = [];
-  protected $routeParams = [];
   protected $breadCrumbs = [];
   protected $tableColumns = [];
   protected $views = [];
   protected $showCheckbox = false;
+  /** @var RouteManager */
+  protected $router;
 
   protected $defaultViews = [
     'actions' => [
@@ -27,8 +28,11 @@ class Presenter
     ],
   ];
 
-  public function __construct()
+  public function __construct(RouteManager $router)
   {
+    $router->setRoutes($this->routes);
+    $this->router = $router;
+
     $this->breadCrumbs = array_merge([[
       'label' => config('tucle.brand', 'TUCLE5'),
       'url' => '/',
@@ -59,46 +63,14 @@ class Presenter
     return true;
   }
 
-
   function routeName($action = null)
   {
-    return $this->routes[$action];
+    return $this->router->routeName($action);
   }
 
   function route($route = null, $parameters = [])
   {
-    if (is_array($route))
-    {
-      $parameters = $route;
-      $route = array_shift($parameters);
-    }
-
-    if (!is_array($parameters))
-    {
-      $parameters = [$parameters];
-    }
-
-    if (isset($this->routeParams[$route]))
-    {
-      $parameters = array_merge($this->routeParams[$route], $parameters);
-    }
-
-    return route($this->routes[$route], $parameters);
-  }
-
-  public function setRouteParams($routeParams = [])
-  {
-    foreach ($routeParams as $route => $params)
-    {
-      if (is_array($params))
-      {
-        $this->routeParams[$route] = $params;
-      }
-      else
-      {
-        $this->routeParams[$route] = [$params];
-      }
-    }
+    return $this->router->route($route, $parameters);
   }
 
   public function renderBreadCrumbs($breadCrumb = null)
@@ -128,5 +100,10 @@ class Presenter
     $html.= '</ol>';
 
     return new HtmlString($html);
+  }
+
+  public function getRouter()
+  {
+    return $this->router;
   }
 }

@@ -16,12 +16,12 @@ class ModelPresenter extends Presenter
   protected $showCheckbox = true;
   protected $dateFormat = [];
 
-  public function __construct(FormBuilder $form, HtmlBuilder $html)
+  public function __construct(RouteManager $router, FormBuilder $form, HtmlBuilder $html)
   {
     $this->form = $form;
     $this->html = $html;
 
-    parent::__construct();
+    parent::__construct($router);
   }
 
   public function date($model, $name)
