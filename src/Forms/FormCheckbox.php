@@ -10,11 +10,26 @@ use Eyewill\TucleCore\Factories\Forms\CheckboxFactory;
  */
 class FormCheckbox extends FormInput
 {
+  public function label()
+  {
+    if (!$this->spec->isMulti())
+    {
+      return '';
+    }
+
+    return parent::label();
+  }
+
   protected function renderComponent($model)
   {
     $spec = $this->spec;
     $name = $spec->getName();
-    $inputName =  $name.'[]';
+    $inputName =  $name;
+    if ($spec->isMulti())
+    {
+      $inputName.= '[]';
+    }
+
     $html = '';
     $html.= '<input type="hidden" name="'.$inputName.'" value="">';
     if ($spec->getInline())
