@@ -86,15 +86,18 @@ class Presenter
     return route($this->routes[$route], $parameters);
   }
 
-  public function setRouteParams($route, $params)
+  public function setRouteParams($routeParams = [])
   {
-    if (is_array($params))
+    foreach ($routeParams as $route => $params)
     {
-      $this->routeParams[$route] = $params;
-    }
-    else
-    {
-      $this->routeParams[$route] = array_slice(func_get_args(), 1);
+      if (is_array($params))
+      {
+        $this->routeParams[$route] = $params;
+      }
+      else
+      {
+        $this->routeParams[$route] = [$params];
+      }
     }
   }
 
