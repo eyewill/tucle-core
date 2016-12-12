@@ -35,6 +35,6 @@
     });
   </script>
 
-  @include($presenter->view('datatables'))
+  @include($presenter->view('datatables.init'))
 
 @endsection

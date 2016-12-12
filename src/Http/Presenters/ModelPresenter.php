@@ -290,9 +290,4 @@ class ModelPresenter extends Presenter
   {
     return $model->id;
   }
-
-  public function hasRowActions()
-  {
-    return true;
-  }
 }

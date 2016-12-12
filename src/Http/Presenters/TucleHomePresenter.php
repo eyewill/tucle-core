@@ -13,10 +13,13 @@ class TucleHomePresenter extends Presenter
   protected $views = [
     'actions' => [
       'index' => 'tucle::home.partial.actions.index',
-      'rows' => 'tucle::home.partial.actions.rows'
     ],
-    'datatables' => 'tucle::home.partial.datatables',
-
+    'datatables' => [
+      'init' => 'tucle::home.partial.datatables.init',
+      'actions' => [
+        'rows' => 'tucle::home.partial.datatables.actions.rows',
+      ],
+    ],
   ];
 
   public function renderTableColumn($column, $presenter)

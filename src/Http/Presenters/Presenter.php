@@ -11,11 +11,16 @@ class Presenter
   protected $defaultViews = [
     'actions' => [
       'index' => 'tucle::partial.actions.index',
-      'rows' => 'tucle::partial.actions.rows',
       'edit' => 'tucle::partial.actions.edit',
       'show' => 'tucle::partial.actions.show',
     ],
-    'datatables' => 'tucle::partial.datatables',
+    'datatables' => [
+      'init' => 'tucle::partial.datatables.init',
+      'actions' => [
+        'entries' => 'tucle::partial.datatables.actions.entries',
+        'rows' => 'tucle::partial.datatables.actions.rows',
+      ],
+    ],
   ];
 
   public function tableColumns()
@@ -37,4 +42,8 @@ class Presenter
     return $this->showCheckbox;
   }
 
+  public function hasRowActions()
+  {
+    return true;
+  }
 }
