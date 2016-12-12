@@ -301,6 +301,13 @@ class ModelPresenter extends Presenter
 
   public function setRouteParams($params)
   {
-    $this->routeParams = $params;
+    if (is_array($params))
+    {
+      $this->routeParams = $params;
+    }
+    else
+    {
+      $this->routeParams = func_get_args();
+    }
   }
 }
