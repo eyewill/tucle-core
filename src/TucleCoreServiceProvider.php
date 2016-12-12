@@ -94,11 +94,10 @@ class TucleCoreServiceProvider extends ServiceProvider
       ], function ($router) {
         $router->auth();
       });
-
       $this->app['router']->group([
         'middleware' => ['web', 'auth'],
       ], function ($router) {
-        foreach ($this->app['files']->glob(app_path('Http/routes/*.php')) as $file)
+        foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
         {
           include $file;
         }
