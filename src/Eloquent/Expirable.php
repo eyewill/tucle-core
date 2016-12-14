@@ -88,7 +88,7 @@ trait Expirable
   public function scopePublished($query)
   {
     $query->where(function ($query) {
-      $query->whereNull('published_at');
+      $query->whereNotNull('published_at');
       $query->where(function ($query) {
         $query->where('published_at', '<=', DB::raw('NOW()'));
         $query->where(function ($query) {
