@@ -2,6 +2,7 @@
 
 use Eyewill\TucleCore\Contracts\Initializer;
 use Eyewill\TucleCore\Factories\Forms\PasswordFactory;
+use Eyewill\TucleCore\Factories\Forms\StaticFactory;
 use Eyewill\TucleCore\Factories\InitializerFactory;
 use Eyewill\TucleCore\Factories\Forms\CheckboxFactory;
 use Eyewill\TucleCore\Factories\Forms\DateFactory;
@@ -52,6 +53,7 @@ class TucleCoreServiceProvider extends ServiceProvider
     'text' => TextFactory::class,
     'textarea' => TextareaFactory::class,
     'password' => PasswordFactory::class,
+    'static' => StaticFactory::class,
   ];
 
   /**
