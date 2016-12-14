@@ -1,6 +1,7 @@
 <?php namespace Eyewill\TucleCore\Eloquent;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Expirable
@@ -60,7 +61,8 @@ trait Expirable
 
   public function scopeCandidates($query)
   {
-
+    $query->whereNotNull('published_at');
+    $query->where('published_at', '>', DB::raw('NOW()'));
   }
 
   /**
@@ -85,7 +87,16 @@ trait Expirable
 
   public function scopePublished($query)
   {
-
+    $query->where(function ($query) {
+      $query->whereNull('published_at');
+      $query->where(function ($query) {
+        $query->where('published_at', '<=', DB::raw('NOW()'));
+        $query->where(function ($query) {
+          $query->orWhereNull('terminated_at');
+          $query->orWhere('terminated_at', '>', DB::raw('NOW()'));
+        });
+      });
+    });
   }
 
   /**
@@ -98,5 +109,29 @@ trait Expirable
 
   public function scopeEffective($query)
   {
+    $query->where(function ($query) {
+      $query->orWhere(function ($query) {
+        $query->candidates();
+      });
+      $query->orWhere(function ($query) {
+        $query->published();
+      });
+    });
+  }
+
+  /**
+   * 公開終了
+   *
+   * @return bool
+   */
+  public function terminated()
+  {
+    // now > terminated_at
+    return (!is_null($this->terminatedAt()) && Carbon::now()->gt($this->terminatedAt()));
+  }
+
+  public function scopeTerminated($query)
+  {
+    $query->where('terminated_at', '<', DB::raw('NOW()'));
   }
 }

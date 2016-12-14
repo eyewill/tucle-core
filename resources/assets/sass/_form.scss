@@ -92,3 +92,13 @@ hr.form-separator {
 .btn-clear-input:hover {
   color: #999;
 }
+
+.btn-separator:after {
+  content: ' ';
+  display: block;
+  float: left;
+  background: #ADADAD;
+  margin: 0 4px 0 8px;
+  height: 34px;
+  width: 1px;
+}
