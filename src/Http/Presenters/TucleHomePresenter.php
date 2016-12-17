@@ -15,7 +15,6 @@ class TucleHomePresenter extends Presenter
       'index' => 'tucle::home.partial.actions.index',
     ],
     'datatables' => [
-      'init' => 'tucle::home.partial.datatables.init',
       'actions' => [
         'rows' => 'tucle::home.partial.datatables.actions.rows',
       ],
