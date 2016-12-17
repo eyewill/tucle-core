@@ -39,12 +39,4 @@
 </div>
 @endsection
 
-@section('script')
-  @parent
-  <script>
-    $(function(){
-      DataTablesFactory.make();
-    });
-  </script>
-@endsection
 

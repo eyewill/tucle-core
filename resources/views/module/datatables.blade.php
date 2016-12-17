@@ -109,4 +109,7 @@
       }
     };
   </script>
+
+  @include($presenter->view('datatables.make'))
+
 @endsection

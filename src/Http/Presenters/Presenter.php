@@ -20,6 +20,7 @@ class Presenter
       'show' => 'tucle::partial.actions.show',
     ],
     'datatables' => [
+      'make' => 'tucle::partial.datatables.make',
       'actions' => [
         'entries' => 'tucle::partial.datatables.actions.entries',
         'rows' => 'tucle::partial.datatables.actions.rows',
