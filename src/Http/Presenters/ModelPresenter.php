@@ -180,51 +180,6 @@ class ModelPresenter extends Presenter
     return new HtmlString($html);
   }
 
-  public function renderPageActions($model, $actions = [])
-  {
-    $html = '';
-    $html.= '<div class="row">';
-    $html.= '<div class="col-xs-12">';
-    $html.= '<div class="btn-toolbar pull-right">';
-    foreach ($actions as $action)
-    {
-      $method = 'render'.studly_case($action).'PageAction';
-      if (method_exists($this, $method))
-      {
-        $html.= $this->{$method}($model);
-      }
-    }
-    $html.= '</div>';
-    $html.= '</div>';
-    $html.= '</div>';
-
-    return new HtmlString($html);
-  }
-
-  public function renderBackPageAction($model)
-  {
-    $url = $this->route('index');
-    return new HtmlString('<a href="'.$url.'" class="btn btn-default">一覧に戻る</a>');
-  }
-
-  public function renderCreatePageAction($model)
-  {
-    $url = $this->route('create');
-    return new HtmlString('<a href="'.$url.'" class="btn btn-primary">作成</a>');
-  }
-
-  public function renderEditPageAction($model)
-  {
-    $url = $this->route('edit', $model);
-    return new HtmlString('<a href="'.$url.'" class="btn btn-primary">編集</a>');
-  }
-
-  public function renderShowPageAction($model)
-  {
-    $url = $this->route('show', $model);
-    return new HtmlString('<a href="'.$url.'" class="btn btn-primary">表示</a>');
-  }
-
   public function getAttributeNames()
   {
     $attributeNames = [];
