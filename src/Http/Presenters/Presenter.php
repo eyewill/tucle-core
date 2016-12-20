@@ -16,6 +16,7 @@ class Presenter
   protected $defaultViews = [
     'actions' => [
       'index' => 'tucle::partial.actions.index',
+      'create' => 'tucle::partial.actions.create',
       'edit' => 'tucle::partial.actions.edit',
       'show' => 'tucle::partial.actions.show',
     ],

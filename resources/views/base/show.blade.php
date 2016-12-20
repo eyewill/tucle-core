@@ -14,9 +14,7 @@
         <h1 class="form-title">{{ $presenter->getPageTitle($model) }}</h1>
       </div>
       <div class="col-md-6">
-        @section('actions')
-          @include($presenter->view('actions.show'))
-        @show
+        @include($presenter->view('actions.show'))
       </div>
     </div>
   </div>

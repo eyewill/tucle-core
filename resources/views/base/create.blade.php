@@ -17,7 +17,7 @@
       <h1 class="form-title">新規作成</h1>
     </div>
     <div class="col-md-6">
-      {{ $presenter->renderPageActions(null, ['back']) }}
+      @include($presenter->view('actions.create'))
     </div>
   </div>
   @show
