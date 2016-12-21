@@ -58,6 +58,10 @@ input.form-control {
   padding: 0 0 0 4px;
 }
 
+.form-inline .form-group:not(:first-child) {
+  margin-left: 4px;
+}
+
 h1.form-title {
   margin: 0 0 20px 0;
 }
