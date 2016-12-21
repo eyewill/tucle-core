@@ -12,13 +12,19 @@ class FormPrice extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->factory;
-    $name = $spec->getName();
-    $attributes = $spec->getAttributes()->get();
+    $factory = $this->factory;
+    $name = $factory->getName();
+    $attributes = $factory->getAttributes()->get();
+    $value = null;
+
+    if (is_null($model))
+    {
+      $value = $factory->getValue();
+    }
 
     $html = '';
     $html.= '<div class="input-group">';
-    $html.= $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
+    $html.= $this->presenter->getForm()->text($name, $value, $attributes)->toHtml();
     $html.= '<span class="input-group-addon">円</span>';
     $html.= '</div>';
 

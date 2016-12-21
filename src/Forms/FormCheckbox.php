@@ -25,6 +25,13 @@ class FormCheckbox extends FormInput
     $spec = $this->factory;
     $name = $spec->getName();
     $inputName =  $name;
+    $checkedValues = [];
+
+    if (is_null($model))
+    {
+      $checkedValues = $spec->getCheckedValues();
+    }
+
     if ($spec->isMulti())
     {
       $inputName.= '[]';
@@ -37,8 +44,9 @@ class FormCheckbox extends FormInput
       $html.= '<div>';
       foreach ($spec->getValues() as $value => $label)
       {
+        $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<label class="checkbox-inline">';
-        $html.= $this->presenter->getForm()->checkbox($inputName, $value)->toHtml();
+        $html.= $this->presenter->getForm()->checkbox($inputName, $value, $checked)->toHtml();
         $html.= e($label);
         $html.= '</label> ';
       }
@@ -48,9 +56,10 @@ class FormCheckbox extends FormInput
     {
       foreach ($spec->getValues() as $value => $label)
       {
+        $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<div class="checkbox">';
         $html.= '<label>';
-        $html.= $this->presenter->getForm()->checkbox($inputName, 1)->toHtml();
+        $html.= $this->presenter->getForm()->checkbox($inputName, $value, $checked)->toHtml();
         $html.= e($label);
         $html.= '</label>';
         $html.= '</div>';

@@ -7,6 +7,8 @@ class RadioFactory extends CheckboxFactory
 {
   public function make(ModelPresenter $presenter)
   {
+    $this->setValue($presenter);
+    $this->setCheckedValues($presenter);
     $this->setValues($presenter);
     return app()->make(FormRadio::class, [$presenter, $this]);
   }

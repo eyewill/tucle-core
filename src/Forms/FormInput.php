@@ -72,10 +72,17 @@ class FormInput
 
   protected function renderComponent($model)
   {
-    $spec = $this->factory;
-    $name = $spec->getName();
-    $attributes = $spec->getAttributes()->get();
-    return $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
+    $factory = $this->factory;
+    $name = $factory->getName();
+    $attributes = $factory->getAttributes()->get();
+    $value = null;
+
+    if (is_null($model))
+    {
+      $value = $factory->getValue();
+    }
+
+    return $this->presenter->getForm()->text($name, $value, $attributes)->toHtml();
   }
 
   /**

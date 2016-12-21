@@ -7,6 +7,7 @@ class TextFactory extends Factory
 {
   public function make(ModelPresenter $presenter)
   {
+    $this->setValue($presenter);
     return app()->make(FormText::class, [$presenter, $this]);
   }
 }

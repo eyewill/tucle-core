@@ -21,21 +21,40 @@ class CheckboxFactory extends Factory
       array_get($attributes, 'value'));
     array_set($attributes, 'values',
       array_get($attributes, 'values', []));
+    array_set($attributes, 'checked_values',
+      array_get($attributes, 'checked_values', []));
 
     parent::__construct($attributes, $mergeAttributes);
   }
 
   public function make(ModelPresenter $presenter)
   {
-    if ($this->isMulti())
-    {
-      $this->setValues($presenter);
-    }
-    else
-    {
-      $this->attributes['values'] = [$this->getValue() => $this->getLabel()];
-    }
+    $this->setValue($presenter);
+    $this->setCheckedValues($presenter);
+    $this->setValues($presenter);
     return app()->make(FormCheckbox::class, [$presenter, $this]);
+  }
+
+  public function setCheckedValues($presenter)
+  {
+    $name = $this->getName();
+    $value = null;
+    $func = snake_case($name).'CheckedValues';
+    if (method_exists($presenter, $func))
+    {
+      $value = $presenter->$func();
+      if (!is_array($value))
+      {
+        $value = [$value];
+      }
+      $this->attributes['checked_values'] = $value;
+    }
+
+  }
+
+  public function getCheckedValues()
+  {
+    return array_get($this->attributes, 'checked_values');
   }
 
   public function isMulti()
@@ -45,15 +64,22 @@ class CheckboxFactory extends Factory
 
   public function setValues($presenter)
   {
-    $func = camel_case($this->getName()).'Values';
-    if (is_callable([$presenter, $func]))
+    if ($this->isMulti())
     {
-      $values = $presenter->{$func}();
-      if ($values instanceof Collection)
+      $func = camel_case($this->getName()).'Values';
+      if (is_callable([$presenter, $func]))
       {
-        $values = $values->toArray();
+        $values = $presenter->{$func}();
+        if ($values instanceof Collection)
+        {
+          $values = $values->toArray();
+        }
+        $this->attributes['values'] = $values;
       }
-      $this->attributes['values'] = $values;
+    }
+    else
+    {
+      $this->attributes['values'] = [$this->getValue() => $this->getLabel()];
     }
   }
 

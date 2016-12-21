@@ -12,14 +12,22 @@ class FormSelect extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->factory;
-    $name = $spec->getName();
-    $attributes = $spec->getAttributes()->get();
-    $values = $spec->getValues();
-    if ($spec->getEmptyLabel())
+    $factory = $this->factory;
+    $name = $factory->getName();
+    $attributes = $factory->getAttributes()->get();
+    $values = $factory->getValues();
+    $value = null;
+
+    if (is_null($model))
     {
-      $values = ['' => $spec->getEmptyLabel()]+$values;
+      $value = $factory->getValue();
     }
-    return $this->presenter->getForm()->select($name, $values, null, $attributes)->toHtml();
+
+    if ($factory->getEmptyLabel())
+    {
+      $values = ['' => $factory->getEmptyLabel()]+$values;
+    }
+
+    return $this->presenter->getForm()->select($name, $values, $value, $attributes)->toHtml();
   }
 }

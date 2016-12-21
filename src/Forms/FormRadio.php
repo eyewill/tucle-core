@@ -12,16 +12,24 @@ class FormRadio extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->factory;
-    $name = $spec->getName();
+    $factory = $this->factory;
+    $name = $factory->getName();
+    $checkedValues = [];
+
+    if (is_null($model))
+    {
+      $checkedValues = $factory->getCheckedValues();
+    }
+
     $html = '';
-    if ($spec->getInline())
+    if ($factory->getInline())
     {
       $html.= '<div>';
-      foreach ($spec->getValues() as $value => $label)
+      foreach ($factory->getValues() as $value => $label)
       {
+        $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<label class="radio-inline">';
-        $html.= $this->presenter->getForm()->radio($name, $value)->toHtml();
+        $html.= $this->presenter->getForm()->radio($name, $value, $checked)->toHtml();
         $html.= e($label);
         $html.= '</label>';
       }
@@ -29,11 +37,12 @@ class FormRadio extends FormInput
     }
     else
     {
-      foreach ($spec->getValues() as $value => $label)
+      foreach ($factory->getValues() as $value => $label)
       {
+        $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<div class="radio">';
         $html.= '<label>';
-        $html.= $this->presenter->getForm()->radio($name, $value)->toHtml();
+        $html.= $this->presenter->getForm()->radio($name, $value, $checked)->toHtml();
         $html.= e($label);
         $html.= '</label>';
         $html.= '</div>';

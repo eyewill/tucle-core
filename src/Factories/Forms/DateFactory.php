@@ -17,6 +17,7 @@ class DateFactory extends Factory
 
   public function make(ModelPresenter $presenter)
   {
+    $this->setValue($presenter);
     return app()->make(FormDate::class, [$presenter, $this]);
   }
 

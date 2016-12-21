@@ -15,7 +15,7 @@ class GroupFactory extends Factory
     parent::__construct($attributes, $mergeAttributes);
   }
 
-  public function make(ModelPresenter $presenter)
+  public function make(ModelPresenter $presenter, $class = null)
   {
     return app()->make(FormGroup::class, [$presenter, $this]);
   }

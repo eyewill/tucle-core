@@ -17,6 +17,7 @@ class TextareaFactory extends Factory
 
   public function make(ModelPresenter $presenter)
   {
+    $this->setValue($presenter);
     return app()->make(FormTextarea::class, [$presenter, $this]);
   }
 }

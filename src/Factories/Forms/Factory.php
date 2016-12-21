@@ -14,6 +14,7 @@ abstract class Factory implements FactoryContracts
     array_set($attributes, 'position', array_get($attributes, 'position', 'main'));
     array_set($attributes, 'class', array_get($attributes, 'class', 'col-xs-12'));
     array_set($attributes, 'attr.class', array_get($attributes, 'attr.class', 'form-control'));
+    array_set($attributes, 'value', array_get($attributes, 'value', null));
 
     $this->attributes = array_merge_recursive($attributes, $mergeAttributes);
   }
@@ -24,7 +25,25 @@ abstract class Factory implements FactoryContracts
    */
   public function make(ModelPresenter $presenter)
   {
+    $this->setValue($presenter);
     return new FormInput($presenter, $this);
+  }
+
+  public function setValue($presenter)
+  {
+    $name = $this->getName();
+    $value = null;
+    $func = snake_case($name).'Value';
+    if (method_exists($presenter, $func))
+    {
+      $value = $presenter->$func();
+      $this->attributes['value'] = $value;
+    }
+  }
+
+  public function getValue()
+  {
+    return array_get($this->attributes, 'value');
   }
 
   public function getAttributeNames()

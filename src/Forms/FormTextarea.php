@@ -12,9 +12,17 @@ class FormTextarea extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->factory;
-    $name = $spec->getName();
-    $attributes = $spec->getAttributes()->get();
-    return $this->presenter->getForm()->textarea($name, null, $attributes)->toHtml();
+    $factory = $this->factory;
+    $name = $factory->getName();
+    $value = null;
+
+    $attributes = $factory->getAttributes()->get();
+
+    if (is_null($model))
+    {
+      $value = $factory->getValue();
+    }
+
+    return $this->presenter->getForm()->textarea($name, $value, $attributes)->toHtml();
   }
 }
