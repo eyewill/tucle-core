@@ -6,7 +6,7 @@ use Eyewill\TucleCore\Factories\Forms\SeparatorFactory;
  * Class FormSeparator
  * @package Eyewill\TucleCore\Forms
  * 
- * @property SeparatorFactory $spec
+ * @property SeparatorFactory $factory
  */
 class FormSeparator extends FormInput
 {

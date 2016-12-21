@@ -6,13 +6,13 @@ use Eyewill\TucleCore\Factories\Forms\CheckboxFactory;
  * Class FormCheckbox
  * @package Eyewill\TucleCore\Forms
  *
- * @property CheckboxFactory $spec
+ * @property CheckboxFactory $factory
  */
 class FormCheckbox extends FormInput
 {
   public function label()
   {
-    if (!$this->spec->isMulti())
+    if (!$this->factory->isMulti())
     {
       return '';
     }
@@ -22,7 +22,7 @@ class FormCheckbox extends FormInput
 
   protected function renderComponent($model)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
     $name = $spec->getName();
     $inputName =  $name;
     if ($spec->isMulti())

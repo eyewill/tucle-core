@@ -4,7 +4,7 @@ class FormStatic extends FormInput
 {
   public function renderComponent($model)
   {
-    $name = $this->spec->getName();
+    $name = $this->factory->getName();
 
     $html = '';
     $html.= '<div class="form-control-static">';

@@ -7,13 +7,13 @@ use Eyewill\TucleCore\Factories\Forms\FileFactory;
  * Class FormImage
  * @package Eyewill\TucleCore\Forms
  *
- * @property FileFactory $spec
+ * @property FileFactory $factory
  */
 class FormFile extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
     $html = '';

@@ -8,18 +8,19 @@ use Illuminate\Support\ViewErrorBag;
 class FormInput
 {
   /** @var Factory */
-  protected $spec;
+  protected $factory;
 
   protected $attributes;
   protected $renderGroup;
   /** @var ModelPresenter */
   protected $presenter;
 
-  public function __construct(ModelPresenter $presenter, Factory $spec)
+  public function __construct(ModelPresenter $presenter, Factory $factory)
   {
     $this->presenter = $presenter;
-    $this->spec = $spec;
+    $this->factory = $factory;
   }
+
 
   /**
    * @return ViewErrorBag|MessageBag
@@ -44,7 +45,7 @@ class FormInput
    */
   public function render($model = null, $row = true)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
 
     $html = '';
     if ($row)
@@ -71,7 +72,7 @@ class FormInput
 
   protected function renderComponent($model)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
     return $this->presenter->getForm()->text($name, null, $attributes)->toHtml();
@@ -103,8 +104,8 @@ class FormInput
 
     $html = '';
     $html.= '<label class="control-label">';
-    $html.= e($this->spec->getLabel());
-    if ($this->spec->getRequired())
+    $html.= e($this->factory->getLabel());
+    if ($this->factory->getRequired())
     {
       $html.= ' <span class="label label-require">必須</span>';
     }
@@ -115,7 +116,7 @@ class FormInput
 
   public function renderHelp()
   {
-    $help = $this->spec->getHelp();
+    $help = $this->factory->getHelp();
 
     $html = '';
     if (!empty($help))
@@ -130,13 +131,13 @@ class FormInput
 
   public function hasError()
   {
-    $name = $this->spec->getName();
+    $name = $this->factory->getName();
     return $this->errors()->hasAny(is_array($name) ? $name : [$name]);
   }
 
   public function renderError()
   {
-    $name = $this->spec->getName();
+    $name = $this->factory->getName();
 
     $html = '';
     if ($this->hasError())

@@ -6,13 +6,13 @@ use Eyewill\TucleCore\Factories\Forms\GroupFactory;
  * Class FormGroup
  * @package Eyewill\TucleCore\Forms
  * 
- * @property GroupFactory $spec
+ * @property GroupFactory $factory
  */
 class FormGroup extends FormInput
 {
   public function render($model = null, $row = true)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
 
     $html = '';
     $html.= $this->label();
@@ -39,7 +39,7 @@ class FormGroup extends FormInput
   public function renderComponent($model)
   {
     $html = '';
-    $forms = $this->spec->getForms();
+    $forms = $this->factory->getForms();
     $html.= '<div class="row">';
     foreach ($forms as $spec)
     {

@@ -6,13 +6,13 @@ use Eyewill\TucleCore\Factories\Forms\PriceFactory;
  * Class FormPrice
  * @package Eyewill\TucleCore\Forms
  *
- * @property PriceFactory $spec
+ * @property PriceFactory $factory
  */
 class FormPrice extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
 

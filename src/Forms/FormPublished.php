@@ -6,7 +6,7 @@ use Eyewill\TucleCore\Factories\Forms\PublishedFactory;
  * Class FormPublished
  * @package Eyewill\TucleCore\Forms
  * 
- * @property PublishedFactory $spec
+ * @property PublishedFactory $factory
  */
 class FormPublished extends FormGroup
 {

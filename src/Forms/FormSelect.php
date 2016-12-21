@@ -6,13 +6,13 @@ use Eyewill\TucleCore\Factories\Forms\SelectFactory;
  * Class FormSelect
  * @package Eyewill\TucleCore\Forms
  * 
- * @property SelectFactory $spec
+ * @property SelectFactory $factory
  */
 class FormSelect extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
     $values = $spec->getValues();

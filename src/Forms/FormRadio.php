@@ -6,13 +6,13 @@ use Eyewill\TucleCore\Factories\Forms\RadioFactory;
  * Class FormRadio
  * @package Eyewill\TucleCore\Forms
  *
- * @property RadioFactory $spec
+ * @property RadioFactory $factory
  */
 class FormRadio extends FormInput
 {
   protected function renderComponent($model)
   {
-    $spec = $this->spec;
+    $spec = $this->factory;
     $name = $spec->getName();
     $html = '';
     if ($spec->getInline())
