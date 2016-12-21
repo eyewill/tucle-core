@@ -99,7 +99,7 @@
       },
       toggle: function (dt) {
         var selected = (DataTablesFactory.selectRows(dt).count() > 0);
-        $('#table-actions .btn').prop('disabled', !selected);
+        $('.table-actions .btn-actions .btn').prop('disabled', !selected);
       },
       selectRows: function (dt) {
         return dt.rows({ selected: true });

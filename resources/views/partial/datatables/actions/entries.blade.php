@@ -1,4 +1,4 @@
-<div id="table-actions" class="btn-actions">
+<div class="btn-actions">
   <button class="btn btn-default" data-table-action="clearall" disabled>
     <span class="fa fa-square-o"></span>
     全クリア
