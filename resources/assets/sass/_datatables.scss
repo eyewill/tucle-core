@@ -14,3 +14,7 @@ table.dataTable thead .dt-checkboxes-select-all [type=checkbox],
 table.dataTable.dt-checkboxes-select tbody tr .dt-checkboxes {
   cursor: pointer;
 }
+
+table .table-actions {
+  margin-top: 8px;
+}
