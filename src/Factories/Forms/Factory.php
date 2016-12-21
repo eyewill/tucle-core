@@ -33,7 +33,7 @@ abstract class Factory implements FactoryContracts
   {
     $name = $this->getName();
     $value = null;
-    $func = snake_case($name).'Value';
+    $func = camel_case($name).'Value';
     if (method_exists($presenter, $func))
     {
       $value = $presenter->$func();

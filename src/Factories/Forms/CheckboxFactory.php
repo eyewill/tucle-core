@@ -39,7 +39,7 @@ class CheckboxFactory extends Factory
   {
     $name = $this->getName();
     $value = null;
-    $func = snake_case($name).'CheckedValues';
+    $func = camel_case($name).'CheckedValues';
     if (method_exists($presenter, $func))
     {
       $value = $presenter->$func();
