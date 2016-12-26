@@ -25,7 +25,7 @@
     @show
 
 
-    {{ $presenter->getForm()->model($model, ['route' => [$presenter->routeName('update'), $model], 'method' => 'put', 'files' => true]) }}
+    {{ $presenter->getForm()->model($model, ['url' => $presenter->route('update', $model), 'method' => 'put', 'files' => true]) }}
     <div class="row">
       <div class="col-sm-9">
 

@@ -22,7 +22,7 @@
   </div>
   @show
 
-  {{ $presenter->getForm()->open(['route' => $presenter->routeName('store'), 'method' => 'post', 'files' => true]) }}
+  {{ $presenter->getForm()->open(['url' => $presenter->route('store'), 'method' => 'post', 'files' => true]) }}
   <div class="row">
     <div class="col-sm-9">
 
