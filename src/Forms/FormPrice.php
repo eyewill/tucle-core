@@ -14,13 +14,8 @@ class FormPrice extends FormInput
   {
     $factory = $this->factory;
     $name = $factory->getName();
+    $value = $factory->getDefaultValue($this->presenter, $model);
     $attributes = $factory->getAttributes()->get();
-    $value = null;
-
-    if (is_null($model))
-    {
-      $value = $factory->getValue();
-    }
 
     $html = '';
     $html.= '<div class="input-group">';

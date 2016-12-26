@@ -25,25 +25,30 @@ abstract class Factory implements FactoryContracts
    */
   public function make(ModelPresenter $presenter)
   {
-    $this->setValue($presenter);
     return new FormInput($presenter, $this);
   }
 
-  public function setValue($presenter)
+  public function getDefaultValue(ModelPresenter $presenter, $model = null)
   {
     $name = $this->getName();
-    $value = null;
     $func = camel_case($name).'Value';
+    $value = null;
+
+    if (session()->hasOldInput($name))
+    {
+      return $value;
+    }
+
     if (method_exists($presenter, $func))
     {
-      $value = $presenter->$func();
-      $this->attributes['value'] = $value;
+      $value = $presenter->$func($model);
     }
-  }
+    elseif (is_null($model))
+    {
+      $value = array_get($this->attributes, 'value');
+    }
 
-  public function getValue()
-  {
-    return array_get($this->attributes, 'value');
+    return $value;
   }
 
   public function getAttributeNames()

@@ -18,7 +18,6 @@ class SelectFactory extends Factory
 
   public function make(ModelPresenter $presenter)
   {
-    $this->setValue($presenter);
     $this->setValues($presenter);
     return app()->make(FormSelect::class, [$presenter, $this]);
   }

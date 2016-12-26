@@ -14,14 +14,8 @@ class FormTextarea extends FormInput
   {
     $factory = $this->factory;
     $name = $factory->getName();
-    $value = null;
-
+    $value = $factory->getDefaultValue($this->presenter, $model);
     $attributes = $factory->getAttributes()->get();
-
-    if (is_null($model))
-    {
-      $value = $factory->getValue();
-    }
 
     return $this->presenter->getForm()->textarea($name, $value, $attributes)->toHtml();
   }

@@ -74,13 +74,8 @@ class FormInput
   {
     $factory = $this->factory;
     $name = $factory->getName();
+    $value = $factory->getDefaultValue($this->presenter, $model);
     $attributes = $factory->getAttributes()->get();
-    $value = null;
-
-    if (is_null($model))
-    {
-      $value = $factory->getValue();
-    }
 
     return $this->presenter->getForm()->text($name, $value, $attributes)->toHtml();
   }

@@ -29,7 +29,6 @@ class CheckboxFactory extends Factory
 
   public function make(ModelPresenter $presenter)
   {
-    $this->setValue($presenter);
     $this->setCheckedValues($presenter);
     $this->setValues($presenter);
     return app()->make(FormCheckbox::class, [$presenter, $this]);

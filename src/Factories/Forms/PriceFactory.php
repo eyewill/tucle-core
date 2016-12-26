@@ -7,7 +7,6 @@ class PriceFactory extends Factory
 {
   public function make(ModelPresenter $presenter)
   {
-    $this->setValue($presenter);
     return app()->make(FormPrice::class, [$presenter, $this]);
   }
 }

@@ -17,7 +17,6 @@ class DatetimeFactory extends Factory
 
   public function make(ModelPresenter $presenter)
   {
-    $this->setValue($presenter);
     return app()->make(FormDatetime::class, [$presenter, $this]);
   }
 
