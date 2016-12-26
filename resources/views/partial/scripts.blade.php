@@ -10,7 +10,7 @@
       e.preventDefault();
 
       var form = $('<form action="'+$(this).data('url')+'" method="POST">');
-      form.append($('<input type="hidden" name="_token">').val('{{ csrf_token() }}'));
+      form.append($('<input type="hidden" name="_token" value="{{ csrf_token() }}">'));
       if (action == 'update') {
         form.append($('<input type="hidden" name="_method" value="PATCH">'));
         form.append($('<input type="hidden">').prop({
@@ -18,9 +18,10 @@
           value: $(this).data('value')
         }));
       } else if (action == 'destroy') {
+        if (!confirm('削除します。よろしいですか？')) {
+          return;
+        }
         form.append($('<input type="hidden" name="_method" value="DELETE">'));
-      } else if (action == 'copy') {
-        //
       }
 
       $('body').append(form);
