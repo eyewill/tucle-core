@@ -19,72 +19,84 @@ class CheckboxFactory extends Factory
       array_get($attributes, 'inline', false));
     array_set($attributes, 'value',
       array_get($attributes, 'value'));
-    array_set($attributes, 'values',
-      array_get($attributes, 'values', []));
-    array_set($attributes, 'checked_values',
-      array_get($attributes, 'checked_values', []));
 
     parent::__construct($attributes, $mergeAttributes);
   }
 
   public function make(ModelPresenter $presenter)
   {
-    $this->setCheckedValues($presenter);
-    $this->setValues($presenter);
     return app()->make(FormCheckbox::class, [$presenter, $this]);
   }
 
-  public function setCheckedValues($presenter)
+  public function getCheckedValues(ModelPresenter $presenter, $model = null)
   {
     $name = $this->getName();
     $value = null;
     $func = camel_case($name).'CheckedValues';
+
     if (method_exists($presenter, $func))
     {
-      $value = $presenter->$func();
-      if (!is_array($value))
-      {
-        $value = [$value];
-      }
-      $this->attributes['checked_values'] = $value;
+      $checkedValues = $presenter->$func($model);
+    }
+    elseif ($this->hasAttribute('checked_values'))
+    {
+      $checkedValues = $this->getAttribute('checked_values');
+    }
+    else
+    {
+      $checkedValues = [];
     }
 
+    if ($checkedValues instanceof Collection)
+    {
+      $checkedValues = $checkedValues->toArray();
+    }
+
+    if (!is_array($checkedValues))
+    {
+      $checkedValues = [$checkedValues];
+    }
+
+    return $checkedValues;
   }
 
-  public function getCheckedValues()
-  {
-    return array_get($this->attributes, 'checked_values');
-  }
-
+  /**
+   * @todo 複数チェックボックスの条件はこれでいいのか
+   * @return bool
+   */
   public function isMulti()
   {
     return is_null($this->getValue());
   }
 
-  public function setValues($presenter)
+  public function getValues(ModelPresenter $presenter, $model = null)
   {
-    if ($this->isMulti())
+    $name = $this->getName();
+    $func = camel_case($name).'Values';
+
+    if (method_exists($presenter, $func))
     {
-      $func = camel_case($this->getName()).'Values';
-      if (is_callable([$presenter, $func]))
-      {
-        $values = $presenter->{$func}();
-        if ($values instanceof Collection)
-        {
-          $values = $values->toArray();
-        }
-        $this->attributes['values'] = $values;
-      }
+      $values = $presenter->{$func}($model);
+    }
+    elseif ($this->hasAttribute('values'))
+    {
+      $values = $this->getAttribute('values');
+    }
+    elseif ($this->hasAttribute('value') && $this->hasAttribute('label'))
+    {
+      $values = [$this->getAttribute('value') => $this->getAttribute('label')];
     }
     else
     {
-      $this->attributes['values'] = [$this->getValue() => $this->getLabel()];
+      $values = [];
     }
-  }
 
-  public function getValues()
-  {
-    return array_get($this->attributes, 'values');
+    if ($values instanceof Collection)
+    {
+      $values = $values->toArray();
+    }
+
+    return $values;
   }
 
   public function getValue()

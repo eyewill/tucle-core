@@ -16,7 +16,7 @@ class FormSelect extends FormInput
     $name = $factory->getName();
     $value = $factory->getDefaultValue($this->presenter, $model);
     $attributes = $factory->getAttributes()->get();
-    $values = $factory->getValues();
+    $values = $factory->getValues($this->presenter, $model);
 
     if ($factory->getEmptyLabel())
     {

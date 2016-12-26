@@ -18,7 +18,6 @@ class SelectFactory extends Factory
 
   public function make(ModelPresenter $presenter)
   {
-    $this->setValues($presenter);
     return app()->make(FormSelect::class, [$presenter, $this]);
   }
 
@@ -29,20 +28,27 @@ class SelectFactory extends Factory
 
   public function setValues($presenter)
   {
-    $func = camel_case($this->getName()).'Values';
-    if (is_callable([$presenter, $func]))
-    {
-      $values = $presenter->{$func}();
-      if ($values instanceof Collection)
-      {
-        $values = $values->toArray();
-      }
-      $this->attributes['values'] = $values;
-    }
   }
 
-  public function getValues()
+  public function getValues(ModelPresenter $presenter, $model = null)
   {
-    return array_get($this->attributes, 'values');
+    $name = $this->getName();
+    $func = camel_case($name).'Values';
+
+    if (method_exists($presenter, $func))
+    {
+      $values = $presenter->{$func}($model);
+    }
+    else
+    {
+      $values = array_get($this->attributes, 'values');
+    }
+
+    if ($values instanceof Collection)
+    {
+      $values = $values->toArray();
+    }
+
+    return $values;
   }
 }

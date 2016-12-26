@@ -22,27 +22,22 @@ class FormCheckbox extends FormInput
 
   protected function renderComponent($model)
   {
-    $spec = $this->factory;
-    $name = $spec->getName();
-    $inputName =  $name;
-    $checkedValues = [];
+    $factory = $this->factory;
+    $inputName = $factory->getName();
+    $values = $factory->getValues($this->presenter, $model);
+    $checkedValues = $factory->getCheckedValues($this->presenter, $model);
 
-    if (is_null($model))
-    {
-      $checkedValues = $spec->getCheckedValues();
-    }
-
-    if ($spec->isMulti())
+    if ($factory->isMulti())
     {
       $inputName.= '[]';
     }
 
     $html = '';
     $html.= '<input type="hidden" name="'.$inputName.'" value="">';
-    if ($spec->getInline())
+    if ($factory->getInline())
     {
       $html.= '<div>';
-      foreach ($spec->getValues() as $value => $label)
+      foreach ($values as $value => $label)
       {
         $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<label class="checkbox-inline">';
@@ -54,7 +49,7 @@ class FormCheckbox extends FormInput
     }
     else
     {
-      foreach ($spec->getValues() as $value => $label)
+      foreach ($values as $value => $label)
       {
         $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<div class="checkbox">';

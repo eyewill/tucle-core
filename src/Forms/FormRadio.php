@@ -14,18 +14,14 @@ class FormRadio extends FormInput
   {
     $factory = $this->factory;
     $name = $factory->getName();
-    $checkedValues = [];
-
-    if (is_null($model))
-    {
-      $checkedValues = $factory->getCheckedValues();
-    }
+    $values = $factory->getValues($this->presenter, $model);
+    $checkedValues = $factory->getCheckedValues($this->presenter, $model);
 
     $html = '';
     if ($factory->getInline())
     {
       $html.= '<div>';
-      foreach ($factory->getValues() as $value => $label)
+      foreach ($values as $value => $label)
       {
         $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<label class="radio-inline">';
@@ -37,7 +33,7 @@ class FormRadio extends FormInput
     }
     else
     {
-      foreach ($factory->getValues() as $value => $label)
+      foreach ($values as $value => $label)
       {
         $checked = in_array($value, $checkedValues) ? true : null;
         $html.= '<div class="radio">';

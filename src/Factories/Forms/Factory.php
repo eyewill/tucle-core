@@ -108,4 +108,14 @@ abstract class Factory implements FactoryContracts
   {
     return (array_get($this->attributes, 'position') == $position);
   }
+
+  public function hasAttribute($name)
+  {
+    return array_has($this->attributes, $name);
+  }
+
+  public function getAttribute($name)
+  {
+    return array_get($this->attributes, $name);
+  }
 }
