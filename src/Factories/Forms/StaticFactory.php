@@ -7,6 +7,7 @@ class StaticFactory extends Factory
 {
   public function make(ModelPresenter $presenter)
   {
+    $this->setValue($presenter);
     return app()->make(FormStatic::class, [$presenter, $this]);
   }
 }
