@@ -34,7 +34,6 @@
   </tbody>
 
 </table>
-@if (config('app.debug'))
-<a href="#" data-action-clear="#entries">クリア</a>
-@endif
+
+<a href="#" data-action-clear="#entries">表示をリセット</a>
 
