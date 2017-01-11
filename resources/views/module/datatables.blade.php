@@ -56,6 +56,7 @@
             DataTablesFactory.toggle(dt);
           });
           $('#entries_wrapper .row:eq(0)').after($('.table-actions').show());
+          $('#entries_wrapper div[id$=_filter] input').prop('class', 'form-control input-md');
 
           $('[data-table-action=delete]').on('click', function (e) {
 
