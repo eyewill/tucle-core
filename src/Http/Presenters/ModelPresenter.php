@@ -68,11 +68,11 @@ class ModelPresenter extends Presenter
     foreach ($this->forms as $spec)
     {
       $exists = array_get($spec, 'exists', false);
-      $type = array_get($spec, 'type', 'text');
       if ($exists && is_null($model))
       {
         continue;
       }
+      $type = array_get($spec, 'type', 'text');
 
       $factory = app()->make('form.'.$type, [$spec]);
       if ($factory->isPosition($position))

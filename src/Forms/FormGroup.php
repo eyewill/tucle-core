@@ -43,6 +43,11 @@ class FormGroup extends FormInput
     $html.= '<div class="row">';
     foreach ($forms as $spec)
     {
+      $exists = array_get($spec, 'exists', false);
+      if ($exists && is_null($model))
+      {
+        continue;
+      }
       $type = array_get($spec, 'type', 'text');
       $class = array_get($spec, 'class', 'col-xs-12');
       $factory = app()->make('form.'.$type, [$spec]);
