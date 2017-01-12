@@ -70,6 +70,37 @@ class FormInput
     return $html;
   }
 
+  protected function addon($source)
+  {
+    $html = '';
+    $prefix = $this->factory->getAttribute('prefix');
+    $suffix = $this->factory->getAttribute('suffix');
+    if (!empty($prefix) || !empty($suffix))
+    {
+      $html.= '<div class="input-group">';
+      if (!empty($prefix))
+      {
+        $html.= '<span class="input-group-addon">';
+        $html.= $prefix;
+        $html.= '</span>';
+      }
+      $html.= $source;
+      if (!empty($suffix))
+      {
+        $html.= '<span class="input-group-addon">';
+        $html.= $suffix;
+        $html.= '</span>';
+      }
+      $html.= '</div>';
+    }
+    else
+    {
+      $html.= $source;
+    }
+
+    return $html;
+  }
+
   protected function renderComponent($model)
   {
     $factory = $this->factory;
@@ -77,7 +108,9 @@ class FormInput
     $value = $factory->getDefaultValue($this->presenter, $model);
     $attributes = $factory->getAttributes()->get();
 
-    return $this->presenter->getForm()->text($name, $value, $attributes)->toHtml();
+    $component = $this->presenter->getForm()->text($name, $value, $attributes)->toHtml();
+
+    return $this->addon($component);
   }
 
   /**

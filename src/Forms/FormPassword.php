@@ -7,6 +7,8 @@ class FormPassword extends FormInput
     $spec = $this->factory;
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
-    return $this->presenter->getForm()->password($name, $attributes)->toHtml();
+    $component = $this->presenter->getForm()->password($name, $attributes)->toHtml();
+
+    return $this->addon($component);
   }
 }

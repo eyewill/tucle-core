@@ -3,7 +3,7 @@
 use Eyewill\TucleCore\Forms\FormDate;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
-class DateFactory extends Factory
+class DateFactory extends TextFactory
 {
   public function __construct($attributes = [], $mergeAttributes = [])
   {

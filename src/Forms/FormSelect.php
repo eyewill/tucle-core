@@ -23,6 +23,8 @@ class FormSelect extends FormInput
       $values = ['' => $factory->getEmptyLabel()]+$values;
     }
 
-    return $this->presenter->getForm()->select($name, $values, $value, $attributes)->toHtml();
+    $component = $this->presenter->getForm()->select($name, $values, $value, $attributes)->toHtml();
+
+    return $this->addon($component);
   }
 }
