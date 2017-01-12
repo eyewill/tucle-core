@@ -68,15 +68,17 @@
           headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
           data: JSON.stringify(data)
         }).done(function (data) {
-          $.notify({
-            icon: 'fa fa-success',
-            message: data.message
-          }, {
-            onShown: function () {
-              if (reload)
-                window.location.reload();
-            }
-          });
+          if (reload)
+            window.location.reload();
+//          $.notify({
+//            icon: 'fa fa-success',
+//            message: data.message
+//          }, {
+//            onShown: function () {
+//              if (reload)
+//                window.location.reload();
+//            }
+//          });
         }).fail(function () {
           $.notify({
             icon: 'fa fa-times',
