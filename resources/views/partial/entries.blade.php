@@ -25,7 +25,7 @@
       @if ($presenter->hasRowActions())
       <td>
         <div class="btn-actions">
-          @include($presenter->view('datatables.actions.rows'))
+          @include($presenter->view('partial.datatables.actions.rows'))
         </div>
       </td>
       @endif

@@ -17,7 +17,7 @@
       <h1 class="form-title">新規作成</h1>
     </div>
     <div class="col-md-6">
-      @include($presenter->view('actions.create'))
+      @include($presenter->view('partial.actions.create'))
     </div>
   </div>
   @show

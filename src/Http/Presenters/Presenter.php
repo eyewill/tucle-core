@@ -1,5 +1,6 @@
 <?php namespace Eyewill\TucleCore\Http\Presenters;
 
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 
@@ -9,22 +10,24 @@ class Presenter
   protected $breadCrumbs = [];
   protected $tableColumns = [];
   protected $views = [];
+  protected $viewBase = '';
   protected $showCheckbox = false;
   /** @var RouteManager */
   protected $router;
-
   protected $defaultViews = [
-    'actions' => [
-      'index' => 'tucle::partial.actions.index',
-      'create' => 'tucle::partial.actions.create',
-      'edit' => 'tucle::partial.actions.edit',
-      'show' => 'tucle::partial.actions.show',
-    ],
-    'datatables' => [
-      'make' => 'tucle::partial.datatables.make',
+    'partial' => [
       'actions' => [
-        'entries' => 'tucle::partial.datatables.actions.entries',
-        'rows' => 'tucle::partial.datatables.actions.rows',
+        'index' => 'tucle::partial.actions.index',
+        'create' => 'tucle::partial.actions.create',
+        'edit' => 'tucle::partial.actions.edit',
+        'show' => 'tucle::partial.actions.show',
+      ],
+      'datatables' => [
+        'make' => 'tucle::partial.datatables.make',
+        'actions' => [
+          'entries' => 'tucle::partial.datatables.actions.entries',
+          'rows' => 'tucle::partial.datatables.actions.rows',
+        ],
       ],
     ],
   ];
@@ -47,11 +50,23 @@ class Presenter
 
   public function view($view)
   {
-    if (!$this->views instanceof Collection)
+    $customView = $view;
+    if (!empty($this->viewBase))
     {
-      $this->views = collect(array_replace_recursive($this->defaultViews, $this->views));
+      $customView = $this->viewBase.$view;
     }
-    return array_get($this->views, $view);
+
+    if (view()->exists($customView))
+    {
+      return $customView;
+    }
+
+    if (array_has($this->defaultViews, $view))
+    {
+      return array_get($this->defaultViews, $view);
+    }
+
+    throw new Exception('"'.$view.'" view file not found.');
   }
 
   public function showCheckbox()

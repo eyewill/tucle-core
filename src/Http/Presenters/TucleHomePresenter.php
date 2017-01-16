@@ -4,6 +4,8 @@ use Illuminate\Support\HtmlString;
 
 class TucleHomePresenter extends Presenter
 {
+  protected $viewBase = 'tucle::home.';
+
   protected $tableColumns = [
     [
       'label' => '機能',
@@ -11,13 +13,15 @@ class TucleHomePresenter extends Presenter
   ];
 
   protected $views = [
-    'actions' => [
-      'index' => 'tucle::home.partial.actions.index',
-    ],
-    'datatables' => [
-      'make' => 'tucle::home.partial.datatables.make',
+    'partial' => [
       'actions' => [
-        'rows' => 'tucle::home.partial.datatables.actions.rows',
+        'index' => 'tucle::home.partial.actions.index',
+      ],
+      'datatables' => [
+        'make' => 'tucle::home.partial.datatables.make',
+        'actions' => [
+          'rows' => 'tucle::home.partial.datatables.actions.rows',
+        ],
       ],
     ],
   ];

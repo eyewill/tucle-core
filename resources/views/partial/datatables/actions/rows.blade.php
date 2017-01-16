@@ -21,7 +21,8 @@
     <span class="hidden-xs">サイト</span>
   </a>
 @endif
-<a href="{{ $presenter->route('edit', [$entry]) }}" class="btn btn-primary btn-sm">
+
+<a href="{{ $presenter->route('edit', $entry) }}" class="btn btn-primary btn-sm">
   <i class="fa fa-edit"></i>
   <span class="hidden-xs">編集</span>
 </a>

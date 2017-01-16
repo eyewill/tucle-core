@@ -16,7 +16,7 @@
         <h1 class="form-title">{{ $presenter->getPageTitle() }}</h1>
       </div>
       <div class="col-md-6">
-        @include($presenter->view('actions.index'))
+        @include($presenter->view('partial.actions.index'))
       </div>
     </div>
   </div>
@@ -26,7 +26,7 @@
     <div class="table-actions" style="display:none">
       <div class="row">
         <div class="col-sm-12">
-          @include($presenter->view('datatables.actions.entries'))
+          @include($presenter->view('partial.datatables.actions.entries'))
         </div>
       </div>
     </div>

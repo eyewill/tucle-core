@@ -111,6 +111,6 @@
     };
   </script>
 
-  @include($presenter->view('datatables.make'))
+  @include($presenter->view('partial.datatables.make'))
 
 @endsection
