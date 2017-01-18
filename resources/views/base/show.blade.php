@@ -4,7 +4,7 @@
 <div class="container">
 
   @section('breadcrumbs')
-  {{ $presenter->renderBreadCrumbs(['label' => $presenter->getPageTitle($model)]) }}
+  {{ $presenter->renderBreadCrumbs('show') }}
   @show
 
   @section('page-header')

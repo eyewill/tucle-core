@@ -8,7 +8,7 @@
 <div class="container">
 
   @section('breadcrumbs')
-  {{ $presenter->renderBreadCrumbs(['label' => '新規作成']) }}
+    {{ $presenter->renderBreadCrumbs('create') }}
   @show
 
   @section('page-header')

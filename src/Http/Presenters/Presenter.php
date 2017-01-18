@@ -89,18 +89,16 @@ class Presenter
     return $this->router->route($route, $parameters);
   }
 
-  public function renderBreadCrumbs($breadCrumb = null)
+  protected function getBreadCrumbs($name, $request)
   {
-    $breadCrumbs = $this->breadCrumbs;
-    if (func_num_args() > 1)
-    {
-      $breadCrumbs = array_merge($breadCrumbs, func_get_args());
-    }
-    elseif (!is_null($breadCrumb))
-    {
-      $breadCrumbs[] = $breadCrumb;
-    }
+    return [];
+  }
 
+  public function renderBreadCrumbs($name, $request = null)
+  {
+    if (is_null($request)) $request = request();
+    $breadCrumbs = $this->breadCrumbs;
+    $breadCrumbs = array_merge($breadCrumbs, $this->getBreadCrumbs($name, $request));
     $html = '';
     $html.= '<ol class="breadcrumb">';
     foreach ($breadCrumbs as $crumb)

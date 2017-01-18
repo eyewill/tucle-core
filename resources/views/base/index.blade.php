@@ -6,7 +6,7 @@
 <div class="container">
 
   @section('breadcrumbs')
-  {{ $presenter->renderBreadCrumbs(['label' => '一覧']) }}
+  {{ $presenter->renderBreadCrumbs('index') }}
   @show
 
   @section('page-header')
