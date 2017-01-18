@@ -66,7 +66,7 @@ class Presenter
       return array_get($this->defaultViews, $view);
     }
 
-    throw new Exception('"'.$view.'" view file not found.');
+    throw new Exception('"'.$customView.'" view file not found.');
   }
 
   public function showCheckbox()
