@@ -1,8 +1,7 @@
 <?php namespace Eyewill\TucleCore\Http\Presenters;
 
 use Exception;
-use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
+use Illuminate\Http\Request;
 
 class Presenter
 {
@@ -14,6 +13,7 @@ class Presenter
   protected $showCheckbox = false;
   /** @var RouteManager */
   protected $router;
+  protected $request;
   protected $defaultViews = [
     'partial' => [
       'actions' => [
@@ -32,15 +32,12 @@ class Presenter
     ],
   ];
 
-  public function __construct(RouteManager $router)
+  public function __construct(RouteManager $router, Request $request)
   {
-    $router->setRoutes($this->routes);
     $this->router = $router;
+    $this->request = $request;
 
-    $this->breadCrumbs = array_merge([[
-      'label' => config('tucle.brand', 'TUCLE5'),
-      'url' => '/',
-    ]], $this->breadCrumbs);
+    $this->router->setRoutes($this->routes);
   }
 
   public function tableColumns()
@@ -94,26 +91,16 @@ class Presenter
     return [];
   }
 
-  public function renderBreadCrumbs($name, $request = null)
+  public function renderBreadCrumbs($name)
   {
-    if (is_null($request)) $request = request();
-    $breadCrumbs = $this->breadCrumbs;
-    $breadCrumbs = array_merge($breadCrumbs, $this->getBreadCrumbs($name, $request));
-    $html = '';
-    $html.= '<ol class="breadcrumb">';
-    foreach ($breadCrumbs as $crumb)
-    {
-      $url = false;
-      if (array_has($crumb, 'url')) $url = $crumb['url'];
-      elseif (array_has($crumb, 'route')) $url = $this->route($crumb['route']);
-      if ($url)
-        $html.= '<li><a href="'.$url.'">'.$crumb['label'].'</a></li>';
-      else
-        $html.= '<li>'.$crumb['label'].'</li>';
-    }
-    $html.= '</ol>';
+    $manager = new BreadCrumbManager();
 
-    return new HtmlString($html);
+    $breadCrumbs = array_merge(
+      $this->breadCrumbs,
+      $this->getBreadCrumbs($name, $this->request)
+    );
+
+    return $manager->render($breadCrumbs, $this->router);
   }
 
   public function getRouter()

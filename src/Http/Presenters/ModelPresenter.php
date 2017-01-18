@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Codesleeve\Stapler\Attachment;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
+use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
 
 class ModelPresenter extends Presenter
@@ -16,12 +17,12 @@ class ModelPresenter extends Presenter
   protected $showCheckbox = true;
   protected $dateFormat = [];
 
-  public function __construct(RouteManager $router, FormBuilder $form, HtmlBuilder $html)
+  public function __construct(RouteManager $router, Request $request, FormBuilder $form, HtmlBuilder $html)
   {
     $this->form = $form;
     $this->html = $html;
 
-    parent::__construct($router);
+    parent::__construct($router, $request);
   }
 
   public function date($model, $name)
