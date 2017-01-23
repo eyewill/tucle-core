@@ -69,23 +69,25 @@
         },
         stateLoadParams: function (settings, data) {
           $('[data-filter]').each(function() {
-            var type = $(this).prop('type');
+            var filter = $(this);
+            var type = filter.prop('type');
             if (this.tagName == 'SELECT') {
               type = 'select';
             }
-            var name = $(this).prop('name');
+            var name = filter.prop('name');
             $.each(data, function (index, value) {
               if (index == name) {
                 if (type == 'checkbox') {
-                  $(this).prop('checked', value);
+                  filter.prop('checked', value);
                 } else if (type == 'radio') {
-                  $(this).filter(':checked').val(value);
+                  filter.filter(':checked').val(value);
                 } else {
-                  $(this).val(value);
+                  filter.val(value);
                 }
               }
             });
           });
+          return true;
         },
         initComplete: function(settings, json) {
           var dt = this.api();
@@ -113,11 +115,16 @@
               var value = false;
               if (type == 'checkbox') {
                 value = $(this).prop('checked');
+                if (value)
+                  $(this).closest('label').text();
               } else if (type == 'radio') {
-                value = $(this).filter(':checked').val();
+                value = $(this).filter(':checked');
+                if (value)
+                  $(this).closest('label').text();
               } else {
                 value = $(this).val();
-                if (value) label = value;
+                if (value)
+                  label = $(this).find(':selected').text();
               }
               if (value) {
                 trigger.removeClass('filter-none').addClass('btn-primary');
@@ -125,6 +132,32 @@
                 trigger.addClass('filter-none').removeClass('btn-primary');
               }
               trigger.text(label);
+
+              $('#filter_clear').on('click', function () {
+                $('[data-filter]').each(function() {
+                  if (type == 'checkbox') {
+                    value = $(this).prop('checked', false);
+                  } else if (type == 'radio') {
+                    value = $(this).val([]);
+                  } else {
+                    value = $(this).val('');
+                  }
+                  $(this).trigger('change');
+                });
+              });
+
+              var isFiltering = false;
+              $('[data-filter]').each(function() {
+                if (type == 'checkbox') {
+                  value = $(this).prop('checked');
+                } else if (type == 'radio') {
+                  value = $(this).filter(':checked');
+                } else {
+                  value = $(this).val();
+                }
+                if (value) isFiltering = true;
+              });
+               $('#filter_clear').prop('disabled', !isFiltering);
 
               dt.draw();
             });
@@ -150,6 +183,10 @@
               }
               return true;
             });
+          });
+
+          $('[data-filter]').each(function() {
+            $(this).trigger('change');
           });
 
           $('[data-table-action=delete]').on('click', function (e) {
