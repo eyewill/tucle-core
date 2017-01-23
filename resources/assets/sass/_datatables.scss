@@ -18,3 +18,10 @@ table.dataTable.dt-checkboxes-select tbody tr .dt-checkboxes {
 .table-actions {
   margin-top: 8px;
 }
+
+.table-filters .filter-none {
+  cursor: pointer;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  box-shadow: none;
+}

@@ -24,6 +24,7 @@ class Presenter
       ],
       'datatables' => [
         'make' => 'tucle::partial.datatables.make',
+        'filters' => 'tucle::partial.datatables.filters',
         'actions' => [
           'entries' => 'tucle::partial.datatables.actions.entries',
           'rows' => 'tucle::partial.datatables.actions.rows',

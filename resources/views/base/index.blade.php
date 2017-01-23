@@ -36,6 +36,8 @@
     ])
   @show
 
+  @include($presenter->view('partial.datatables.filters'))
+
 </div>
 @endsection
 
