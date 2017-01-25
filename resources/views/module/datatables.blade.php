@@ -60,7 +60,7 @@
             var name = $(this).prop('name');
             if (type == 'checkbox') {
               if (typeof(value[name]) == 'undefined') {
-                value[name] = [];
+                value[name] = {};
               }
               value[name][$(this).val()] = $(this).prop('checked');
             } else if (type == 'radio') {
