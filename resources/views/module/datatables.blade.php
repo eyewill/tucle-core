@@ -212,7 +212,7 @@
                     return false;
                 }
               } else if (type == 'radio') {
-                if (filter.is(':checked') && data[col] != filter.val())
+                if (filter.is(':checked') && filter.val() != '' && data[col] != filter.val())
                   return false;
               } else {
                 if (filter.val() && data[col] != filter.val())
@@ -220,9 +220,7 @@
               }
               return true;
             });
-          });
 
-          $('[data-filter]').each(function() {
             $(this).trigger('change');
           });
 
