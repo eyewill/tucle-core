@@ -20,6 +20,7 @@ class FilterRadio extends FilterInput
     $attr = array_merge([
       'data-filter' => $this->presenter->filterIndex($factory->getAttributes()),
       'data-trigger' => '#'.$this->presenter->filterTriggerId($factory->getAttributes()),
+      'data-mode' => $this->presenter->filterMode($factory->getAttributes()),
     ], $attr);
 
     $html = '';

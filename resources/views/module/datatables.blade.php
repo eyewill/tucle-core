@@ -196,6 +196,7 @@
             var filter = $(this);
             var col = filter.data('filter');
             var type = filter.prop('type');
+            var mode = filter.data('mode');
             if (filter.get(0).tagName == 'SELECT') {
               type = 'select';
             }
@@ -205,18 +206,38 @@
                 if (checkboxes.length > 0) {
                   var matchedSomeone = false;
                   for (var i = 0; i < checkboxes.length; i++) {
-                    if (data[col] == filter.val())
-                      matchedSomeone = true;
+                    if (mode == 'like') {
+                      if (data[col].indexOf(filter.val()) !== -1)
+                        matchedSomeone = true;
+                    } else {
+                      if (data[col] == filter.val())
+                        matchedSomeone = true;
+                    }
                   }
                   if (!matchedSomeone)
                     return false;
                 }
               } else if (type == 'radio') {
-                if (filter.is(':checked') && filter.val() != '' && data[col] != filter.val())
-                  return false;
+                if (filter.is(':checked') && filter.val() != '')
+                {
+                  if (mode == 'like') {
+                    if (data[col].indexOf(filter.val()) === -1)
+                      return false;
+                  } else {
+                    if (data[col] != filter.val())
+                      return false;
+                  }
+                }
               } else {
-                if (filter.val() && data[col] != filter.val())
-                  return false;
+                if (filter.val()) {
+                  if (mode == 'like') {
+                    if (data[col].indexOf(filter.val()) === -1)
+                      return false;
+                  } else {
+                    if (data[col] != filter.val())
+                      return false;
+                  }
+                }
               }
               return true;
             });

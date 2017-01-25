@@ -58,6 +58,11 @@ class ModelPresenter extends Presenter
     return array_get($spec, 'index');
   }
 
+  public function filterMode($spec)
+  {
+    return array_get($spec, 'mode');
+  }
+
   public function renderFilter($spec)
   {
     $html = '';
