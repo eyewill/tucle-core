@@ -59,9 +59,14 @@
             }
             var name = $(this).prop('name');
             if (type == 'checkbox') {
-              value[name] = $(this).prop('checked');
+              if (typeof(value[name]) == 'undefined') {
+                value[name] = [];
+              }
+              value[name][$(this).val()] = $(this).prop('checked');
             } else if (type == 'radio') {
-              value[name] = $(this).filter(':checked').val();
+              if ($(this).is(':checked')) {
+                value[name] = $(this).val();
+              }
             } else {
               value[name] = $(this).val();
             }
@@ -78,9 +83,9 @@
             $.each(data, function (index, value) {
               if (index == name) {
                 if (type == 'checkbox') {
-                  filter.prop('checked', value);
+                  filter.prop('checked', value[filter.val()]);
                 } else if (type == 'radio') {
-                  filter.filter(':checked').val(value);
+                  filter.val([value]);
                 } else {
                   filter.val(value);
                 }
@@ -109,19 +114,29 @@
             }
             var trigger = $($(this).data('trigger'));
             var modal = $(this).closest('.modal');
-            $(this).on('change', function (e) {
+            var filterChangeHandler = function (e) {
+              $(this).off('change', filterChangeHandler);
               var label = trigger.data('label');
-              modal.modal('hide');
               var value = false;
               if (type == 'checkbox') {
-                value = $(this).prop('checked');
-                if (value)
-                  $(this).closest('label').text();
+                var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
+                var labels = [];
+                var values = [];
+                for(var i=0; i< checkboxes.length; i++) {
+                  labels.push($(checkboxes[i]).closest('label').text());
+                  values.push($(checkboxes[i]).val());
+                }
+                if (checkboxes.length > 0) {
+                  label = labels.join(',');
+                  value = values.join(',');
+                }
               } else if (type == 'radio') {
-                value = $(this).filter(':checked');
+                modal.modal('hide');
+                value = $('[name="'+$(this).prop('name')+'"]:checked').val();
                 if (value)
-                  $(this).closest('label').text();
+                  label = $('[name="'+$(this).prop('name')+'"]:checked').closest('label').text();
               } else {
+                modal.modal('hide');
                 value = $(this).val();
                 if (value)
                   label = $(this).find(':selected').text();
@@ -133,23 +148,15 @@
               }
               trigger.text(label);
 
-              $('#filter_clear').on('click', function () {
-                $('[data-filter]').each(function() {
-                  if (type == 'checkbox') {
-                    value = $(this).prop('checked', false);
-                  } else if (type == 'radio') {
-                    value = $(this).val([]);
-                  } else {
-                    value = $(this).val('');
-                  }
-                  $(this).trigger('change');
-                });
-              });
-
               var isFiltering = false;
               $('[data-filter]').each(function() {
+                var type = $(this).prop('type');
+                if (this.tagName == 'SELECT') {
+                  type = 'select';
+                }
                 if (type == 'checkbox') {
-                  value = $(this).prop('checked');
+                  var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
+                  value = (checkboxes.length > 0);
                 } else if (type == 'radio') {
                   value = $(this).filter(':checked');
                 } else {
@@ -159,9 +166,31 @@
               });
                $('#filter_clear').prop('disabled', !isFiltering);
 
+              $(this).on('change', filterChangeHandler);
+
               dt.draw();
+            };
+
+            $(this).on('change', filterChangeHandler);
+          });
+
+          $('#filter_clear').on('click', function () {
+            $('[data-filter]').each(function() {
+              var type = $(this).prop('type');
+              if (this.tagName == 'SELECT') {
+                type = 'select';
+              }
+              if (type == 'checkbox') {
+                $(this).prop('checked', false);
+              } else if (type == 'radio') {
+                $(this).prop('checked', false);
+              } else {
+                $(this).val('');
+              }
+              $(this).trigger('change');
             });
           });
+
 
           $('[data-filter]').each(function() {
             var filter = $(this);
@@ -172,10 +201,18 @@
             }
             $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
               if (type == 'checkbox') {
-                if (filter.prop('checked') && data[col] != filter.val())
-                  return false;
+                var checkboxes = $('[name="'+filter.prop('name')+'"]:checked');
+                if (checkboxes.length > 0) {
+                  var matchedSomeone = false;
+                  for (var i = 0; i < checkboxes.length; i++) {
+                    if (data[col] == filter.val())
+                      matchedSomeone = true;
+                  }
+                  if (!matchedSomeone)
+                    return false;
+                }
               } else if (type == 'radio') {
-                if (filter.filter(';checked').length > 0 && data[col] != filter.filter(':checked').val())
+                if (filter.is(':checked') && data[col] != filter.val())
                   return false;
               } else {
                 if (filter.val() && data[col] != filter.val())

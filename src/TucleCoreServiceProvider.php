@@ -56,6 +56,12 @@ class TucleCoreServiceProvider extends ServiceProvider
     'static' => StaticFactory::class,
   ];
 
+  protected $filterFactories = [
+    'select' => \Eyewill\TucleCore\Factories\Filters\SelectFactory::class,
+    'checkbox' => \Eyewill\TucleCore\Factories\Filters\CheckboxFactory::class,
+    'radio' => \Eyewill\TucleCore\Factories\Filters\RadioFactory::class,
+  ];
+  
   /**
    * Bootstrap the application services.
    *
@@ -120,6 +126,10 @@ class TucleCoreServiceProvider extends ServiceProvider
     foreach ($this->formFactories as $type => $concrete)
     {
       $this->app->bind('form.'.$type, $concrete);
+    }
+    foreach ($this->filterFactories as $type => $concrete)
+    {
+      $this->app->bind('filter.'.$type, $concrete);
     }
 
     $this->commands($this->commands);

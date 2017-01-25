@@ -16,6 +16,7 @@ class ModelPresenter extends Presenter
   protected $showColumns = [];
   protected $showCheckbox = true;
   protected $dateFormat = [];
+  protected $filters = [];
 
   public function __construct(RouteManager $router, Request $request, FormBuilder $form, HtmlBuilder $html)
   {
@@ -23,6 +24,50 @@ class ModelPresenter extends Presenter
     $this->html = $html;
 
     parent::__construct($router, $request);
+  }
+
+  public function getFilters()
+  {
+    return $this->filters;
+  }
+
+  public function hasFilters()
+  {
+    return !empty($this->filters);
+  }
+
+  public function filterTriggerId($spec)
+  {
+    $name = array_get($spec, 'name');
+    return $name.'_trigger';
+  }
+
+  public function filterModalId($spec)
+  {
+    $name = array_get($spec, 'name');
+    return $name.'_modal';
+  }
+
+  public function filterLabel($spec)
+  {
+    return array_get($spec, 'label');
+  }
+
+  public function filterIndex($spec)
+  {
+    return array_get($spec, 'index');
+  }
+
+  public function renderFilter($spec)
+  {
+    $html = '';
+
+    $type = array_get($spec, 'type', 'select');
+    $factory = app()->make('filter.'.$type, [$spec]);
+    $filter = $factory->make($this);
+    $html.= $filter->render();
+
+    return new HtmlString($html);
   }
 
   public function date($model, $name)
