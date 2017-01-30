@@ -150,7 +150,7 @@ class ModelPresenter extends Presenter
     {
       $type = array_get($column, 'type');
       $links = array_get($column, 'links', false);
-      $value = $model->{$name};
+      $value = object_get($model, $name);
 
       if ($type == 'date')
       {
