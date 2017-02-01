@@ -9,7 +9,6 @@ use Illuminate\Support\HtmlString;
 
 class ModelPresenter extends Presenter
 {
-  protected $pageTitle;
   protected $form;
   protected $html;
   protected $forms = [];

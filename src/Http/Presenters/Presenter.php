@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 class Presenter
 {
+  protected $pageTitle;
   protected $routes = [];
   protected $breadCrumbs = [];
   protected $tableColumns = [];
@@ -40,6 +41,11 @@ class Presenter
     $this->request = $request;
 
     $this->router->setRoutes($this->routes);
+  }
+
+  public function getPageTitle()
+  {
+    return $this->pageTitle;
   }
 
   public function tableColumns()
