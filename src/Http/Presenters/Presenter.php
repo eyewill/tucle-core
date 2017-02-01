@@ -32,6 +32,7 @@ class Presenter
       ],
     ],
   ];
+  protected $hasRowActions = true;
 
   public function __construct(RouteManager $router, Request $request)
   {
@@ -74,7 +75,7 @@ class Presenter
 
   public function hasRowActions()
   {
-    return true;
+    return $this->hasRowActions;
   }
 
   function routeName($action = null)
