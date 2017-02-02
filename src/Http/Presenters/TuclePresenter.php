@@ -1,5 +1,6 @@
 <?php namespace Eyewill\TucleCore\Http\Presenters;
 
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Support\HtmlString;
 
 class TuclePresenter
@@ -13,8 +14,10 @@ class TuclePresenter
       if (is_array($module))
       {
         $name = array_get($module, 'name');
-        $role = array_get($module, 'role');
-        if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->allows($role))
+        $allows = array_get($module, 'allows');
+        if (is_array($allows))
+          $allows = implode(',', $allows);
+        if (app(Gate::class)->allows($allows))
         {
           $html.= $this->renderMenu($name);
         }

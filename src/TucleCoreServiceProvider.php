@@ -17,6 +17,7 @@ use Eyewill\TucleCore\Factories\Forms\SelectFactory;
 use Eyewill\TucleCore\Factories\Forms\SeparatorFactory;
 use Eyewill\TucleCore\Factories\Forms\TextFactory;
 use Eyewill\TucleCore\Factories\Forms\TextareaFactory;
+use Eyewill\TucleCore\Providers\AuthServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class TucleCoreServiceProvider extends ServiceProvider
@@ -30,6 +31,7 @@ class TucleCoreServiceProvider extends ServiceProvider
   protected $providers = [
     'Collective\Html\HtmlServiceProvider',
     'Codesleeve\LaravelStapler\Providers\L5ServiceProvider',
+    AuthServiceProvider::class,
   ];
 
   protected $providersLocal = [
