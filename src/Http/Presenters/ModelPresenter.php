@@ -243,11 +243,6 @@ class ModelPresenter extends Presenter
     return $attributeNames;
   }
 
-  public function url()
-  {
-    return '#';
-  }
-
   public function checkboxId($model)
   {
     return $model->id;
