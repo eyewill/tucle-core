@@ -1,6 +1,8 @@
 <?php namespace Eyewill\TucleCore;
 
 use Eyewill\TucleCore\Contracts\Initializer;
+use Eyewill\TucleCore\Contracts\ModuleManager;
+use Eyewill\TucleCore\Contracts\NavigationManager;
 use Eyewill\TucleCore\Factories\Forms\PasswordFactory;
 use Eyewill\TucleCore\Factories\Forms\StaticFactory;
 use Eyewill\TucleCore\Factories\InitializerFactory;
@@ -17,6 +19,7 @@ use Eyewill\TucleCore\Factories\Forms\SelectFactory;
 use Eyewill\TucleCore\Factories\Forms\SeparatorFactory;
 use Eyewill\TucleCore\Factories\Forms\TextFactory;
 use Eyewill\TucleCore\Factories\Forms\TextareaFactory;
+use Eyewill\TucleCore\Factories\ModuleManagerFactory;
 use Eyewill\TucleCore\Providers\AuthServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -125,6 +128,12 @@ class TucleCoreServiceProvider extends ServiceProvider
   public function register()
   {
     $this->app->singleton(Initializer::class, InitializerFactory::class);
+    $this->app->singleton(ModuleManager::class, function () {
+      return new \Eyewill\TucleCore\ModuleManager(config('tucle.modules', []));
+    });
+    $this->app->singleton(NavigationManager::class, function () {
+      return new \Eyewill\TucleCore\NavigationManager(config('tucle.navigation', []));
+    });
     foreach ($this->formFactories as $type => $concrete)
     {
       $this->app->bind('form.'.$type, $concrete);

@@ -212,6 +212,8 @@ Route::get('/', function (TucleHomePresenter \$presenter) {
   \$entries = [];
   foreach (\$modules as \$module)
   {
+    if (is_array(\$module))
+      \$module = \$module['name'];
     \$entries[] = app('App\\\\Http\\\\Presenters\\\\'.studly_case(\$module).'Presenter');
   }
 
