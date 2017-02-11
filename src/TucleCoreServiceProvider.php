@@ -32,14 +32,14 @@ class TucleCoreServiceProvider extends ServiceProvider
   ];
 
   protected $providers = [
+    'Barryvdh\Debugbar\ServiceProvider',
+    'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
     'Collective\Html\HtmlServiceProvider',
     'Codesleeve\LaravelStapler\Providers\L5ServiceProvider',
     AuthServiceProvider::class,
   ];
 
   protected $providersLocal = [
-    'Barryvdh\Debugbar\ServiceProvider',
-    'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
     'Primalbase\Migrate\MigrateServiceProvider',
   ];
 
