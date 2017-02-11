@@ -53,8 +53,10 @@
       <ul class="nav navbar-nav navbar-right">
         <!-- Authentication Links -->
         @if (Auth::guest())
+{{--
           <li><a href="{{ url('login') }}">Login</a></li>
           <li><a href="{{ url('register') }}">Register</a></li>
+--}}
         @else
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -78,6 +80,12 @@
             </ul>
           </li>
         @endif
+        <li>
+          <a href="{{ config('tucle.front_url') }}" target="_blank">
+            <i class="fa fa-external-link"></i>
+            ウェブサイト
+          </a>
+        </li>
       </ul>
     </div>
   </div>
