@@ -61,8 +61,8 @@ trait Expirable
 
   public function scopeCandidates($query)
   {
-    $query->whereNotNull('published_at');
-    $query->where('published_at', '>', DB::raw('NOW()'));
+    $query->whereNotNull($this->getTable().'.published_at');
+    $query->where($this->getTable().'.published_at', '>', DB::raw('NOW()'));
   }
 
   /**
@@ -88,12 +88,12 @@ trait Expirable
   public function scopePublished($query)
   {
     $query->where(function ($query) {
-      $query->whereNotNull('published_at');
+      $query->whereNotNull($this->getTable().'.published_at');
       $query->where(function ($query) {
-        $query->where('published_at', '<=', DB::raw('NOW()'));
+        $query->where($this->getTable().'.published_at', '<=', DB::raw('NOW()'));
         $query->where(function ($query) {
-          $query->orWhereNull('terminated_at');
-          $query->orWhere('terminated_at', '>', DB::raw('NOW()'));
+          $query->orWhereNull($this->getTable().'.terminated_at');
+          $query->orWhere($this->getTable().'.terminated_at', '>', DB::raw('NOW()'));
         });
       });
     });
@@ -132,6 +132,6 @@ trait Expirable
 
   public function scopeTerminated($query)
   {
-    $query->where('terminated_at', '<', DB::raw('NOW()'));
+    $query->where($this->getTable().'.terminated_at', '<', DB::raw('NOW()'));
   }
 }
