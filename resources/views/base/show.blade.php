@@ -1,4 +1,4 @@
-@extends('tucle::base.layout')
+@extends('layout')
 
 @section('content')
 <div class="container">
