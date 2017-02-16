@@ -446,6 +446,7 @@ return [
     Eyewill\TucleCore\TucleCoreServiceProvider::class,
     
     Primalbase\Migrate\MigrateServiceProvider::class,
+    Primalbase\ViewBuilder\ViewBuilderServiceProvider::class,
   ],
 
   /*
