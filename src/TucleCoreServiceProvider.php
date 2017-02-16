@@ -19,8 +19,6 @@ use Eyewill\TucleCore\Factories\Forms\SelectFactory;
 use Eyewill\TucleCore\Factories\Forms\SeparatorFactory;
 use Eyewill\TucleCore\Factories\Forms\TextFactory;
 use Eyewill\TucleCore\Factories\Forms\TextareaFactory;
-use Eyewill\TucleCore\Factories\ModuleManagerFactory;
-use Eyewill\TucleCore\Providers\AuthServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class TucleCoreServiceProvider extends ServiceProvider
@@ -29,18 +27,6 @@ class TucleCoreServiceProvider extends ServiceProvider
 
   protected $commands = [
     'Eyewill\TucleCore\Console\Commands\TucleInit',
-  ];
-
-  protected $providers = [
-    'Barryvdh\Debugbar\ServiceProvider',
-    'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-    'Collective\Html\HtmlServiceProvider',
-    'Codesleeve\LaravelStapler\Providers\L5ServiceProvider',
-    AuthServiceProvider::class,
-  ];
-
-  protected $providersLocal = [
-    'Primalbase\Migrate\MigrateServiceProvider',
   ];
 
   protected $formFactories = [
@@ -78,46 +64,9 @@ class TucleCoreServiceProvider extends ServiceProvider
       __DIR__ . '/../resources/views',
     ]);
 
-    foreach ($this->providers as $provider)
-    {
-      if (class_exists($provider))
-      {
-        $this->app->register($provider);
-      }
-    }
-
-    if ($this->app->environment('local'))
-    {
-      foreach ($this->providersLocal as $provider)
-      {
-        if (class_exists($provider))
-        {
-          $this->app->register($provider);
-        }
-      }
-    }
-
     $this->app['view']->share('tucle',
       $this->app->make('Eyewill\TucleCore\Http\Presenters\TuclePresenter')
     );
-
-    if (!$this->app->routesAreCached())
-    {
-      $this->app['router']->group([
-        'middleware' => 'web',
-        'namespace' => 'App\Http\Controllers',
-      ], function ($router) {
-        $router->auth();
-      });
-      $this->app['router']->group([
-        'middleware' => ['web', 'auth'],
-      ], function ($router) {
-        foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
-        {
-          include $file;
-        }
-      });
-    }
   }
 
   /**
