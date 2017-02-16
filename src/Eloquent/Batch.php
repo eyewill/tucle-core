@@ -18,44 +18,51 @@ trait Batch
   {
     $completes = 0;
 
-    app()->make('db')->transaction(function () use ($entries, &$completes, $force) {
+    try {
 
-      /** @var Model $model */
+      app()->make('db')->transaction(function () use ($entries, &$completes, $force) {
 
-      foreach ($entries as $entry)
-      {
-        $type = array_get($entry, 'type');
-        $id = array_get($entry, 'id');
-        if ($type == 'delete')
+        /** @var Model $model */
+
+        foreach ($entries as $entry)
         {
-          $model = static::find($id);
-          if (!$model->delete())
+          $type = array_get($entry, 'type');
+          $id = array_get($entry, 'id');
+          if ($type == 'delete')
           {
-            if (!$force)
-              throw new Exception('deleting '.$model->getTable().' failure.');
+            $model = static::find($id);
+            if (!$model->delete())
+            {
+              if (!$force)
+                throw new Exception('deleting '.$model->getTable().' failure.');
+            }
+            else
+            {
+              $completes++;
+            }
           }
-          else
+          elseif ($type == 'put')
           {
-            $completes++;
+            $attributes = array_get($entry, 'attributes');
+            $model = static::find($id);
+            $model->fill($attributes);
+            if (!$model->save())
+            {
+              if (!$force)
+                throw new Exception('updating '.$model->getTable().' failure.');
+            }
+            else
+            {
+              $completes++;
+            }
           }
         }
-        elseif ($type == 'put')
-        {
-          $attributes = array_get($entry, 'attributes');
-          $model = static::find($id);
-          $model->fill($attributes);
-          if (!$model->save())
-          {
-            if (!$force)
-              throw new Exception('updating '.$model->getTable().' failure.');
-          }
-          else
-          {
-            $completes++;
-          }
-        }
-      }
-    });
+      });
+
+    } catch (Exception $e) {
+
+
+    }
 
     return $completes;
   }
