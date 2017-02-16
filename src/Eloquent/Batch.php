@@ -18,7 +18,7 @@ trait Batch
   {
     $completes = 0;
 
-    app()->make('db')->transaction(function () use ($entries, $completes, $force) {
+    app()->make('db')->transaction(function () use ($entries, &$completes, $force) {
 
       /** @var Model $model */
 
@@ -32,7 +32,7 @@ trait Batch
           if (!$model->delete())
           {
             if (!$force)
-              throw new Exception('deleting '.$model->getTables().' failure.');
+              throw new Exception('deleting '.$model->getTable().' failure.');
           }
           else
           {
@@ -47,7 +47,7 @@ trait Batch
           if (!$model->save())
           {
             if (!$force)
-              throw new Exception('updating '.$model->getTables().' failure.');
+              throw new Exception('updating '.$model->getTable().' failure.');
           }
           else
           {
