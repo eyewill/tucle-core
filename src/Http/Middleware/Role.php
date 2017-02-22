@@ -7,6 +7,13 @@ class Role
 {
   function handle($request, Closure $next)
   {
+    // ログインセッションが切れている場合は
+    // Authenticationに任せる
+    if (!$request->user())
+    {
+      return $next($request);
+    }
+
     foreach (config('tucle.modules', []) as $module)
     {
       if (is_array($module))
