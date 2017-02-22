@@ -164,7 +164,7 @@
                 }
                 if (value) isFiltering = true;
               });
-               $('#filter_clear').prop('disabled', !isFiltering);
+              $('#filter_clear').prop('disabled', !isFiltering);
 
               $(this).on('change', filterChangeHandler);
 
@@ -175,7 +175,9 @@
           });
 
           $('#filter_clear').on('click', function () {
+
             $('[data-filter]').each(function() {
+
               var type = $(this).prop('type');
               if (this.tagName == 'SELECT') {
                 type = 'select';
@@ -187,8 +189,12 @@
               } else {
                 $(this).val('');
               }
-              $(this).trigger('change');
+
+//              $(this).trigger('change');
             });
+
+            DataTablesFilter.filter();
+            dt.draw();
           });
 
 
@@ -302,6 +308,9 @@
       }
     };
 
+    /**
+     * @todo 初期表示時とクリア時のみ実装済み
+     */
     var DataTablesFilter = {
       filters: '[data-filter]',
       filter: function (filter) {
