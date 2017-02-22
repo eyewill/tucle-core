@@ -28,9 +28,16 @@ trait Batch
         {
           $type = array_get($entry, 'type');
           $id = array_get($entry, 'id');
-          if ($type == 'delete')
+          if (array_has($entry, 'model'))
+          {
+            $model = app()->make($entry['model'])->find($id);
+          }
+          else
           {
             $model = static::find($id);
+          }
+          if ($type == 'delete')
+          {
             if (!$model->delete())
             {
               if (!$force)
@@ -44,7 +51,6 @@ trait Batch
           elseif ($type == 'put')
           {
             $attributes = array_get($entry, 'attributes');
-            $model = static::find($id);
             $model->fill($attributes);
             if (!$model->save())
             {
