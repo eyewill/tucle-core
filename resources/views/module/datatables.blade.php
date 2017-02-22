@@ -172,8 +172,6 @@
             };
 
             $(this).on('change', filterChangeHandler);
-
-            $(DataTablesFactory.table).show();
           });
 
           $('#filter_clear').on('click', function () {
@@ -285,6 +283,8 @@
           $('[data-table-action=clearall]').on('click', function (e) {
             DataTablesFactory.selectRows(dt).deselect();
           });
+
+          $(DataTablesFactory.table).show();
         }
       },
       toggle: function (dt) {
