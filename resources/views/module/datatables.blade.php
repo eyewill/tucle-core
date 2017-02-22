@@ -257,6 +257,7 @@
           $('[data-table-action=delete]').on('click', function (e) {
 
             var url = $(this).data('url');
+            var model = $(this).data('model');
             var rows = DataTablesFactory.selectRows(dt);
             if (confirm(rows.count()+'件のレコードを削除します。よろしいですか？')) {
               var data = [];
@@ -264,7 +265,8 @@
               DataTablesFactory.selectRows(dt).data().each(function (row) {
                 data.push({
                   type: 'delete',
-                  id: row[0]
+                  id: row[0],
+                  model: model
                 })
               });
               $.batchRequest(url, data);
@@ -273,6 +275,7 @@
 
           $('[data-table-action=put]').on('click', function (e) {
             var url = $(this).data('url');
+            var model = $(this).data('model');
             var attributes = $(this).data('attributes');
             var rows = DataTablesFactory.selectRows(dt);
             if (confirm(rows.count()+'件のレコードを更新します。よろしいですか？')) {
@@ -282,6 +285,7 @@
                 data.push({
                   type: 'put',
                   id: row[0],
+                  model: model,
                   attributes: attributes
                 })
               });
