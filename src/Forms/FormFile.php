@@ -31,7 +31,12 @@ class FormFile extends FormInput
     $attachment = $model->{$name};
     $html = '';
     $url = $attachment->url();
-    $deleteUrl = $model->route().'/'.$model->id.'/'.$name;
+    if (method_exists($model, 'fileDeleteUrl')) {
+      $deleteUrl = $model->fileDeleteUrl();
+    }
+    else {
+      $deleteUrl = $model->route().'/'.$model->id.'/'.$name;
+    }
     $filename = $attachment->originalFilename();
     $contentType = $model->{$name}->contentType();
     $preview = json_encode([$url]);
