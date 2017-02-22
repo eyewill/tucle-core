@@ -1,4 +1,4 @@
-<table id="entries" class="table" data-provider="datatables">
+<table id="entries" class="table" data-provider="datatables" style="display: none">
   <thead>
   <tr>
     @if ($presenter->showCheckbox())

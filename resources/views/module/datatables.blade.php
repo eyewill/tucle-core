@@ -172,6 +172,8 @@
             };
 
             $(this).on('change', filterChangeHandler);
+
+            $(DataTablesFactory.table).show();
           });
 
           $('#filter_clear').on('click', function () {
@@ -296,6 +298,7 @@
         return $(this.table).DataTable(this.options);
       }
     };
+
   </script>
 
   @include($presenter->view('partial.datatables.make'))
