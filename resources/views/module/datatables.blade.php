@@ -242,8 +242,11 @@
               return true;
             });
 
-            $(this).trigger('change');
+
+//            $(this).trigger('change');
           });
+          DataTablesFilter.filter();
+          dt.draw();
 
           $('[data-table-action=delete]').on('click', function (e) {
 
@@ -299,6 +302,77 @@
       }
     };
 
+    var DataTablesFilter = {
+      filters: '[data-filter]',
+      filter: function (filter) {
+
+        $(DataTablesFilter.filters).each(function() {
+
+          var filterName = $(this).data('filter');
+
+          if (typeof filter == 'undefined' || filter == filterName) {
+
+            var type = $(this).prop('type');
+            if (this.tagName == 'SELECT') {
+              type = 'select';
+            }
+            var trigger = $($(this).data('trigger'));
+            var modal = $(this).closest('.modal');
+
+            var label = trigger.data('label');
+            var value = false;
+            if (type == 'checkbox') {
+              var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
+              var labels = [];
+              var values = [];
+              for(var i=0; i< checkboxes.length; i++) {
+                labels.push($(checkboxes[i]).closest('label').text());
+                values.push($(checkboxes[i]).val());
+              }
+              if (checkboxes.length > 0) {
+                label = labels.join(',');
+                value = values.join(',');
+              }
+            } else if (type == 'radio') {
+              modal.modal('hide');
+              value = $('[name="'+$(this).prop('name')+'"]:checked').val();
+              if (value)
+                label = $('[name="'+$(this).prop('name')+'"]:checked').closest('label').text();
+            } else {
+              modal.modal('hide');
+              value = $(this).val();
+              if (value)
+                label = $(this).find(':selected').text();
+            }
+            if (value) {
+              trigger.removeClass('filter-none').addClass('btn-primary');
+            } else {
+              trigger.addClass('filter-none').removeClass('btn-primary');
+            }
+            trigger.text(label);
+          }
+
+        });
+
+        var isFiltering = false;
+        $('[data-filter]').each(function() {
+          var type = $(this).prop('type');
+          if (this.tagName == 'SELECT') {
+            type = 'select';
+          }
+          if (type == 'checkbox') {
+            var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
+            value = (checkboxes.length > 0);
+          } else if (type == 'radio') {
+            value = $(this).filter(':checked');
+          } else {
+            value = $(this).val();
+          }
+          if (value) isFiltering = true;
+        });
+        $('#filter_clear').prop('disabled', !isFiltering);
+      }
+    };
   </script>
 
   @include($presenter->view('partial.datatables.make'))
