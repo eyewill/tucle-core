@@ -68,8 +68,12 @@
           headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
           data: JSON.stringify(data)
         }).done(function (data) {
+          @if (config('app.debug'))
+            alert('一括処理を実行しました。ページをリロードしてください。(デバッグ時のみ)');
+          @else
           if (reload)
             window.location.reload();
+          @endif
 //          $.notify({
 //            icon: 'fa fa-success',
 //            message: data.message
