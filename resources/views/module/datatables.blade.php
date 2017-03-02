@@ -107,152 +107,11 @@
           $('#entries_wrapper .row:eq(0)').after($('.table-filters').show());
 
           // カスタムフィルタ
-          $('[data-filter]').each(function() {
-            var type = $(this).prop('type');
-            if (this.tagName == 'SELECT') {
-              type = 'select';
-            }
-            var trigger = $($(this).data('trigger'));
-            var modal = $(this).closest('.modal');
-            var filterChangeHandler = function (e) {
-              $(this).off('change', filterChangeHandler);
-              var label = trigger.data('label');
-              var value = false;
-              if (type == 'checkbox') {
-                var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
-                var labels = [];
-                var values = [];
-                for(var i=0; i< checkboxes.length; i++) {
-                  labels.push($(checkboxes[i]).closest('label').text());
-                  values.push($(checkboxes[i]).val());
-                }
-                if (checkboxes.length > 0) {
-                  label = labels.join(',');
-                  value = values.join(',');
-                }
-              } else if (type == 'radio') {
-                modal.modal('hide');
-                value = $('[name="'+$(this).prop('name')+'"]:checked').val();
-                if (value)
-                  label = $('[name="'+$(this).prop('name')+'"]:checked').closest('label').text();
-              } else {
-                modal.modal('hide');
-                value = $(this).val();
-                if (value)
-                  label = $(this).find(':selected').text();
-              }
-              if (value) {
-                trigger.removeClass('filter-none').addClass('btn-primary');
-              } else {
-                trigger.addClass('filter-none').removeClass('btn-primary');
-              }
-              trigger.text(label);
+          DataTablesFilter.register(dt);
 
-              var isFiltering = false;
-              $('[data-filter]').each(function() {
-                var type = $(this).prop('type');
-                if (this.tagName == 'SELECT') {
-                  type = 'select';
-                }
-                if (type == 'checkbox') {
-                  var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
-                  value = (checkboxes.length > 0);
-                } else if (type == 'radio') {
-                  value = $(this).filter(':checked');
-                } else {
-                  value = $(this).val();
-                }
-                if (value) isFiltering = true;
-              });
-              $('#filter_clear').prop('disabled', !isFiltering);
-
-              $(this).on('change', filterChangeHandler);
-
-              dt.draw();
-            };
-
-            $(this).on('change', filterChangeHandler);
-          });
-
-          $('#filter_clear').on('click', function () {
-
-            $('[data-filter]').each(function() {
-
-              var type = $(this).prop('type');
-              if (this.tagName == 'SELECT') {
-                type = 'select';
-              }
-              if (type == 'checkbox') {
-                $(this).prop('checked', false);
-              } else if (type == 'radio') {
-                $(this).prop('checked', false);
-              } else {
-                $(this).val('');
-              }
-
-//              $(this).trigger('change');
-            });
-
-            DataTablesFilter.filter();
-            dt.draw();
-          });
-
-
-          $('[data-filter]').each(function() {
-            var filter = $(this);
-            var col = filter.data('filter');
-            var type = filter.prop('type');
-            var mode = filter.data('mode');
-            if (filter.get(0).tagName == 'SELECT') {
-              type = 'select';
-            }
-            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-              if (type == 'checkbox') {
-                var checkboxes = $('[name="'+filter.prop('name')+'"]:checked');
-                if (checkboxes.length > 0) {
-                  var matchedSomeone = false;
-                  for (var i = 0; i < checkboxes.length; i++) {
-                    if (mode == 'like') {
-                      if (data[col].indexOf(filter.val()) !== -1)
-                        matchedSomeone = true;
-                    } else {
-                      if (data[col] == filter.val())
-                        matchedSomeone = true;
-                    }
-                  }
-                  if (!matchedSomeone)
-                    return false;
-                }
-              } else if (type == 'radio') {
-                if (filter.is(':checked') && filter.val() != '')
-                {
-                  if (mode == 'like') {
-                    if (data[col].indexOf(filter.val()) === -1)
-                      return false;
-                  } else {
-                    if (data[col] != filter.val())
-                      return false;
-                  }
-                }
-              } else {
-                if (filter.val()) {
-                  if (mode == 'like') {
-                    if (data[col].indexOf(filter.val()) === -1)
-                      return false;
-                  } else {
-                    if (data[col] != filter.val())
-                      return false;
-                  }
-                }
-              }
-              return true;
-            });
-
-
-//            $(this).trigger('change');
-          });
           DataTablesFilter.filter();
-          dt.draw();
+
+//          console.log('draw initialized.');
 
           $('[data-table-action=delete]').on('click', function (e) {
 
@@ -312,78 +171,156 @@
       }
     };
 
-    /**
-     * @todo 初期表示時とクリア時のみ実装済み
-     */
     var DataTablesFilter = {
-      filters: '[data-filter]',
-      filter: function (filter) {
+      dt: undefined,
+      selector: '[data-filter]',
+      filters: {},
+      register: function (dt) {
 
-        $(DataTablesFilter.filters).each(function() {
+        DataTablesFilter.dt = dt;
 
-          var filterName = $(this).data('filter');
+        var search = function(settings, data, dataIndex) {
 
-          if (typeof filter == 'undefined' || filter == filterName) {
+          var matched = true;
 
-            var type = $(this).prop('type');
-            if (this.tagName == 'SELECT') {
-              type = 'select';
+          // radioとcheckboxは一つにまとめて処理
+          $.each(DataTablesFilter.filters, function(name, obj) {
+
+            if (obj.type == 'checkbox') {
+              var checkboxes = $('[name="'+name+'"]:checked');
+              if (checkboxes.length > 0) {
+                var matchedSomeone = false;
+                for (var i = 0; i < checkboxes.length; i++) {
+                  var checkedValue = checkboxes.eq(i).val();
+                  if (obj.mode == 'like') { // Like検索
+                    if (data[obj.number].indexOf(checkedValue) !== -1)
+                      matchedSomeone = true;
+                  } else { // 完全一致検索
+                    if (data[obj.number] == checkedValue)
+                      matchedSomeone = true;
+                  }
+                }
+                if (!matchedSomeone) {
+                  matched = false;
+                  return false;
+                }
+              }
+            } else if (obj.type == 'radio') {
+              var radio = $('[name="'+name+'"]:checked');
+              if (radio.length > 0)
+              {
+                if (obj.mode == 'like') {
+                  if (data[obj.number].indexOf(radio.val()) === -1) {
+                    matched = false;
+                    return false;
+                  }
+                } else {
+                  if (data[obj.number] != radio.val()) {
+                    matched = false;
+                    return false;
+                  }
+                }
+              }
+            } else if (obj.type == 'select') {
+              var select = $('[name="'+name+'"]');
+              if (select.val()) {
+                if (obj.mode == 'like') {
+                  if (data[obj.number].indexOf(select.val()) === -1) {
+                    matched = false;
+                    return false;
+                  }
+                } else {
+                  if (data[obj.number] != select.val()) {
+                    matched = false;
+                    return false;
+                  }
+                }
+              }
             }
-            var trigger = $($(this).data('trigger'));
-            var modal = $(this).closest('.modal');
+          });
 
-            var label = trigger.data('label');
-            var value = false;
-            if (type == 'checkbox') {
-              var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
+          return matched;
+        };
+
+        $.fn.dataTable.ext.search.push(search);
+
+        $('[data-filter]').on('change', DataTablesFilter.filter);
+        $('#filter_clear').on('click', DataTablesFilter.clear);
+      },
+      filter: function () {
+
+        // radioとcheckboxは一つにまとめて処理
+        DataTablesFilter.filters = {};
+        var isFiltering = false;
+        $(DataTablesFilter.selector).each(function() {
+
+          if (!(this.name in DataTablesFilter.filters)) {
+
+            var obj = {
+              type: this.tagName == 'SELECT' ? 'select' : $(this).prop('type'),
+              number: $(this).data('filter'),
+              trigger: $($(this).data('trigger')),
+              modal: $(this).closest('.modal'),
+              label: $($(this).data('trigger')).data('label'),
+              value: false,
+              mode: $(this).data('mode')
+            };
+
+            if (obj.type == 'checkbox') {
+              var checkboxes = $('[name="'+this.name+'"]:checked');
               var labels = [];
               var values = [];
-              for(var i=0; i< checkboxes.length; i++) {
-                labels.push($(checkboxes[i]).closest('label').text());
-                values.push($(checkboxes[i]).val());
-              }
               if (checkboxes.length > 0) {
-                label = labels.join(',');
-                value = values.join(',');
+                for(var i=0; i< checkboxes.length; i++) {
+                  labels.push($(checkboxes[i]).closest('label').text());
+                  values.push($(checkboxes[i]).val());
+                }
+                obj.label = labels.join(',');
+                obj.value = checkboxes.length;
               }
-            } else if (type == 'radio') {
-              modal.modal('hide');
-              value = $('[name="'+$(this).prop('name')+'"]:checked').val();
-              if (value)
-                label = $('[name="'+$(this).prop('name')+'"]:checked').closest('label').text();
-            } else {
-              modal.modal('hide');
-              value = $(this).val();
-              if (value)
-                label = $(this).find(':selected').text();
+            } else if (obj.type == 'radio') {
+              var radio = $('[name="'+this.name+'"]:checked');
+              obj.value = radio.val();
+              if (obj.value)
+                obj.label = radio.closest('label').text();
+              obj.modal.modal('hide');
+            } else if (obj.type == 'select') {
+              obj.value = $(this).val();
+              if (obj.value)
+                obj.label = $(this).find(':selected').text();
+              obj.modal.modal('hide');
             }
-            if (value) {
-              trigger.removeClass('filter-none').addClass('btn-primary');
-            } else {
-              trigger.addClass('filter-none').removeClass('btn-primary');
-            }
-            trigger.text(label);
-          }
 
+            if (obj.value) {
+              obj.trigger.removeClass('filter-none').addClass('btn-primary');
+            } else {
+              obj.trigger.addClass('filter-none').removeClass('btn-primary');
+            }
+            obj.trigger.text(obj.label);
+            if (obj.value)
+              isFiltering = true;
+
+            DataTablesFilter.filters[this.name] = obj;
+          }
         });
 
-        var isFiltering = false;
-        $('[data-filter]').each(function() {
-          var type = $(this).prop('type');
-          if (this.tagName == 'SELECT') {
-            type = 'select';
-          }
-          if (type == 'checkbox') {
-            var checkboxes = $('[name="'+$(this).prop('name')+'"]:checked');
-            value = (checkboxes.length > 0);
-          } else if (type == 'radio') {
-            value = $(this).filter(':checked');
-          } else {
-            value = $(this).val();
-          }
-          if (value) isFiltering = true;
-        });
         $('#filter_clear').prop('disabled', !isFiltering);
+
+        DataTablesFilter.dt.draw();
+      },
+      clear: function () {
+        $.each(DataTablesFilter.filters, function(name, obj) {
+
+          if (obj.type == 'checkbox') {
+            $('[name="'+name+'"]').prop('checked', false);
+          } else if (obj.type == 'radio') {
+            $('[name="'+name+'"]').prop('checked', false);
+          } else if (obj.type == 'select') {
+            $('[name="'+name+'"]').val('');
+          }
+        });
+
+        DataTablesFilter.filter();
       }
     };
   </script>
