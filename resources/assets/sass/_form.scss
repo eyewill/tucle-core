@@ -50,6 +50,10 @@ input.form-control {
   margin-bottom: -15px;
 }
 
+.form-group.group .form-group.group > .row {
+  margin-bottom: 0;
+}
+
 .form-group.group > label {
   clear: both;
   border-left: #50555b solid 4px;
