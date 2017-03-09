@@ -49,6 +49,7 @@ class FormFile extends FormInput
     else
     {
       $type = 'object';
+      $html.= sprintf('<p><a href="%s" target="_blank">アップロード済みファイル</a></p>', $url);
     }
     $token = csrf_token();
     $html.= $this->presenter->getForm()->file($name.'_uploaded', $attributes)->toHtml();
