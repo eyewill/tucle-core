@@ -207,7 +207,7 @@
               }
             } else if (obj.type == 'radio') {
               var radio = $('[name="'+name+'"]:checked');
-              if (radio.length > 0)
+              if (radio.length > 0 && radio.val())
               {
                 if (obj.mode == 'like') {
                   if (data[obj.number].indexOf(radio.val()) === -1) {
