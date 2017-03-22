@@ -4,11 +4,19 @@
   <script>
     $.notifyDefaults({
       type: 'success',
+      showProgressbar: false,
       placement: {
-        from: 'top',
-        align: 'center'
+        from: "bottom",
+        align: "center"
       },
-      timer: 1000
+      animate: {
+        enter: 'animated fadeInUp',
+        exit: 'animated fadeOutDown'
+      },
+      offset: {
+        x: 0,
+        y: 60
+      }
     });
 
     /**
@@ -39,11 +47,7 @@
       icon: notifications['{{ $name }}'].icon,
       message: '{{ session()->get($name) }}'
     }, {
-      type: notifications['{{ $name }}'].type,
-      offset: {
-        y: 96
-      },
-      z_index: 0
+      type: notifications['{{ $name }}'].type
     });
     @endif
     @endforeach
