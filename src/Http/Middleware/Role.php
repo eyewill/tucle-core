@@ -1,7 +1,7 @@
 <?php namespace Eyewill\TucleCore\Http\Middleware;
 
 use Closure;
-use Gate;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class Role
 {
@@ -19,12 +19,9 @@ class Role
       if (is_array($module))
       {
         $name = $module['name'];
-        $allows = $module['allows'];
-        if (is_array($allows))
-          $allows = implode(',', $allows);
         if ($request->is($name) || $request->is($name.'/*'))
         {
-          if (Gate::denies($allows))
+          if (app(Gate::class)->denies('show-'.$name, $module['model']))
           {
             $url = role($request->user()->role)['default_url'];
             return redirect()->to($url)
