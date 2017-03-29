@@ -37,6 +37,21 @@ class Navigation
     return $this->name;
   }
 
+  public function names()
+  {
+    if ($this->hasGroup())
+    {
+      $names = [];
+      foreach ($this->group as $entry)
+      {
+        $names[] = module()->find($entry->name)->name();
+      }
+      return implode(',', array_unique($names));
+    }
+
+    return $this->name;
+  }
+
   public function allows()
   {
     if ($this->hasGroup())

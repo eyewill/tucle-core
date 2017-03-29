@@ -20,26 +20,34 @@ class TuclePresenter
   protected function renderMenu($navigation)
   {
     if ($navigation->disabled())
+    {
       return '';
+    }
+
+    foreach(explode(',', $navigation->names()) as $module)
+    {
+      $module = module($module);
+      if (app(Gate::class)->denies('show-'.$module->name(), $module->model))
+      {
+        return '';
+      }
+    }
 
     $html = '';
 
-    if (app(Gate::class)->allows($navigation->allows()))
+    if ($navigation->hasGroup())
     {
-      if ($navigation->hasGroup())
-      {
-        $html.= $this->renderGroup($navigation);
-      }
-      else
-      {
-        $url = $navigation->url();
-        $label = $navigation->label();
-        $html.= '<li>';
-        $html.= '<a href="'.$url.'">';
-        $html.= e($label);
-        $html.= '</a>';
-        $html.= '</li>';
-      }
+      $html.= $this->renderGroup($navigation);
+    }
+    else
+    {
+      $url = $navigation->url();
+      $label = $navigation->label();
+      $html.= '<li>';
+      $html.= '<a href="'.$url.'">';
+      $html.= e($label);
+      $html.= '</a>';
+      $html.= '</li>';
     }
 
     return $html;
