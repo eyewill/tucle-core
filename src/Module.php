@@ -7,11 +7,18 @@ class Module
 
   public function __construct($module = [])
   {
-    $this->name = array_get($module, 'name', $module);
-    $allows = array_get($module, 'allows');
-    if (is_array($allows))
-      $allows = implode(',', $allows);
-    $this->allows = $allows;
+    if (is_array($module))
+    {
+      $this->attributes = $module;
+    }
+    else
+    {
+      $this->attributes = [
+        'name' => $module,
+        'allows' => null,
+        'model' => null,
+      ];
+    }
     $class = 'App\\Http\\Presenters\\'.studly_case($this->name).'Presenter';
     $this->presenter = app($class);
   }
