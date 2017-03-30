@@ -106,6 +106,11 @@
 
           $('#entries_wrapper .row:eq(0)').after($('.table-filters').show());
 
+          // 検索ボックスをクリア可能にする
+          $('#entries_wrapper input[type=search]').clearable(function () {
+            dt.search('').draw();
+          }, -40);
+
           // カスタムフィルタ
           DataTablesFilter.register(dt);
 

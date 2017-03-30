@@ -30,14 +30,16 @@
     }).removeClass('disabled').prop('disabled', false);
 
     /**
-     * form input clear
+     * jQuery拡張
+     * 入力内容クリア機能追加
      */
-    $('input:text[data-clearable]').each(function(e) {
+    $.fn.clearable = function(callback, margin) {
+      margin = margin || 0;
       var input = $(this);
       var top = input.position().top+9;
       var padding = Number(input.parent().css('padding-right').replace('px', ''));
       input.parent().css('position', 'relative');
-      var right = input.parent().innerWidth()-input.outerWidth()-padding + 9;
+      var right = input.parent().innerWidth()-input.outerWidth()-padding + margin + 9;
       $(this).after(
         $('<span class="btn-clear-input fa fa-times-circle"></span>')
           .css({
@@ -46,9 +48,11 @@
           })
           .on('click', function (e) {
             input.val('');
+            if (callback)
+              callback(input);
           })
       );
-    });
+    };
 
     /**
      * jQuery拡張
@@ -92,6 +96,13 @@
           });
         });
       }
+    });
+
+    /**
+     * form input clear
+     */
+    $('input:text[data-clearable]').each(function () {
+      $(this).clearable();
     });
 
   });
