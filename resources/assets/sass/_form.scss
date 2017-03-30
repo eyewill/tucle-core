@@ -115,3 +115,8 @@ hr.form-separator {
   background-image:      -o-linear-gradient(bottom, rgba(153,153,153,0.25), rgba(153,153,153,0.75), rgba(153,153,153,0.25));
   background-image:      linear-gradient(to bottom, rgba(153,153,153,0.25), rgba(153,153,153,0.75), rgba(153,153,153,0.25));
 }
+
+/* IEのみ クリアボタン非表示 */
+input::-ms-clear {
+  display: none;
+}
