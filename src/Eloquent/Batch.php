@@ -1,7 +1,6 @@
 <?php namespace Eyewill\TucleCore\Eloquent;
 
 use Exception;
-use Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,16 +23,14 @@ trait Batch
 
       app()->make('db')->transaction(function () use ($name, $entries, &$completes, $force) {
 
-        foreach ($entries as $id)
+        /** @var Model $model */
+        foreach ($entries as $model)
         {
-          /** @var Model $model */
-          $model = static::find($id);
-
           if (!$model->$name())
           {
             if (!$force)
             {
-              throw new Exception('batch failure on '.$model->getTable().' id '.$id.'.');
+              throw new Exception('batch failure on '.$model->getTable().' id '.$model->id.'.');
             }
             continue;
           }
