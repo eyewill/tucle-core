@@ -1,6 +1,7 @@
 <?php namespace Eyewill\TucleCore\Eloquent;
 
 use Exception;
+use Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,67 +11,42 @@ use Illuminate\Database\Eloquent\Model;
 trait Batch
 {
   /**
+   * @param $name
    * @param array $entries
    * @param bool $force
    * @return int
    */
-  public static function batch($entries = [], $force = false)
+  public static function batch($name, $entries = [], $force = false)
   {
     $completes = 0;
 
     try {
 
-      app()->make('db')->transaction(function () use ($entries, &$completes, $force) {
+      app()->make('db')->transaction(function () use ($name, $entries, &$completes, $force) {
 
-        /** @var Model $model */
-
-        foreach ($entries as $entry)
+        foreach ($entries as $id)
         {
-          $type = array_get($entry, 'type');
-          $id = array_get($entry, 'id');
-          if (array_has($entry, 'model'))
+          /** @var Model $model */
+          $model = static::find($id);
+
+          if (!$model->$name())
           {
-            $model = app()->make($entry['model'])->find($id);
-          }
-          else
-          {
-            $model = static::find($id);
-          }
-          if ($type == 'delete')
-          {
-            if (!$model->delete())
+            if (!$force)
             {
-              if (!$force)
-                throw new Exception('deleting '.$model->getTable().' failure.');
+              throw new Exception('batch failure on '.$model->getTable().' id '.$id.'.');
             }
-            else
-            {
-              $completes++;
-            }
+            continue;
           }
-          elseif ($type == 'put')
-          {
-            $attributes = array_get($entry, 'attributes');
-            $model->fill($attributes);
-            if (!$model->save())
-            {
-              if (!$force)
-                throw new Exception('updating '.$model->getTable().' failure.');
-            }
-            else
-            {
-              $completes++;
-            }
-          }
+
+          $completes++;
         }
+
       });
 
     } catch (Exception $e) {
-
 
     }
 
     return $completes;
   }
-
 }

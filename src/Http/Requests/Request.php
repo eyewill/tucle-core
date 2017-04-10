@@ -29,7 +29,7 @@ abstract class Request extends FormRequest
 
   protected function trim($input)
   {
-    if (is_array($input)) // checkboxes
+    if (is_array($input)) // checkboxes or batch request
     {
       return array_filter($input, 'strlen');
     }

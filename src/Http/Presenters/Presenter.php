@@ -95,6 +95,11 @@ class Presenter
     return $this->router->route($route, $parameters);
   }
 
+  public function hasRoute($route)
+  {
+    return in_array($route, array_keys($this->routes));
+  }
+
   protected function getBreadCrumbs($name, $request)
   {
     return [];

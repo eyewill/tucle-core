@@ -118,40 +118,20 @@
 
 //          console.log('draw initialized.');
 
-          $('[data-table-action=delete]').on('click', function (e) {
-
-            var url = $(this).data('url');
-            var model = $(this).data('model');
+          $('[data-batch-name]').on('click', function (e) {
+            var name = $(this).data('batch-name');
+            var url = $(this).data('batch-url');
+            var model = $(this).data('batch-model');
+            var confirm_message = $(this).data('batch-confirm') || ':count件のレコードを更新します。よろしいですか？';
             var rows = DataTablesFactory.selectRows(dt);
-            if (confirm(rows.count()+'件のレコードを削除します。よろしいですか？')) {
+
+            confirm_message = confirm_message.replace(':count', rows.count());
+
+            if (confirm(confirm_message)) {
               var data = [];
 
               DataTablesFactory.selectRows(dt).data().each(function (row) {
-                data.push({
-                  type: 'delete',
-                  id: row[0],
-                  model: model
-                })
-              });
-              $.batchRequest(url, data);
-            }
-          });
-
-          $('[data-table-action=put]').on('click', function (e) {
-            var url = $(this).data('url');
-            var model = $(this).data('model');
-            var attributes = $(this).data('attributes');
-            var rows = DataTablesFactory.selectRows(dt);
-            if (confirm(rows.count()+'件のレコードを更新します。よろしいですか？')) {
-              var data = [];
-
-              DataTablesFactory.selectRows(dt).data().each(function (row) {
-                data.push({
-                  type: 'put',
-                  id: row[0],
-                  model: model,
-                  attributes: attributes
-                })
+                data.push(row[0]);
               });
               $.batchRequest(url, data);
             }

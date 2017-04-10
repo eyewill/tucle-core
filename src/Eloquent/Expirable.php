@@ -120,7 +120,7 @@ trait Expirable
   }
 
   /**
-   * 公開終了
+   * 公開が終了しているか
    *
    * @return bool
    */
@@ -130,8 +130,34 @@ trait Expirable
     return (!is_null($this->terminatedAt()) && Carbon::now()->gt($this->terminatedAt()));
   }
 
+  /**
+   * 公開が終了しているか
+   *
+   * @param $query
+   */
   public function scopeTerminated($query)
   {
     $query->where($this->getTable().'.terminated_at', '<', DB::raw('NOW()'));
+  }
+
+  /**
+   * 公開する
+   */
+  public function publish()
+  {
+    return $this->update([
+      'published_at' => Carbon::now(),
+      'terminated_at' => null,
+    ]);
+  }
+
+  /**
+   * 公開を終了する
+   */
+  public function terminate()
+  {
+    return $this->update([
+      'terminated_at' => Carbon::now(),
+    ]);
   }
 }

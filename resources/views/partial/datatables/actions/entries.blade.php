@@ -3,15 +3,19 @@
     <span class="fa fa-square-o"></span>
     全クリア
   </button>
-  <button class="btn btn-primary" data-table-action="put" data-url="{{ $presenter->route('batch') }}" data-attributes='{"published_at":"now","terminated_at":""}' disabled>
+  @if ($presenter->hasRoute('batch.publish'))
+  <button class="btn btn-primary" data-batch-url="{{ $presenter->route('batch.publish') }}" data-batch-name="publish" disabled>
     <span class="fa fa-check"></span>
     公開
   </button>
-  <button class="btn btn-warning" data-table-action="put" data-url="{{ $presenter->route('batch') }}" data-attributes='{"terminated_at":"-1 minute"}' disabled>
+  @endif
+  @if ($presenter->hasRoute('batch.terminate'))
+  <button class="btn btn-warning" data-batch-url="{{ $presenter->route('batch.terminate') }}" data-batch-name="terminate" disabled>
     <span class="fa fa-ban"></span>
     公開終了
   </button>
-  <button class="btn btn-danger" data-table-action="delete" data-url="{{ $presenter->route('batch') }}" disabled>
+  @endif
+  <button class="btn btn-danger" data-batch-url="{{ $presenter->route('batch.delete') }}" data-batch-name="delete" data-batch-confirm=":count件のレコードを削除します。よろしいですか？" disabled>
     <span class="fa fa-trash-o"></span>
     削除
   </button>
