@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
+use Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
 
@@ -219,5 +220,15 @@ class ModelPresenter extends Presenter
   public function checkboxId($model)
   {
     return $model->id;
+  }
+
+  public function renderTableRowClass($model)
+  {
+    if ($model instanceof ExpirableInterface && !$model->published())
+    {
+      return 'mute';
+    }
+
+    return '';
   }
 }
