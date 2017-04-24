@@ -15,7 +15,7 @@
 
   <tbody>
   @foreach ($entries as $entry)
-    <tr>
+    <tr class="{{ ($entry instanceof \Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface && !$entry->published()) ? 'mute' : '' }}">
       @if ($presenter->showCheckbox())
       <td>{{ $presenter->checkboxId($entry) }}</td>
       @endif

@@ -2,8 +2,15 @@ table.dataTable .align-middle {
   vertical-align: middle;
 }
 
-table.dataTable tr.selected {
+table.dataTable tr.mute {
+  color: #A5A5A5;
   background: #FCFCFC;
+}
+
+table.dataTable tr.selected,
+table.dataTable tr.mute.selected {
+  color: #606060;
+  background: #F5F5F5;
 }
 
 #cms table.dataTable.dt-checkboxes-select tbody tr {
