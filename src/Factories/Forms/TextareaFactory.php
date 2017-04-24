@@ -10,7 +10,7 @@ class TextareaFactory extends Factory
     array_set($attributes, 'attr.data-provider',
       array_get($attributes, 'attr.data-provider', 'ckeditor'));
     array_set($attributes, 'attr.data-wysiwyg',
-      array_get($attributes, 'attr.data-wysiwyg', 'true'));
+      array_get($attributes, 'attr.data-wysiwyg', false));
 
     parent::__construct($attributes, $mergeAttributes);
   }
