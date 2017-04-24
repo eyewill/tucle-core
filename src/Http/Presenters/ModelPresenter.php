@@ -1,7 +1,6 @@
 <?php namespace Eyewill\TucleCore\Http\Presenters;
 
 use Carbon\Carbon;
-use Codesleeve\Stapler\Attachment;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Http\Request;
@@ -12,7 +11,6 @@ class ModelPresenter extends Presenter
   protected $form;
   protected $html;
   protected $forms = [];
-  protected $showColumns = [];
   protected $showCheckbox = true;
   protected $dateFormat = [];
   protected $filters = [];
@@ -158,7 +156,7 @@ class ModelPresenter extends Presenter
 
       if ($links)
       {
-        $value = '<a href="'.$this->route('show', [$model]).'">'.$value.'</a>';
+        $value = '<a href="'.$this->route('edit', [$model]).'">'.$value.'</a>';
       }
 
       $html = sprintf($template, $value);
@@ -203,31 +201,6 @@ class ModelPresenter extends Presenter
     }
 
     return $html;
-  }
-
-  public function renderDetails($model)
-  {
-    $html = '';
-    $html.= '<div class="dl-horizontal">';
-    foreach ($this->showColumns as $column)
-    {
-      $html.= '<dt>';
-      $html.= array_get($column, 'label');
-      $html.= '</dt>';
-      $html.= '<dd>';
-      $value = $model->{array_get($column, 'name')};
-      if ($value instanceof Attachment)
-      {
-        $html.= $value->originalFilename();
-      }
-      else
-      {
-        $html.= $value;
-      }
-      $html.= '</dd>';
-    }
-    $html.= '</div>';
-    return new HtmlString($html);
   }
 
   public function getAttributeNames()

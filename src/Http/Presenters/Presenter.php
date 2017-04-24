@@ -21,7 +21,6 @@ class Presenter
         'index' => 'tucle::partial.actions.index',
         'create' => 'tucle::partial.actions.create',
         'edit' => 'tucle::partial.actions.edit',
-        'show' => 'tucle::partial.actions.show',
       ],
       'datatables' => [
         'make' => 'tucle::partial.datatables.make',
