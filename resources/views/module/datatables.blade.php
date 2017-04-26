@@ -165,8 +165,8 @@
       DataTablesFactory.options.columnDefs.push({
         width: '1px',
         className: 'align-middle text-center',
-        orderable: false,
-        searchable: false,
+        orderable: true,
+        searchable: true,
         targets: target_index
       });
       target_index++;
@@ -189,7 +189,6 @@
         var search = function(settings, data, dataIndex) {
 
           var matched = true;
-
           // radioとcheckboxは一つにまとめて処理
           $.each(DataTablesFilter.filters, function(name, obj) {
 

@@ -235,39 +235,46 @@ class ModelPresenter extends Presenter
 
   public function renderStatus($model)
   {
-    $labels = [];
     if ($model instanceof ExpirableInterface)
     {
       if ($model->published())
       {
-        $labels[] = [
+        $label = [
           'label' => '公開中',
           'class' => 'label-primary',
+          'value' => 2,
         ];
       }
       elseif ($model->candidates())
       {
-        $labels[] = [
+        $label = [
           'label' => '公開前',
           'class' => 'label-warning',
+          'value' => 1,
         ];
       }
       else
       {
-        $labels[] = [
+        $label = [
           'label' => '公開終了',
           'class' => 'label-default',
+          'value' => 3,
         ];
       }
+      $html = '';
+      $html.= sprintf('<td data-search="%d"><span class="label %s">%s</span></td>',$label['value'],  $label['class'], $label['label']);
+      return new HtmlString($html);
     }
 
-    $html = '';
-    foreach ($labels as $label)
-    {
-      $html.= sprintf('<span class="label %s">%s</span> ', $label['class'], $label['label']);
-    }
-
-    return new HtmlString($html);
+    return ' ';
   }
 
+  public function statusFilterValues()
+  {
+    return [
+      1 => '公開前',
+      2 => '公開中',
+      3 => '公開終了',
+    ];
+  }
 }

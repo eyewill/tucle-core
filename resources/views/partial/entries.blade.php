@@ -23,9 +23,7 @@
       <td>{{ $presenter->checkboxId($entry) }}</td>
       @endif
       @if ($presenter->showStatus())
-        <td>
-          {{ $presenter->renderStatus($entry) }}
-        </td>
+        {{ $presenter->renderStatus($entry) }}
       @endif
       @foreach ($presenter->tableColumns() as $column)
         {{ $presenter->renderTableColumn($column, $entry) }}
