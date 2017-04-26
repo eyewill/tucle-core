@@ -12,6 +12,7 @@ class Presenter
   protected $views = [];
   protected $viewBase = '';
   protected $showCheckbox = false;
+  protected $showStatus = false;
   /** @var RouteManager */
   protected $router;
   protected $request;
@@ -77,6 +78,11 @@ class Presenter
   public function showCheckbox()
   {
     return $this->showCheckbox;
+  }
+
+  public function showStatus()
+  {
+    return $this->showStatus;
   }
 
   public function hasRowActions()

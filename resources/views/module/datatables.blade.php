@@ -36,17 +36,7 @@
     var DataTablesFactory = {
       table: '#entries',
       options: {
-        columnDefs: [
-          { className: 'align-middle', targets: '_all' },
-          { type: "html", targets: "_all" },
-          { width: '1px', targets: 0 },
-          {
-            checkboxes: { selectRow: true, selectAllPages: false },
-            orderable: false,
-            searchable: false,
-            targets: 0
-          }
-        ],
+        columnDefs: [],
         select: {
           style: 'multi',
           selector: false
@@ -155,6 +145,38 @@
         return $(this.table).DataTable(this.options);
       }
     };
+
+    var table = $(DataTablesFactory.table);
+    var target_index = 0;
+    if (table.data('show-checkbox'))
+    {
+      DataTablesFactory.options.columnDefs.push({
+        width: '1px',
+        orderable: false,
+        searchable: false,
+        checkboxes: { selectRow: true, selectAllPages: false },
+        targets: target_index
+      });
+      target_index++;
+    }
+
+    if (table.data('show-status'))
+    {
+      DataTablesFactory.options.columnDefs.push({
+        width: '1px',
+        className: 'align-middle text-center',
+        orderable: false,
+        searchable: false,
+        targets: target_index
+      });
+      target_index++;
+    }
+
+    DataTablesFactory.options.columnDefs.push({
+      className: 'align-middle',
+      type: 'html',
+      targets: '_all'
+    });
 
     var DataTablesFilter = {
       dt: undefined,

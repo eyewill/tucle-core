@@ -13,6 +13,7 @@ class ModelPresenter extends Presenter
   protected $html;
   protected $forms = [];
   protected $showCheckbox = true;
+  protected $showStatus = true;
   protected $dateFormat = [];
   protected $filters = [];
 
@@ -231,4 +232,42 @@ class ModelPresenter extends Presenter
 
     return '';
   }
+
+  public function renderStatus($model)
+  {
+    $labels = [];
+    if ($model instanceof ExpirableInterface)
+    {
+      if ($model->published())
+      {
+        $labels[] = [
+          'label' => '公開中',
+          'class' => 'label-primary',
+        ];
+      }
+      elseif ($model->candidates())
+      {
+        $labels[] = [
+          'label' => '公開前',
+          'class' => 'label-warning',
+        ];
+      }
+      else
+      {
+        $labels[] = [
+          'label' => '公開終了',
+          'class' => 'label-default',
+        ];
+      }
+    }
+
+    $html = '';
+    foreach ($labels as $label)
+    {
+      $html.= sprintf('<span class="label %s">%s</span> ', $label['class'], $label['label']);
+    }
+
+    return new HtmlString($html);
+  }
+
 }

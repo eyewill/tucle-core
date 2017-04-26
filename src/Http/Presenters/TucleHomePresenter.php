@@ -36,4 +36,9 @@ class TucleHomePresenter extends Presenter
 
     return new HtmlString($html);
   }
+
+  public function renderTableRowClass()
+  {
+    return '';
+  }
 }

@@ -1,8 +1,11 @@
-<table id="entries" class="table" data-provider="datatables" style="display: none">
+<table id="entries" class="table" data-provider="datatables" style="display: none" data-show-checkbox="{{ $presenter->showCheckbox() }}" data-show-status="{{ $presenter->showStatus() }}">
   <thead>
   <tr>
     @if ($presenter->showCheckbox())
-    <th></th>
+      <th></th>
+    @endif
+    @if ($presenter->showStatus())
+      <th></th>
     @endif
     @foreach ($presenter->tableColumns() as $column)
       <th>{{ $column['label'] }}</th>
@@ -18,6 +21,11 @@
     <tr class="{{ $presenter->renderTableRowClass($entry) }}">
       @if ($presenter->showCheckbox())
       <td>{{ $presenter->checkboxId($entry) }}</td>
+      @endif
+      @if ($presenter->showStatus())
+        <td>
+          {{ $presenter->renderStatus($entry) }}
+        </td>
       @endif
       @foreach ($presenter->tableColumns() as $column)
         {{ $presenter->renderTableColumn($column, $entry) }}
