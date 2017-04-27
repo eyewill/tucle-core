@@ -106,6 +106,7 @@ class Initializer implements InitializerContracts
       yield $this->composer->scripts('php artisan ide-helper:meta', 2);
       yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
       yield $this->composer->add('primalbase/view-builder', 'dev-master');
+      yield $this->composer->add('primalbase/tucle-builder', 'dev-master');
       yield $this->composer->update();
     }
 
