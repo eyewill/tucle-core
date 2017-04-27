@@ -94,7 +94,8 @@
           $('#entries_wrapper .row:eq(0)').after($('.table-actions').show());
           $('#entries_wrapper div[id$=_filter] input').prop('class', 'form-control input-md');
 
-          $('#entries_wrapper .row:eq(0)').after($('.table-filters').show());
+//          $('#entries_wrapper .row:eq(0)').after($('.table-filters').show());
+          $('#entries_wrapper .table-actions .row .btn-actions').append($('.table-filters').css({display: 'inline-block', float: 'right'}));
 
           // 検索ボックスをクリア可能にする
           $('#entries_wrapper input[type=search]').clearable(function () {

@@ -1,17 +1,17 @@
 @if ($presenter->hasFilters())
 
   <div class="table-filters" style="display: none">
-    フィルタ:
+    フィルター:
     @foreach($presenter->getFilters() as $spec)
       <button id="{{ $presenter->filterTriggerId($spec) }}"
-              class="btn btn-default filter-none"
+              class="btn btn-sm btn-default filter-none"
               data-toggle="modal"
               data-target="#{{ $presenter->filterModalId($spec) }}"
               data-label="{{ $presenter->filterLabel($spec) }}">
         {{ $presenter->filterLabel($spec) }}
       </button>
     @endforeach
-    <button id="filter_clear" class="btn btn-warning" disabled>クリア</button>
+    <button id="filter_clear" class="btn btn-sm btn-warning" disabled>クリア</button>
   </div>
 
   @foreach($presenter->getFilters() as $spec)
