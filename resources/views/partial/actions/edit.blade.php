@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \Eyewill\TucleCore\Http\Presenters\ModelPresenter $presenter
+ */
+?>
 <div class="row">
   <div class="col-xs-12">
     <div class="btn-toolbar pull-right">
@@ -14,30 +19,28 @@
 
       <span class="btn-separator"></span>
 
-      @if ($model instanceof \Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface)
-        @if ($model->candidates())
-          <a href="{{ $presenter->route('preview', $model) }}" class="btn btn-primary" target="_blank">
-            <span class="fa fa-external-link"></span>
-            プレビュー
-          </a>
-        @elseif ($model->published())
-          <a href="{{ $model->url() }}" class="btn btn-primary" target="_blank">
+      @if ($presenter->hasRoute('show'))
+        @if ($model instanceof \Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface)
+          @if ($model->published())
+            <a href="{{ $model->route('show', $model) }}" class="btn btn-primary" target="_blank">
+              <span class="fa fa-external-link"></span>
+              サイト
+            </a>
+          @else
+            @if ($presenter->hasRoute('preview'))
+              <a href="{{ $presenter->route('preview', $model) }}" class="btn btn-primary" target="_blank">
+                <span class="fa fa-external-link"></span>
+                プレビュー
+              </a>
+            @endif
+          @endif
+        @else
+          <a href="{{ $model->route('show', $model) }}" class="btn btn-primary" target="_blank">
             <span class="fa fa-external-link"></span>
             サイト
           </a>
-        @else
-          <button class="btn btn-default" disabled>公開期間は終了しました</button>
         @endif
-      @else
-        <a href="{{ $model->url() }}" class="btn btn-primary" target="_blank">
-          <span class="fa fa-external-link"></span>
-          サイト
-        </a>
       @endif
-      <a href="{{ $presenter->route('show', $model) }}" class="btn btn-primary">
-        <span class="fa fa-file-text-o"></span>
-        表示
-      </a>
 
       <button data-action="destroy" data-url="{{ $presenter->route('delete', $model) }}" class="btn btn-danger">
         <span class="fa fa-trash"></span>
