@@ -94,12 +94,12 @@
           $('#entries_wrapper .row:eq(0)').after($('.table-actions').show());
           $('#entries_wrapper div[id$=_filter] input').prop('class', 'form-control input-md');
 
+          // .table-actionsにフィルターを追加
 //          $('#entries_wrapper .row:eq(0)').after($('.table-filters').show());
-          $('#entries_wrapper .table-actions .row .btn-actions').append($('.table-filters').css({display: 'inline-block', float: 'right'}));
+          $('#entries_wrapper .table-actions .row .col-sm-12').append($('.table-filters').show());
 
           // 検索ボックスのサイズ変更
           $('#entries_wrapper input[type=search]').removeClass('input-md').addClass('input-sm');
-
 
           // 検索ボックスをクリア可能にする
           $('#entries_wrapper input[type=search]').clearable(function () {
