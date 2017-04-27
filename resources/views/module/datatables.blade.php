@@ -97,6 +97,10 @@
 //          $('#entries_wrapper .row:eq(0)').after($('.table-filters').show());
           $('#entries_wrapper .table-actions .row .btn-actions').append($('.table-filters').css({display: 'inline-block', float: 'right'}));
 
+          // 検索ボックスのサイズ変更
+          $('#entries_wrapper input[type=search]').removeClass('input-md').addClass('input-sm');
+
+
           // 検索ボックスをクリア可能にする
           $('#entries_wrapper input[type=search]').clearable(function () {
             dt.search('').draw();
