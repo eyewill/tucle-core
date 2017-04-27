@@ -34,7 +34,6 @@ class Presenter
     ],
   ];
   protected $hasRowActions = true;
-  protected $url;
 
   public function __construct(RouteManager $router, Request $request)
   {
@@ -125,15 +124,5 @@ class Presenter
   public function getRouter()
   {
     return $this->router;
-  }
-
-  public function url()
-  {
-    if (is_null($this->url))
-    {
-      return url('/');
-    }
-
-    return $this->url;
   }
 }
