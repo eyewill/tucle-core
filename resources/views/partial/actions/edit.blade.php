@@ -22,7 +22,7 @@
       @if ($presenter->hasRoute('show'))
         @if ($model instanceof \Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface)
           @if ($model->published())
-            <a href="{{ $model->route('show', $model) }}" class="btn btn-primary" target="_blank">
+            <a href="{{ $presenter->route('show', $model) }}" class="btn btn-primary" target="_blank">
               <span class="fa fa-external-link"></span>
               サイト
             </a>
@@ -35,7 +35,7 @@
             @endif
           @endif
         @else
-          <a href="{{ $model->route('show', $model) }}" class="btn btn-primary" target="_blank">
+          <a href="{{ $presenter->route('show', $model) }}" class="btn btn-primary" target="_blank">
             <span class="fa fa-external-link"></span>
             サイト
           </a>
