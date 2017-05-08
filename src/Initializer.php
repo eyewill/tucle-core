@@ -1,5 +1,6 @@
 <?php namespace Eyewill\TucleCore;
 
+use Eyewill\TucleBuilder\Factories\RequestsBuilderFactory;
 use Eyewill\TucleCore\Contracts\Initializer as InitializerContracts;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Providers\ArtisanServiceProvider;
@@ -105,6 +106,7 @@ class Initializer implements InitializerContracts
       yield $this->makeUserPresenter();
       yield $this->makeUserRoutes();
       yield $this->makeUserViews();
+      yield $this->makeUserRequests();
     }
 
     if (in_array('composer', $this->tasks))
@@ -601,5 +603,46 @@ __PHP__
     ]);
 
     return 'make:module user --only=views called.';
+  }
+
+  public function makeUserRequests()
+  {
+    $module = new \Eyewill\TucleBuilder\Module($this->app, 'user');
+    $factory = new RequestsBuilderFactory($this->app);
+    $path = $this->basePath.'/app/Http/Requests/User';
+    $builder = $factory->make($module, $path, $this->force);
+    $builder->setRule('store', function ($builder) {
+      $code = '';
+      $code.= 'return ['.PHP_EOL;
+      $rules = [
+        'name' => 'required',
+        'email' => 'required|unique:users',
+        'password' => 'required',
+        'role' => 'required',
+      ];
+      foreach ($rules as $column => $rule)
+      {
+        $code.= sprintf("'%s' => '%s',", $column, $rule).PHP_EOL;
+      }
+      $code.= '];';
+
+      return $code;
+    });
+
+    $builder->setRule('update', function ($builder) {
+      $code = '';
+      $code.= '$user = $this->route(\'user\');'.PHP_EOL;
+      $code.= 'return ['.PHP_EOL;
+      $code.= "'name' => 'required',".PHP_EOL;
+      $code.= "'email' => 'required|unique:users,email,'.\$user->id,".PHP_EOL;
+      $code.= "'role' => 'required',".PHP_EOL;
+      $code.= '];';
+
+      return $code;
+    });
+
+    $builder->make();
+
+    return $path.' generated.';
   }
 }
