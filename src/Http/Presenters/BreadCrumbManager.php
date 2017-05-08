@@ -11,7 +11,7 @@ class BreadCrumbManager
     $this->setPrepends([
       [
         'label' => config('tucle.brand', 'TUCLE5'),
-        'url' => '/',
+        'url' => config('app.url'),
       ],
     ]);
   }
