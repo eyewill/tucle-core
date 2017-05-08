@@ -20,6 +20,7 @@ class Initializer implements InitializerContracts
     'assets',
     'packages',
     'auth',
+    'user',
     'composer',
     'config',
     'routes',
@@ -95,7 +96,12 @@ class Initializer implements InitializerContracts
     if (in_array('auth', $this->tasks))
     {
       yield $this->copyAuthView();
+    }
+
+    if (in_array('user', $this->tasks))
+    {
       yield $this->makeUserModel();
+      yield $this->makeUserPresenter();
     }
 
     if (in_array('composer', $this->tasks))
@@ -552,6 +558,21 @@ __PHP__
     $code.= view()->make('Template::User')->render();
     $this->app['files']->put($filePath, $code);
 
-    return 'User model created.';
+    return $filePath.' generated.';
+  }
+
+  public function makeUserPresenter()
+  {
+    $filePath = $this->basePath.'/app/Http/Presenters/UserPresenter.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $code = '';
+    $code.= '<?php namespace App\Http\Presenters;'.PHP_EOL;
+    $code.= view()->make('Template::UserPresenter')->render();
+    $this->app['files']->put($filePath, $code);
+
+    return $filePath.' generated.';
   }
 }

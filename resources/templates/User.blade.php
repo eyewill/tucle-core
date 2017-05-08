@@ -13,7 +13,7 @@ class User extends Authenticatable {
   /**
   */
   protected $fillable = [
-    'user_name',
+    'name',
     'email',
     'password',
     'role',
@@ -43,7 +43,7 @@ class User extends Authenticatable {
   */
   public function getTitleAttribute($value)
   {
-    return $this->attributes['user_name'];
+    return $this->attributes['name'];
   }
 
   /**
