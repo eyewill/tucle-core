@@ -2,6 +2,7 @@
 
 use Eyewill\TucleCore\Contracts\Initializer as InitializerContracts;
 use Illuminate\Container\Container;
+use Illuminate\Foundation\Providers\ArtisanServiceProvider;
 
 class Initializer implements InitializerContracts
 {
@@ -102,6 +103,8 @@ class Initializer implements InitializerContracts
     {
       yield $this->makeUserModel();
       yield $this->makeUserPresenter();
+      yield $this->makeUserRoutes();
+      yield $this->makeUserViews();
     }
 
     if (in_array('composer', $this->tasks))
@@ -574,5 +577,29 @@ __PHP__
     $this->app['files']->put($filePath, $code);
 
     return $filePath.' generated.';
+  }
+
+  public function makeUserRoutes()
+  {
+    $this->app->make('Illuminate\Contracts\Console\Kernel')
+      ->call('make:module', [
+        'module' => 'user',
+        '--only' => 'routes',
+        '--force' => $this->force,
+      ]);
+
+    return 'make:module user --only=routes called.';
+  }
+
+  public function makeUserViews()
+  {
+    $this->app->make('Illuminate\Contracts\Console\Kernel')
+      ->call('make:module', [
+        'module' => 'user',
+        '--only' => 'views',
+        '--force' => $this->force,
+    ]);
+
+    return 'make:module user --only=views called.';
   }
 }

@@ -75,7 +75,6 @@ class TucleInit extends Command
     } catch (Exception $e) {
 
       $this->error($e->getFile().':'.$e->getLine().' '.$e->getMessage());
-      exit(-1);
     }
   }
 
