@@ -37,7 +37,7 @@
 
       @section('navbar-brand')
       <!-- Branding Image -->
-      <a class="navbar-brand" href="{{ url('/') }}">
+      <a class="navbar-brand" href="{{ config('app.url') }}">
         {{ config('tucle.brand', 'TUCLE5') }}
       </a>
       @show
