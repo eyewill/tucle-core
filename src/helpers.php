@@ -5,7 +5,7 @@ use Eyewill\TucleCore\Contracts\NavigationManager;
 if (!function_exists('role')) {
   function role($name)
   {
-    return collect(config('auth.roles'))->first(function ($index, $value) use ($name) {
+    return collect(config('tucle.roles'))->first(function ($index, $value) use ($name) {
       return ($value['name'] == $name);
     });
   }
