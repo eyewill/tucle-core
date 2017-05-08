@@ -39,6 +39,7 @@ class Initializer implements InitializerContracts
     $this->providerPath = $container['path'].'/Providers';
     $this->setForce($force);
     $this->setTasks($only);
+    $this->app['view']->addNamespace('Template', __DIR__.'/../resources/templates');
   }
 
   public function setForce($force)
@@ -94,6 +95,7 @@ class Initializer implements InitializerContracts
     if (in_array('auth', $this->tasks))
     {
       yield $this->copyAuthView();
+      yield $this->makeUserModel();
     }
 
     if (in_array('composer', $this->tasks))
@@ -204,41 +206,17 @@ class Initializer implements InitializerContracts
   {
     $homeRoute = $this->app['router']->getRoutes()->getByName('home');
     $routesPath = $this->app['path'].'/Http/routes.php';
-    if (!$this->force && !is_null($homeRoute))
-    {
+    if (!$this->force && !is_null($homeRoute)) {
       return $routesPath.' already exists.';
     }
 
-    $this->app['files']->put($routesPath, <<<__PHP__
-<?php
+    $code = '';
+    $code.= '<?php'.PHP_EOL;
+    $code.= $this->app['view']->make('routes')->render();
 
-/**
- * Index
- * route GET /
- * name home
-*/
-use Eyewill\TucleCore\Http\Presenters\TucleHomePresenter;
+    $this->app['files']->put($routesPath, $code);
 
-Route::get('/', function (TucleHomePresenter \$presenter) {
-
-  \$modules = config('tucle.modules', []);
-  \$entries = [];
-  foreach (\$modules as \$module)
-  {
-    if (is_array(\$module))
-      \$module = \$module['name'];
-    \$entries[] = app('App\\\\Http\\\\Presenters\\\\'.studly_case(\$module).'Presenter');
-  }
-
-  return view('tucle::home.index', [
-    'entries' => \$entries,
-    'presenter' => \$presenter,
-  ]);
-})->middleware('auth')->name('home');
-__PHP__
-      );
-
-      return $routesPath.' generated.';
+    return $routesPath.' generated.';
   }
 
   public function makeConfigFile()
@@ -257,7 +235,20 @@ return [
   
   'modules' => [],
   
-  'front_url' => env('FRONT_URL', 'http://localhost')
+  'front_url' => env('FRONT_URL', 'http://localhost'),
+  
+  'roles' => [
+    [
+      'name' => 'admin',
+      'label' => 'システム管理者',
+      'default_url' => '/',
+    ],
+    [
+      'name' => 'user',
+      'label' => '一般ユーザー',
+      'default_url' => '/',
+    ],
+  ],
 ];
 __PHP__
     );
@@ -547,5 +538,20 @@ __PHP__
     );
 
     return $filePath.' generated.';
+  }
+
+  public function makeUserModel()
+  {
+    $filePath = $this->basePath.'/app/User.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $code = '';
+    $code.= '<?php namespace App;'.PHP_EOL;
+    $code.= view()->make('Template::User')->render();
+    $this->app['files']->put($filePath, $code);
+
+    return 'User model created.';
   }
 }

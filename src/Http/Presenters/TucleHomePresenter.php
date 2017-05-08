@@ -41,4 +41,10 @@ class TucleHomePresenter extends Presenter
   {
     return '';
   }
+
+  public function title()
+  {
+    return config('tucle.brand', 'TUCLE5').' 管理画面';
+  }
+
 }
