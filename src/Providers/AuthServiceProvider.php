@@ -2,6 +2,7 @@
 
 namespace Eyewill\TucleCore\Providers;
 
+use Eyewill\TucleCore\Module;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -13,7 +14,6 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -24,17 +24,29 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(GateContract $gate)
     {
-        $this->registerPolicies($gate);
+      $this->registerPolicies($gate);
 
-        $gate->before(function ($user, $ability) {
+      $gate->before(function ($user, $ability) {
 
-          if ($user->role == 'admin')
+        if ($user->role == 'admin')
+        {
+          return true;
+        }
+      });
+
+      /** @var Module $module */
+      foreach (module()->all() as $module)
+      {
+        $gate->define('show-'.$module->name(), function ($user) use ($module) {
+
+          if (is_null($module->model))
+          {
             return true;
+          }
 
-          if (in_array($user->role, explode(',', $ability)))
-            return true;
-
-          return false;
+          return in_array($user->role, explode(',', $module->allows()));
         });
+      }
+
     }
 }

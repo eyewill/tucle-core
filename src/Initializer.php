@@ -212,7 +212,7 @@ class Initializer implements InitializerContracts
 
     $code = '';
     $code.= '<?php'.PHP_EOL;
-    $code.= $this->app['view']->make('routes')->render();
+    $code.= $this->app['view']->make('Template::routes')->render();
 
     $this->app['files']->put($routesPath, $code);
 
