@@ -29,21 +29,27 @@ class ModelPresenter extends Presenter
     parent::__construct($router, $request);
   }
 
-  public function getEntries($model, $query = null)
+  protected function getEntriesBuilder($model)
   {
-    $builder = app()->make($model)->query();
+    return app()->make($model)->query();
+  }
+
+  public function getEntries($model)
+  {
+    $builder = $this->getEntriesBuilder($model);
     if (request()->get('take') != 'all')
     {
       $builder->skip(request()->get('take'));
       $builder->limit($this->limit);
     }
+    $builder->orderBy($this->defaultSortColumn, $this->defaultSortOrder);
 
-    return $builder->orderBy($this->defaultSortColumn, $this->defaultSortOrder)->get();
+    return $builder->get();
   }
 
-  public function getTotal($model, $query = null)
+  public function getTotal($model)
   {
-    return app()->make($model)->count();
+    return $this->getEntriesBuilder($model)->count();
   }
 
   public function getLimit()
@@ -53,14 +59,27 @@ class ModelPresenter extends Presenter
 
   public function renderTakeSelector($total)
   {
-    $values = [
-      '0' => '1件目から'.$this->getLimit().'件目まで',
-    ];
-    if ($total > $this->getLimit())
+    $values = [];
+
+    if (is_null($total))
     {
-      foreach (range($this->getLimit(), $total, $this->getLimit()) as $index)
+      $values['0'] = '1件目から'.$this->getLimit().'件目まで';
+    }
+    else
+    {
+      if ($total > $this->getLimit())
       {
-        $values[$index] = ($index+1).'件目から'.($index+$this->getLimit()).'件目まで';
+        foreach (range(0, $total-1, $this->getLimit()) as $index)
+        {
+          if ($total < $index+$this->getLimit())
+          {
+            $values[$index] = ($index+1).'件目から'.$total.'件目まで';
+          }
+          else
+          {
+            $values[$index] = ($index+1).'件目から'.($index+$this->getLimit()).'件目まで';
+          }
+        }
       }
     }
 

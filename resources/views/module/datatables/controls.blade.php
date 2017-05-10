@@ -14,7 +14,18 @@
     $(function () {
       $('select[name=take]').on('change', function (e) {
         var value = $(this).val();
-        location.search = 'take='+value;
+        var args = {};
+        if (location.search) {
+          var search = location.search.substr(1);
+          $.each(search.split('&'), function () {
+            var pair = this.split('=');
+            args[pair[0]] = pair[1];
+          });
+          args['take'] = value;
+          location.search = $.param(args);
+        } else {
+          location.search = 'take='+value;
+        }
       });
     });
   </script>
