@@ -4,6 +4,8 @@ use Carbon\Carbon;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
 
@@ -31,6 +33,10 @@ class ModelPresenter extends Presenter
 
   protected function getEntriesBuilder($model)
   {
+    if ($model instanceof Builder || $model instanceof Relation)
+    {
+      return $model;
+    }
     return app()->make($model)->query();
   }
 
