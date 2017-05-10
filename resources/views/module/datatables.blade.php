@@ -106,6 +106,9 @@
             dt.search('').draw();
           }, -40);
 
+          // 全件表示用リンク
+          $('#entries_wrapper .row:eq(0) div:eq(0)').prepend($('.table-controls').show());
+
           // カスタムフィルタ
           DataTablesFilter.register(dt);
 

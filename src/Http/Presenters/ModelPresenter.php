@@ -16,6 +16,10 @@ class ModelPresenter extends Presenter
   protected $showStatus = true;
   protected $dateFormat = [];
   protected $filters = [];
+  protected $queries = [];
+  protected $limit = 100;
+  protected $defaultSortColumn = 'id';
+  protected $defaultSortOrder = 'desc';
 
   public function __construct(RouteManager $router, Request $request, FormBuilder $form, HtmlBuilder $html)
   {
@@ -23,6 +27,78 @@ class ModelPresenter extends Presenter
     $this->html = $html;
 
     parent::__construct($router, $request);
+  }
+
+  public function getEntries($model, $query = null)
+  {
+    $builder = app()->make($model)->query();
+    if (request()->get('take') != 'all')
+    {
+      $builder->skip(request()->get('take'));
+      $builder->limit($this->limit);
+    }
+
+    return $builder->orderBy($this->defaultSortColumn, $this->defaultSortOrder)->get();
+  }
+
+  public function getTotal($model, $query = null)
+  {
+    return app()->make($model)->count();
+  }
+
+  public function getLimit()
+  {
+    return $this->limit;
+  }
+
+  public function renderTakeSelector($total)
+  {
+    $values = [
+      '0' => '1件目から'.$this->getLimit().'件目まで',
+    ];
+    if ($total > $this->getLimit())
+    {
+      foreach (range($this->getLimit(), $total, $this->getLimit()) as $index)
+      {
+        $values[$index] = ($index+1).'件目から'.($index+$this->getLimit()).'件目まで';
+      }
+    }
+
+    if (is_null($total))
+    {
+      $values['all'] = '全件';
+    }
+    else
+    {
+      $values['all'] = '全件('.$total.'件)';
+    }
+
+    return $this->getForm()->select('take', $values, request()->get('take'), [
+      'class' => 'form-control input-sm',
+      'style' => 'width: auto',
+    ]);
+
+  }
+
+  public function renderLengthSelector($total)
+  {
+    $values = [
+      '' => $this->getLimit().'件',
+    ];
+
+    if (is_null($total))
+    {
+      $values['all'] = '全レコード';
+    }
+    else
+    {
+      $values['all'] = '全レコード('.$total.'件)';
+    }
+
+    return $this->getForm()->select('take', $values, request()->get('take'), [
+      'class' => 'form-control input-sm',
+      'style' => 'width: auto',
+    ]);
   }
 
   public function getFilters()

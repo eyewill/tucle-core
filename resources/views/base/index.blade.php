@@ -1,6 +1,7 @@
 @extends('layout')
 
 @include('tucle::module.datatables')
+@include('tucle::module.datatables.controls')
 
 @section('content')
 <div class="container">
