@@ -77,6 +77,9 @@ class UserPresenter extends ModelPresenter {
    */
   public $tableColumns = [
     [
+      'type' => 'checkbox',
+    ],
+    [
       'name' => 'name',
       'label' => 'ユーザー名',
       'links' => true,
@@ -107,14 +110,6 @@ class UserPresenter extends ModelPresenter {
   /**
    */
   protected $pageTitle = 'ユーザー管理';
-
-  /**
-   */
-  protected $showCheckbox = true;
-
-  /**
-   */
-  protected $showStatus = false;
 
   protected $hasRowActions = false;
 

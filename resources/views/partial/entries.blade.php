@@ -1,33 +1,17 @@
-<table id="entries" class="table" data-provider="datatables" style="display: none" data-show-checkbox="{{ $presenter->showCheckbox() }}" data-show-status="{{ $presenter->showStatus() }}">
+<?php
+  /**
+   * @var \Eyewill\TucleCore\Http\Presenters\ModelPresenter $presenter
+   */
+?>
+<table id="entries" class="table" data-provider="datatables" style="display: none">
   <thead>
-  <tr>
-    @if ($presenter->showCheckbox())
-      <th></th>
-    @endif
-    @if ($presenter->showStatus())
-      <th></th>
-    @endif
-    @foreach ($presenter->tableColumns() as $column)
-      <th>{{ $column['label'] }}</th>
-    @endforeach
-    @if ($presenter->hasRowActions())
-    <th data-orderable="false" data-searchable="false" data-width="1px"></th>
-    @endif
-  </tr>
+    {{ $presenter->renderTableColumns() }}
   </thead>
 
   <tbody>
   @foreach ($entries as $entry)
     <tr class="{{ $presenter->renderTableRowClass($entry) }}">
-      @if ($presenter->showCheckbox())
-      <td>{{ $presenter->checkboxId($entry) }}</td>
-      @endif
-      @if ($presenter->showStatus())
-        {{ $presenter->renderStatus($entry) }}
-      @endif
-      @foreach ($presenter->tableColumns() as $column)
-        {{ $presenter->renderTableColumn($column, $entry) }}
-      @endforeach
+      {{ $presenter->renderTableRow($entry) }}
       @if ($presenter->hasRowActions())
       <td>
         <div class="btn-actions">

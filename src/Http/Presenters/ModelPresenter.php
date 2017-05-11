@@ -14,8 +14,6 @@ class ModelPresenter extends Presenter
   protected $form;
   protected $html;
   protected $forms = [];
-  protected $showCheckbox = true;
-  protected $showStatus = true;
   protected $dateFormat = [];
   protected $filters = [];
   protected $queries = [];
@@ -249,6 +247,19 @@ class ModelPresenter extends Presenter
     else
     {
       $type = array_get($column, 'type');
+
+      if ($type == 'status')
+      {
+        return $this->renderStatus($model);
+      }
+
+      if ($type == 'checkbox')
+      {
+        $value = object_get($model, 'id');
+        $html = sprintf('<td>%s</td>', $value);
+        return new HtmlString($html);
+      }
+
       $links = array_get($column, 'links', false);
       $value = object_get($model, $name);
 
@@ -364,7 +375,7 @@ class ModelPresenter extends Presenter
       }
       $html = '';
       $html.= sprintf('<td data-search="%d"><span class="label %s">%s</span></td>',$label['value'],  $label['class'], $label['label']);
-      return new HtmlString($html);
+      return $html;
     }
 
     return ' ';
@@ -377,5 +388,16 @@ class ModelPresenter extends Presenter
       2 => '公開中',
       3 => '公開終了',
     ];
+  }
+
+  public function renderTableRow($model)
+  {
+    $html = '';
+    foreach ($this->tableColumns() as $column)
+    {
+      $html.= $this->renderTableColumn($column, $model);
+    }
+
+    return new HtmlString($html);
   }
 }

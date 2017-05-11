@@ -155,30 +155,27 @@
     };
 
     var table = $(DataTablesFactory.table);
-    var target_index = 0;
-    if (table.data('show-checkbox'))
-    {
-      DataTablesFactory.options.columnDefs.push({
-        width: '1px',
-        orderable: false,
-        searchable: false,
-        checkboxes: { selectRow: true, selectAllPages: false },
-        targets: target_index
-      });
-      target_index++;
-    }
 
-    if (table.data('show-status'))
-    {
-      DataTablesFactory.options.columnDefs.push({
-        width: '1px',
-        className: 'align-middle text-center',
-        orderable: true,
-        searchable: true,
-        targets: target_index
-      });
-      target_index++;
-    }
+    $('.entries_columns th').each(function (index) {
+      var type = $(this).data('type');
+      if (type === 'checkbox') {
+        DataTablesFactory.options.columnDefs.push({
+          width: '1px',
+          orderable: false,
+          searchable: false,
+          checkboxes: { selectRow: true, selectAllPages: false },
+          targets: index
+        });
+      } else if (type === 'status') {
+        DataTablesFactory.options.columnDefs.push({
+          width: '1px',
+          className: 'align-middle text-center',
+          orderable: false,
+          searchable: true,
+          targets: index
+        });
+      }
+    });
 
     DataTablesFactory.options.columnDefs.push({
       className: 'align-middle',

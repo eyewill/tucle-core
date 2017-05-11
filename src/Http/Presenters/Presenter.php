@@ -2,6 +2,7 @@
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\HtmlString;
 
 class Presenter
 {
@@ -11,8 +12,6 @@ class Presenter
   protected $tableColumns = [];
   protected $views = [];
   protected $viewBase = '';
-  protected $showCheckbox = false;
-  protected $showStatus = false;
   /** @var RouteManager */
   protected $router;
   protected $request;
@@ -74,16 +73,6 @@ class Presenter
     throw new Exception('"'.$customView.'" view file not found.');
   }
 
-  public function showCheckbox()
-  {
-    return $this->showCheckbox;
-  }
-
-  public function showStatus()
-  {
-    return $this->showStatus;
-  }
-
   public function hasRowActions()
   {
     return $this->hasRowActions;
@@ -124,5 +113,25 @@ class Presenter
   public function getRouter()
   {
     return $this->router;
+  }
+
+
+  public function renderTableColumns()
+  {
+    $html = '';
+    $html.= '<tr class="entries_columns">';
+    foreach ($this->tableColumns() as $column)
+    {
+      $type = array_get($column, 'type', 'text');
+      $value = array_get($column, 'label', '');
+      $html.= sprintf('<th data-type="%s">%s</th>', $type, $value);
+    }
+    if ($this->hasRowActions())
+    {
+      $html.= '<th data-orderable="false" data-searchable="false" data-width="1px"></th>';
+    }
+    $html.= '</tr>';
+
+    return new HtmlString($html);
   }
 }
