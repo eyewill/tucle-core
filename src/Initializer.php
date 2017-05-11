@@ -1,5 +1,6 @@
 <?php namespace Eyewill\TucleCore;
 
+use Exception;
 use Eyewill\TucleBuilder\Factories\RequestsBuilderFactory;
 use Eyewill\TucleCore\Contracts\Initializer as InitializerContracts;
 use Illuminate\Container\Container;
@@ -607,42 +608,47 @@ __PHP__
 
   public function makeUserRequests()
   {
-    $module = new \Eyewill\TucleBuilder\Module($this->app, 'user');
-    $factory = new RequestsBuilderFactory($this->app);
-    $path = $this->basePath.'/app/Http/Requests/User';
-    $builder = $factory->make($module, $path, $this->force);
-    $builder->setRule('store', function ($builder) {
-      $code = '';
-      $code.= 'return ['.PHP_EOL;
-      $rules = [
-        'name' => 'required',
-        'email' => 'required|unique:users',
-        'password' => 'required',
-        'role' => 'required',
-      ];
-      foreach ($rules as $column => $rule)
-      {
-        $code.= sprintf("'%s' => '%s',", $column, $rule).PHP_EOL;
-      }
-      $code.= '];';
+    try {
+      $module = new \Eyewill\TucleBuilder\Module($this->app, 'user');
+      $factory = new RequestsBuilderFactory($this->app);
+      $path = $this->basePath.'/app/Http/Requests/User';
+      $builder = $factory->make($module, $path, $this->force);
+      $builder->setRule('store', function ($builder) {
+        $code = '';
+        $code.= 'return ['.PHP_EOL;
+        $rules = [
+          'name' => 'required',
+          'email' => 'required|unique:users',
+          'password' => 'required',
+          'role' => 'required',
+        ];
+        foreach ($rules as $column => $rule)
+        {
+          $code.= sprintf("'%s' => '%s',", $column, $rule).PHP_EOL;
+        }
+        $code.= '];';
 
-      return $code;
-    });
+        return $code;
+      });
 
-    $builder->setRule('update', function ($builder) {
-      $code = '';
-      $code.= '$user = $this->route(\'user\');'.PHP_EOL;
-      $code.= 'return ['.PHP_EOL;
-      $code.= "'name' => 'required',".PHP_EOL;
-      $code.= "'email' => 'required|unique:users,email,'.\$user->id,".PHP_EOL;
-      $code.= "'role' => 'required',".PHP_EOL;
-      $code.= '];';
+      $builder->setRule('update', function ($builder) {
+        $code = '';
+        $code.= '$user = $this->route(\'user\');'.PHP_EOL;
+        $code.= 'return ['.PHP_EOL;
+        $code.= "'name' => 'required',".PHP_EOL;
+        $code.= "'email' => 'required|unique:users,email,'.\$user->id,".PHP_EOL;
+        $code.= "'role' => 'required',".PHP_EOL;
+        $code.= '];';
 
-      return $code;
-    });
+        return $code;
+      });
 
-    $builder->make();
+      $builder->make();
 
-    return $path.' generated.';
+      return $path.' generated.';
+    } catch (Exception $e) {
+
+      return $e->getMessage();
+    }
   }
 }
