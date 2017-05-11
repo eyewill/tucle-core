@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
    */
   public function boot(Router $router)
   {
-    //
+    $router->middleware('json', \Eyewill\TucleCore\Http\Middleware\Json::class);
 
     parent::boot($router);
   }
