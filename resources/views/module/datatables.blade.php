@@ -257,6 +257,9 @@
 
         $('[data-filter]').on('change', DataTablesFilter.filter);
         $('#filter_clear').on('click', DataTablesFilter.clear);
+        $('.table-filters button').focus(function(e){
+          $(this).blur();
+        });
       },
       filter: function () {
 
