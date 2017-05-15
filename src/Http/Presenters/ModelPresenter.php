@@ -400,4 +400,11 @@ class ModelPresenter extends Presenter
 
     return new HtmlString($html);
   }
+
+  public function setParentRouteModel($model)
+  {
+    $this->getRouter()->only([
+      'delete_file',
+    ], $model);
+  }
 }
