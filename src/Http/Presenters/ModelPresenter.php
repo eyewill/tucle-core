@@ -46,7 +46,22 @@ class ModelPresenter extends Presenter
       $builder->skip(request()->get('take'));
       $builder->limit($this->limit);
     }
-    $builder->orderBy($this->defaultSortColumn, $this->defaultSortOrder);
+    $sortColumns = $this->defaultSortColumn;
+    if (!is_array($sortColumns))
+    {
+      $sortColumns = [$sortColumns];
+    }
+    $sortOrders = $this->defaultSortOrder;
+    if (!is_array($sortOrders))
+    {
+      $sortOrders = [$sortOrders];
+    }
+    debug($sortColumns);
+    foreach ($sortColumns as $i => $column)
+    {
+      $order = isset($sortOrders[$i]) ? $sortOrders[$i] : 'asc';
+      $builder->orderBy($column, $order);
+    }
 
     return $builder->get();
   }
