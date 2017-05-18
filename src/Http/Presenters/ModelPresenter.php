@@ -56,7 +56,6 @@ class ModelPresenter extends Presenter
     {
       $sortOrders = [$sortOrders];
     }
-    debug($sortColumns);
     foreach ($sortColumns as $i => $column)
     {
       $order = isset($sortOrders[$i]) ? $sortOrders[$i] : 'asc';
