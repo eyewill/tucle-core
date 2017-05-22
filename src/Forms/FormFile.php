@@ -44,7 +44,10 @@ class FormFile extends FormInput
       $type = 'text';
       $text = app()->make('files')->get($attachment->path());
       $encoding = mb_detect_encoding($text, 'SJIS,UTF-8');
-      $preview = json_encode([mb_convert_encoding($text, 'UTF-8', $encoding)]);
+      if ($encoding)
+      {
+        $preview = json_encode([mb_convert_encoding($text, 'UTF-8', $encoding)]);
+      }
     }
     else
     {
