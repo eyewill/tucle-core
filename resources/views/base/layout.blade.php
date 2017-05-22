@@ -96,8 +96,8 @@
 @yield('content')
 
 <footer class="footer">
-  &copy Eyewill<br>
-  Powered by Tucle5
+  &copy {{ config('tucle.copyright', 'Eyewill') }}<br>
+  Powered by {{ config('tucle.powered_by', 'Tucle5') }}
 </footer>
 
 <!-- JavaScripts -->
