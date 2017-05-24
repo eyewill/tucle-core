@@ -2,10 +2,11 @@
 
 use Closure;
 use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Http\Request;
 
 class Role
 {
-  function handle($request, Closure $next)
+  function handle(Request $request, Closure $next)
   {
     // ログインセッションが切れている場合は
     // Authenticationに任せる
@@ -19,6 +20,10 @@ class Role
       if (is_array($module))
       {
         $name = $module['name'];
+        if ($request->route()->getPrefix())
+        {
+          $name = $request->route()->getPrefix().'/'.$name;
+        }
         if ($request->is($name) || $request->is($name.'/*'))
         {
           if (app(Gate::class)->denies('show-'.$name, $module['model']))
