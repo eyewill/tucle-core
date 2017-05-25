@@ -44,14 +44,7 @@ class ModelPresenter extends Presenter
     $columns = [];
     foreach ($values as $value)
     {
-      if (isset($value['search_column']))
-      {
-        $columns[] = $value['search_column'];
-      }
-      else
-      {
-        $columns[] = $builder->getModel()->getTable().'.'.$value['name'];
-      }
+      $columns[] = $builder->getModel()->getTable().'.'.$value['name'];
     }
 
     return $columns;
@@ -62,9 +55,9 @@ class ModelPresenter extends Presenter
     $columns = [];
     foreach ($this->searchColumns as $value)
     {
-      if (isset($value['search_column']))
+      if (isset($value['column']))
       {
-        $columns[] = $value['search_column'];
+        $columns[] = $value['column'];
       }
       else
       {
