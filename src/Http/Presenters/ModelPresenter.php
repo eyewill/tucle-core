@@ -33,13 +33,27 @@ class ModelPresenter extends Presenter
    * 検索可能カラム
    * デフォルトはtrue
    */
-  protected function searchableTableColumns()
+  protected function searchableTableColumns($builder)
   {
-    return collect($this->tableColumns())
+    $values = collect($this->tableColumns())
       ->filter(function ($value) {
         return array_has($value, 'name') && (!array_has($value, 'searchable') || array_get($value, 'searchable', true));
-      })
-      ->pluck('name');
+      });
+
+    $columns = [];
+    foreach ($values as $value)
+    {
+      if (isset($value['search_column']))
+      {
+        $columns[] = $value['search_column'];
+      }
+      else
+      {
+        $columns[] = $builder->getModel()->getTable().'.'.$value['name'];
+      }
+    }
+
+    return $columns;
   }
 
   protected function getEntriesBuilder($model)
@@ -54,8 +68,8 @@ class ModelPresenter extends Presenter
     }
     if (request()->has('s'))
     {
-      $builder->where(function($query) {
-        foreach($this->searchableTableColumns() as $column)
+      $builder->where(function($query) use ($builder) {
+        foreach($this->searchableTableColumns($builder) as $column)
         {
           $query->orWhere($column, 'like', '%'.request('s').'%');
         }
