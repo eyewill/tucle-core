@@ -81,7 +81,14 @@ class ModelPresenter extends Presenter
 
   public function getEntries($model)
   {
-    $builder = $this->getEntriesBuilder($model);
+    if ($model instanceof Builder || $model instanceof Relation)
+    {
+      $builder = $model;
+    }
+    else
+    {
+      $builder = $this->getEntriesBuilder($model);
+    }
     if (request()->get('take') != 'all')
     {
       $builder->skip(request()->get('take'));
