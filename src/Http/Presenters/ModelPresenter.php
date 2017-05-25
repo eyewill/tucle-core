@@ -20,6 +20,7 @@ class ModelPresenter extends Presenter
   protected $limit = 100;
   protected $defaultSortColumn = 'id';
   protected $defaultSortOrder = 'desc';
+  protected $searchColumns = [];
 
   public function __construct(RouteManager $router, Request $request, FormBuilder $form, HtmlBuilder $html)
   {
@@ -56,6 +57,26 @@ class ModelPresenter extends Presenter
     return $columns;
   }
 
+  protected function searchColumns($builder)
+  {
+    $columns = [];
+    foreach ($this->searchColumns as $value)
+    {
+      if (isset($value['search_column']))
+      {
+        $columns[] = $value['search_column'];
+      }
+      else
+      {
+        $columns[] = $builder->getModel()->getTable().'.'.$value['name'];
+      }
+    }
+    $values = $this->searchableTableColumns($builder);
+    $values = array_merge($values, $columns);
+
+    return $values;
+  }
+
   protected function getEntriesBuilder($model)
   {
     if ($model instanceof Builder || $model instanceof Relation)
@@ -69,7 +90,7 @@ class ModelPresenter extends Presenter
     if (request()->has('s'))
     {
       $builder->where(function($query) use ($builder) {
-        foreach($this->searchableTableColumns($builder) as $column)
+        foreach($this->searchColumns($builder) as $column)
         {
           $query->orWhere($column, 'like', '%'.request('s').'%');
         }
