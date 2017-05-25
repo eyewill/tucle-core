@@ -29,13 +29,40 @@ class ModelPresenter extends Presenter
     parent::__construct($router, $request);
   }
 
+  /**
+   * 検索可能カラム
+   * デフォルトはtrue
+   */
+  protected function searchableTableColumns()
+  {
+    return collect($this->tableColumns())
+      ->filter(function ($value) {
+        return array_has($value, 'name') && (!array_has($value, 'searchable') || array_get($value, 'searchable', true));
+      })
+      ->pluck('name');
+  }
+
   protected function getEntriesBuilder($model)
   {
     if ($model instanceof Builder || $model instanceof Relation)
     {
-      return $model;
+      $builder = $model;
     }
-    return app()->make($model)->query();
+    else
+    {
+      $builder = app()->make($model)->query();
+    }
+    if (request()->has('s'))
+    {
+      $builder->where(function($query) {
+        foreach($this->searchableTableColumns() as $column)
+        {
+          $query->orWhere($column, 'like', '%'.request('s').'%');
+        }
+      });
+    }
+
+    return $builder;
   }
 
   public function getEntries($model)

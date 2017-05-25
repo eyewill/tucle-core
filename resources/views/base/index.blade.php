@@ -2,6 +2,7 @@
 
 @include('tucle::module.datatables')
 @include('tucle::module.datatables.controls')
+@include('tucle::module.datatables.search')
 
 @section('content')
 <div class="container">

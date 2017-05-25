@@ -36,6 +36,7 @@
     var DataTablesFactory = {
       table: '#entries',
       options: {
+        filter: false,
         columnDefs: [],
         select: {
           style: 'multi',
@@ -102,12 +103,17 @@
           $('#entries_wrapper input[type=search]').removeClass('input-md').addClass('input-sm');
 
           // 検索ボックスをクリア可能にする
-          $('#entries_wrapper input[type=search]').clearable(function () {
-            dt.search('').draw();
-          }, -40);
+          if (0) {
+            $('#entries_wrapper input[type=search]').clearable(function () {
+              dt.search('').draw();
+            }, -40);
+          }
 
           // 全件表示用リンク
-          $('#entries_wrapper .row:eq(0) div:eq(0)').prepend($('.table-controls').show());
+          $('#entries_wrapper .row:eq(0) > div:eq(0)').prepend($('.table-controls').show());
+
+          // 検索をサーバーサイドに変更
+          $("#entries_wrapper .row:eq(0) > div:eq(1)").prepend($('.table-search').show());
 
           // カスタムフィルタ
           DataTablesFilter.register(dt);
