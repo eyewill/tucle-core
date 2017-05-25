@@ -36,7 +36,6 @@
     var DataTablesFactory = {
       table: '#entries',
       options: {
-        filter: false,
         columnDefs: [],
         select: {
           style: 'multi',
@@ -113,6 +112,7 @@
           $('#entries_wrapper .row:eq(0) > div:eq(0)').prepend($('.table-controls').show());
 
           // 検索をサーバーサイドに変更
+          $('#entries_filter').hide();
           $("#entries_wrapper .row:eq(0) > div:eq(1)").prepend($('.table-search').show());
 
           // カスタムフィルタ
