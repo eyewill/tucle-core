@@ -77,7 +77,7 @@ class ModelPresenter extends Presenter
     return $values;
   }
 
-  protected function getEntriesBuilder($model)
+  public function getEntriesBuilder($model)
   {
     if ($model instanceof Builder || $model instanceof Relation)
     {
