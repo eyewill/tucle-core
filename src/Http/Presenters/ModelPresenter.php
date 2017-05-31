@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
+use DB;
 use Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -31,43 +32,33 @@ class ModelPresenter extends Presenter
   }
 
   /**
-   * 検索可能カラム
-   * デフォルトはtrue
+   * 検索対象カラム
    */
-  protected function searchableTableColumns($builder)
+  protected function searchColumns($builder)
   {
+    $columns = [];
     $values = collect($this->tableColumns())
       ->filter(function ($value) {
         return array_has($value, 'name') && (!array_has($value, 'searchable') || array_get($value, 'searchable', true));
       });
 
-    $columns = [];
     foreach ($values as $value)
     {
-      $columns[] = $builder->getModel()->getTable().'.'.$value['name'];
+      $columns[] = [
+        'name' => array_get($value, 'name', ''),
+        'type' => 'text',
+      ];
+    }
+
+    foreach ($this->searchColumns as $value)
+    {
+      $columns[] = [
+        'name' => array_get($value, 'column', $builder->getModel()->getTable().'.'.$value['name']),
+        'type' => array_get($value, 'type', 'text'),
+      ];
     }
 
     return $columns;
-  }
-
-  protected function searchColumns($builder)
-  {
-    $columns = [];
-    foreach ($this->searchColumns as $value)
-    {
-      if (isset($value['column']))
-      {
-        $columns[] = $value['column'];
-      }
-      else
-      {
-        $columns[] = $builder->getModel()->getTable().'.'.$value['name'];
-      }
-    }
-    $values = $this->searchableTableColumns($builder);
-    $values = array_merge($values, $columns);
-
-    return $values;
   }
 
   public function getEntriesBuilder($model)
@@ -85,7 +76,16 @@ class ModelPresenter extends Presenter
       $builder->where(function($query) use ($builder) {
         foreach($this->searchColumns($builder) as $column)
         {
-          $query->orWhere($column, 'like', '%'.request('s').'%');
+          $name = $column['name'];
+          $type = $column['type'];
+          if ($type == 'date')
+          {
+            $query->orWhere(DB::raw("DATE_FORMAT($name, '%Y/%m/%d')"), 'like', request('s').'%');
+          }
+          else
+          {
+            $query->orWhere($name, 'like', '%'.request('s').'%');
+          }
         }
       });
     }
