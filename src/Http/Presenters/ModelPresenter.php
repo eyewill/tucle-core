@@ -45,7 +45,7 @@ class ModelPresenter extends Presenter
     foreach ($values as $value)
     {
       $columns[] = [
-        'name' => array_get($value, 'name', ''),
+        'name' => $builder->getModel()->getTable().'.'.array_get($value, 'name', ''),
         'type' => 'text',
       ];
     }
