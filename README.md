@@ -2,7 +2,7 @@
 
 <pre>
 # laravelプロジェクト作成
-$ composer create-project laravel/laravel example-project 5.2.*  
+$ composer create-project "laravel/laravel=~5.2.0" example-project
 </pre>
 
 <pre>

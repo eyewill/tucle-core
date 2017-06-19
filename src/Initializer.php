@@ -574,6 +574,7 @@ __PHP__
       return $filePath . ' already exists.';
     }
 
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
     $code = '';
     $code.= '<?php namespace App\Http\Presenters;'.PHP_EOL;
     $code.= view()->make('Template::UserPresenter')->render();
