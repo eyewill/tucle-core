@@ -42,10 +42,12 @@ $ php artisan tucle:init
 ### ユーザー管理モジュールを作成
 
 <pre>
-$ php artisan tucle:makeuser
+$ php artisan tucle:makeuser --force
 </pre>
 
 ユーザー管理画面を作成します
+データベースのマイグレーションが終わってから実行してください
+--forceをつけない場合、User.phpは更新されません
 
 ### 再生成
 
@@ -67,6 +69,8 @@ $ npm install
 $ bower install
 $ gulp
 </pre>
+
+必ず最初に一回実行する必要があります
 
 ### Presenter
 

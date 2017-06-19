@@ -1,4 +1,4 @@
-@extends('tucle::base.layout')
+@extends('layout')
 
 <!-- Main Content -->
 @section('content')

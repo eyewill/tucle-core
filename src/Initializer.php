@@ -27,6 +27,7 @@ class Initializer implements InitializerContracts
     'config',
     'routes',
     'providers',
+    'layout',
   ];
 
   protected $tasks = [];
@@ -135,6 +136,11 @@ class Initializer implements InitializerContracts
       yield $this->makeRouteServiceProvider();
     }
 
+    if (in_array('layout', $this->tasks))
+    {
+      yield $this->copyLayout();
+    }
+
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
   }
 
@@ -169,6 +175,19 @@ class Initializer implements InitializerContracts
 
     return 'assets/'.$asset.' copied.';
   }
+
+  public function copyLayout()
+  {
+    if (!$this->force && $this->app['files']->exists($this->resourcePath.'/views/layout.blade.php'))
+    {
+      return $this->resourcePath.'/views/layout.blade.php already exists';
+    }
+
+    $this->app['files']->copy(__DIR__.'/../files/layout.blade.php', $this->resourcePath.'/views/layout.blade.php');
+
+    return 'layout copied.';
+  }
+
 
   public function copyAuthView()
   {
