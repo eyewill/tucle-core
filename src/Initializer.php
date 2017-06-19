@@ -81,6 +81,30 @@ class Initializer implements InitializerContracts
 
   public function generator()
   {
+    if (in_array('composer', $this->tasks))
+    {
+      yield $this->composer->add('laravelcollective/html', '5.2.*');
+      yield $this->composer->add('codesleeve/laravel-stapler', '1.0.*');
+      yield $this->composer->add('barryvdh/laravel-debugbar', '^2.3');
+      yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
+      yield $this->composer->scripts('php artisan ide-helper:generate', 1);
+      yield $this->composer->scripts('php artisan ide-helper:meta', 2);
+      yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
+      yield $this->composer->add('primalbase/view-builder', 'dev-master');
+      yield $this->composer->add('eyewill/tucle-builder', 'dev-master');
+    }
+
+    if (in_array('config', $this->tasks))
+    {
+      yield $this->makeConfigFile();
+      yield $this->makeAppConfigFile();
+    }
+
+    if (in_array('composer', $this->tasks))
+    {
+      yield $this->composer->update();
+    }
+
     if (in_array('assets', $this->tasks))
     {
       yield $this->makeAssetsSass();
@@ -108,26 +132,6 @@ class Initializer implements InitializerContracts
       yield $this->makeUserRoutes();
       yield $this->makeUserViews();
       yield $this->makeUserRequests();
-    }
-
-    if (in_array('composer', $this->tasks))
-    {
-      yield $this->composer->add('laravelcollective/html', '5.2.*');
-      yield $this->composer->add('codesleeve/laravel-stapler', '1.0.*');
-      yield $this->composer->add('barryvdh/laravel-debugbar', '^2.3');
-      yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
-      yield $this->composer->scripts('php artisan ide-helper:generate', 1);
-      yield $this->composer->scripts('php artisan ide-helper:meta', 2);
-      yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
-      yield $this->composer->add('primalbase/view-builder', 'dev-master');
-      yield $this->composer->add('primalbase/tucle-builder', 'dev-master');
-      yield $this->composer->update();
-    }
-
-    if (in_array('config', $this->tasks))
-    {
-      yield $this->makeConfigFile();
-      yield $this->makeAppConfigFile();
     }
 
     if (in_array('routes', $this->tasks))
