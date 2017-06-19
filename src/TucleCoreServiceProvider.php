@@ -1,5 +1,7 @@
 <?php namespace Eyewill\TucleCore;
 
+use Eyewill\TucleCore\Console\Commands\TucleInit;
+use Eyewill\TucleCore\Console\Commands\TucleMakeUser;
 use Eyewill\TucleCore\Contracts\Initializer;
 use Eyewill\TucleCore\Contracts\ModuleManager;
 use Eyewill\TucleCore\Contracts\NavigationManager;
@@ -26,7 +28,8 @@ class TucleCoreServiceProvider extends ServiceProvider
   protected $defer = false;
 
   protected $commands = [
-    'Eyewill\TucleCore\Console\Commands\TucleInit',
+    TucleInit::class,
+    TucleMakeUser::class,
   ];
 
   protected $formFactories = [

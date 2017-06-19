@@ -23,7 +23,6 @@ class Initializer implements InitializerContracts
     'assets',
     'packages',
     'auth',
-    'user',
     'composer',
     'config',
     'routes',
@@ -123,15 +122,6 @@ class Initializer implements InitializerContracts
     if (in_array('auth', $this->tasks))
     {
       yield $this->copyAuthView();
-    }
-
-    if (in_array('user', $this->tasks))
-    {
-      yield $this->makeUserModel();
-      yield $this->makeUserPresenter();
-      yield $this->makeUserRoutes();
-      yield $this->makeUserViews();
-      yield $this->makeUserRequests();
     }
 
     if (in_array('routes', $this->tasks))
@@ -554,106 +544,5 @@ __PHP__
     );
 
     return $filePath.' generated.';
-  }
-
-  public function makeUserModel()
-  {
-    $filePath = $this->basePath.'/app/User.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $code = '';
-    $code.= '<?php namespace App;'.PHP_EOL;
-    $code.= view()->make('Template::User')->render();
-    $this->app['files']->put($filePath, $code);
-
-    return $filePath.' generated.';
-  }
-
-  public function makeUserPresenter()
-  {
-    $filePath = $this->basePath.'/app/Http/Presenters/UserPresenter.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
-    $code = '';
-    $code.= '<?php namespace App\Http\Presenters;'.PHP_EOL;
-    $code.= view()->make('Template::UserPresenter')->render();
-    $this->app['files']->put($filePath, $code);
-
-    return $filePath.' generated.';
-  }
-
-  public function makeUserRoutes()
-  {
-    $this->app->make('Illuminate\Contracts\Console\Kernel')
-      ->call('make:module', [
-        'module' => 'user',
-        '--only' => 'routes',
-        '--force' => $this->force,
-      ]);
-
-    return 'make:module user --only=routes called.';
-  }
-
-  public function makeUserViews()
-  {
-    $this->app->make('Illuminate\Contracts\Console\Kernel')
-      ->call('make:module', [
-        'module' => 'user',
-        '--only' => 'views',
-        '--force' => $this->force,
-    ]);
-
-    return 'make:module user --only=views called.';
-  }
-
-  public function makeUserRequests()
-  {
-    try {
-      $module = new \Eyewill\TucleBuilder\Module($this->app, 'user');
-      $factory = new RequestsBuilderFactory($this->app);
-      $path = $this->basePath.'/app/Http/Requests/User';
-      $builder = $factory->make($module, $path, $this->force);
-      $builder->setRule('store', function ($builder) {
-        $code = '';
-        $code.= 'return ['.PHP_EOL;
-        $rules = [
-          'name' => 'required',
-          'email' => 'required|unique:users',
-          'password' => 'required',
-          'role' => 'required',
-        ];
-        foreach ($rules as $column => $rule)
-        {
-          $code.= sprintf("'%s' => '%s',", $column, $rule).PHP_EOL;
-        }
-        $code.= '];';
-
-        return $code;
-      });
-
-      $builder->setRule('update', function ($builder) {
-        $code = '';
-        $code.= '$user = $this->route(\'user\');'.PHP_EOL;
-        $code.= 'return ['.PHP_EOL;
-        $code.= "'name' => 'required',".PHP_EOL;
-        $code.= "'email' => 'required|unique:users,email,'.\$user->id,".PHP_EOL;
-        $code.= "'role' => 'required',".PHP_EOL;
-        $code.= '];';
-
-        return $code;
-      });
-
-      $builder->make();
-
-      return $path.' generated.';
-    } catch (Exception $e) {
-
-      return $e->getMessage();
-    }
   }
 }

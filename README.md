@@ -39,6 +39,14 @@ $ php artisan tucle:init
 
 .tucleが作成されていて生成対象のファイルが存在する場合、そのタスクはスキップします。
 
+### ユーザー管理モジュールを作成
+
+<pre>
+$ php artisan tucle:makeuser
+</pre>
+
+ユーザー管理画面を作成します
+
 ### 再生成
 
 <pre>
