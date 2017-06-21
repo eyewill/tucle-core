@@ -95,3 +95,10 @@ $ gulp
     return ['1' => 'fuga', 2 => 'fuga'];
   }
 </pre>
+
+
+### リリースノート
+
+dev-master
+
+- tucle:base.layoutを削除し、tucle:initでコピーする形に変更

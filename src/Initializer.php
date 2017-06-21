@@ -28,6 +28,7 @@ class Initializer implements InitializerContracts
     'routes',
     'providers',
     'layout',
+    'lang',
   ];
 
   protected $tasks = [];
@@ -141,6 +142,11 @@ class Initializer implements InitializerContracts
       yield $this->copyLayout();
     }
 
+    if (in_array('lang', $this->tasks))
+    {
+      yield $this->copyLang();
+    }
+
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
   }
 
@@ -188,6 +194,17 @@ class Initializer implements InitializerContracts
     return 'layout copied.';
   }
 
+  public function copyLang()
+  {
+    if (!$this->force && $this->app['files']->exists($this->resourcePath.'/lang'))
+    {
+      return $this->resourcePath.'/lang already exists';
+    }
+
+    $this->app['files']->copyDirectory(__DIR__.'/../files/lang', $this->resourcePath.'/'.'lang');
+
+    return 'lang copied.';
+  }
 
   public function copyAuthView()
   {
