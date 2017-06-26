@@ -138,6 +138,7 @@ class Initializer implements InitializerContracts
 
     if (in_array('providers', $this->tasks))
     {
+      yield $this->makeEventServiceProvider();
       yield $this->makeAuthServiceProvider();
       yield $this->makeRouteServiceProvider();
     }
@@ -278,32 +279,9 @@ class Initializer implements InitializerContracts
       return $configFilePath . ' already exists.';
     }
 
-    $this->app['files']->put($configFilePath, <<<__PHP__
-<?php
-
-return [
-  
-  'brand' => 'TUCLE5',
-  
-  'modules' => [],
-  
-  'front_url' => env('FRONT_URL', 'http://localhost'),
-  
-  'roles' => [
-    [
-      'name' => 'admin',
-      'label' => 'システム管理者',
-      'default_url' => '/',
-    ],
-    [
-      'name' => 'user',
-      'label' => '一般ユーザー',
-      'default_url' => '/',
-    ],
-  ],
-];
-__PHP__
-    );
+    $templatePath = __DIR__.'/../files/config.php';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($configFilePath, $template);
 
     return $configFilePath.' generated.';
   }
@@ -553,18 +531,23 @@ __PHP__
       return $filePath . ' already exists.';
     }
 
-    $this->app['files']->put($filePath, <<<__PHP__
-<?php
+    $templatePath = __DIR__.'/../files/Providers/AuthServiceProvider.php';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
 
-namespace App\Providers;
+    return $filePath.' generated.';
+  }
 
-use Eyewill\TucleCore\Providers\AuthServiceProvider as ServiceProvider;
+  public function makeEventServiceProvider()
+  {
+    $filePath = $this->providerPath.'/EventServiceProvider.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
 
-class AuthServiceProvider extends ServiceProvider
-{
-}
-__PHP__
-    );
+    $templatePath = __DIR__.'/../files/Providers/EventServiceProvider.php';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
 
     return $filePath.' generated.';
   }
@@ -576,18 +559,9 @@ __PHP__
       return $filePath . ' already exists.';
     }
 
-    $this->app['files']->put($filePath, <<<__PHP__
-<?php
-
-namespace App\Providers;
-
-use Eyewill\TucleCore\Providers\RouteServiceProvider as ServiceProvider;
-
-class RouteServiceProvider extends ServiceProvider
-{
-}
-__PHP__
-    );
+    $templatePath = __DIR__.'/../files/Providers/RouteServiceProvider.php';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
 
     return $filePath.' generated.';
   }

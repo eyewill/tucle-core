@@ -40,13 +40,15 @@ if (!function_exists('eventlog')) {
   {
     if (is_null($params))
     {
-      $params = request()->except('_method', '_token', 'password', 'created_at', 'updated_at');
+      $params = request()->all();
     }
 
-    if (DB::table('event_logs')->exists())
+    $params = array_except($params, ['_method', '_token', 'password', 'created_at', 'updated_at']);
+
+    if (config('tucle.event_log.enabled'))
     {
       DB::table('event_logs')->insert([
-        'login_id' => $user->login_id,
+        'login_id' => $user->{config('tucle.event_log.user_credential_key', 'email')},
         'role' => $user->role,
         'event' => $event,
         'params' => json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),

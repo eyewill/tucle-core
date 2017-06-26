@@ -1,10 +1,10 @@
-<?php namespace Eyewill\TucleCore;
+<?php namespace Eyewill\TucleCore\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 
 trait EventLogTrait
 {
-  public static $logging = true;
+  public $logging = true;
 
   public static function bootEventLogTrait()
   {
@@ -13,7 +13,7 @@ trait EventLogTrait
     });
 
     static::updated(function (Model $model) {
-      static::logging($model, $model->getTable().'.update');
+      static::logging($model, $model->getTable().'.update', '', $model->getDirty());
     });
 
     static::deleted(function (Model $model) {
@@ -30,8 +30,7 @@ trait EventLogTrait
 
   protected static function logging(Model $model, $event, $description = '', $params = null)
   {
-
-    if (!static::$logging)
+    if (!$model->logging)
     {
       return;
     }

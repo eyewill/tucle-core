@@ -99,14 +99,35 @@ $ gulp
 
 ### リリースノート
 
-dev-master
+#### dev-master
 
-#### tucle:base.layoutを削除
+##### 変更点
 
-- tucle:initでコピーする形に変更
-- tucle:base.layoutをインクルードしている場合はlayoutを作成し、インクルード先を変更する
+- イベントログを追加
 
-#### イベントログを追加
+##### アップグレード
 
 - tucle:init --only=eventlog を実行し、migrationを行う
 - 各モデルにuse EventLogTrait;を追加する
+- EventServiceProviderはEyewill\TucleCore\Providers\EventServiceProviderを継承するように変更する
+- config/tucle.phpに以下を追加
+<pre>
+    'event_log' => [
+      'enabled' => true,
+      'user_credential_key' => 'email',
+    ],
+</pre>
+
+#### 0.2.0
+
+##### 変更点
+
+- tucle:base.layoutを削除し、tucle:initでコピーする形に変更
+
+##### アップグレード
+
+- tucle:base.layoutをインクルードしている場合はlayoutを作成し、インクルード先を変更する
+
+#### 0.1.2
+
+It has not been documented.

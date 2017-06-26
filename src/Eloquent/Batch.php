@@ -18,16 +18,17 @@ trait Batch
   public static function batch($name, $entries = [], $force = false)
   {
     $completes = 0;
-
-    static::$logging = false;
+    $results = [];
 
     try {
 
-      app()->make('db')->transaction(function () use ($name, $entries, &$completes, $force) {
+      app()->make('db')->transaction(function () use ($name, $entries, &$completes, &$results, $force) {
 
         /** @var Model $model */
         foreach ($entries as $model)
         {
+          $model->logging = false;
+
           if (!$model->$name())
           {
             if (!$force)
@@ -37,6 +38,11 @@ trait Batch
             continue;
           }
 
+          if (!array_key_exists($model->getTable(), $results))
+          {
+            $results[$model->getTable()] = [];
+          }
+          $results[$model->getTable()][] = $model->id;
           $completes++;
         }
 
@@ -46,9 +52,7 @@ trait Batch
 
     }
 
-    static::$logging = true;
-
-    eventlog(auth()->user(), app()->make(static::class)->getTable().'.batch.'.$name);
+    eventlog(auth()->user(), app()->make(static::class)->getTable().'.batch.'.$name, '', $results);
 
     return $completes;
   }
