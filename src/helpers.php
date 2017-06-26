@@ -34,3 +34,26 @@ if (!function_exists('navigation')) {
     return app()->make(NavigationManager::class)->find($name);
   }
 }
+
+if (!function_exists('eventlog')) {
+  function eventlog($user, $event, $description = '', $params = null)
+  {
+    if (is_null($params))
+    {
+      $params = request()->except('_method', '_token', 'password', 'created_at', 'updated_at');
+    }
+
+    if (DB::table('event_logs')->exists())
+    {
+      DB::table('event_logs')->insert([
+        'login_id' => $user->login_id,
+        'role' => $user->role,
+        'event' => $event,
+        'params' => json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        'client_ip_address' => request()->ip(),
+        'description' => $description,
+        'created_at' => \Carbon\Carbon::now(),
+      ]);
+    }
+  }
+}

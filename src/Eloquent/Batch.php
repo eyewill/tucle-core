@@ -19,6 +19,8 @@ trait Batch
   {
     $completes = 0;
 
+    static::$logging = false;
+
     try {
 
       app()->make('db')->transaction(function () use ($name, $entries, &$completes, $force) {
@@ -43,6 +45,10 @@ trait Batch
     } catch (Exception $e) {
 
     }
+
+    static::$logging = true;
+
+    eventlog(auth()->user(), app()->make(static::class)->getTable().'.batch.'.$name);
 
     return $completes;
   }

@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateEventLogsTable extends Migration {
+
+  public function up()
+  {
+    Schema::create('event_logs', function (Blueprint $table) {
+
+      $table->string('login_id')->index();
+      $table->string('role');
+      $table->string('event');
+      $table->string('params');
+      $table->text('description');
+      $table->string('client_ip_address');
+      $table->dateTime('created_at')->nullable();
+      $table->engine = 'InnoDB';
+    });
+  }
+
+  public function down()
+  {
+    Schema::dropIfExists('event_logs');
+  }
+}

@@ -69,4 +69,13 @@ class ComposerManager
     $this->updates = false;
     return $process->getOutput();
   }
+
+  public function dumpAutoload()
+  {
+    $process = new Process('composer dumpautoload');
+    $process->setTimeout(0);
+    $process->run();
+    $this->updates = false;
+    return $process->getOutput();
+  }
 }

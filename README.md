@@ -101,4 +101,12 @@ $ gulp
 
 dev-master
 
-- tucle:base.layoutを削除し、tucle:initでコピーする形に変更
+#### tucle:base.layoutを削除
+
+- tucle:initでコピーする形に変更
+- tucle:base.layoutをインクルードしている場合はlayoutを作成し、インクルード先を変更する
+
+#### イベントログを追加
+
+- tucle:init --only=eventlog を実行し、migrationを行う
+- 各モデルにuse EventLogTrait;を追加する

@@ -3,6 +3,7 @@
 use Exception;
 use Eyewill\TucleBuilder\Factories\RequestsBuilderFactory;
 use Eyewill\TucleCore\Contracts\Initializer as InitializerContracts;
+use Eyewill\TucleCore\Database\Migrations\MigrationCreator;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Providers\ArtisanServiceProvider;
 
@@ -15,6 +16,7 @@ class Initializer implements InitializerContracts
   protected $configPath;
   protected $providerPath;
   protected $composer;
+  protected $migrationCreator;
   protected $filesystem;
   protected $router;
   protected $force;
@@ -29,19 +31,22 @@ class Initializer implements InitializerContracts
     'providers',
     'layout',
     'lang',
+    'eventlog',
   ];
 
   protected $tasks = [];
 
-  public function __construct(Container $container, ComposerManager $composer, $force = false, $only = null)
+  public function __construct(Container $container, ComposerManager $composer, MigrationCreator $migrationCreator, $force = false, $only = null)
   {
     $this->app = $container;
     $this->composer = $composer;
+    $this->migrationCreator = $migrationCreator;
     $this->basePath = $container->basePath();
     $this->publicPath = $container['path.public'];
     $this->resourcePath = $container->basePath().'/resources';
     $this->configPath = $container->basePath().'/config';
     $this->providerPath = $container['path'].'/Providers';
+    $this->databasePath = $container->databasePath();
     $this->setForce($force);
     $this->setTasks($only);
     $this->app['view']->addNamespace('Template', __DIR__.'/../resources/templates');
@@ -145,6 +150,11 @@ class Initializer implements InitializerContracts
     if (in_array('lang', $this->tasks))
     {
       yield $this->copyLang();
+    }
+
+    if (in_array('eventlog', $this->tasks))
+    {
+      yield $this->copyEventLogMigrationFile();
     }
 
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
@@ -580,5 +590,13 @@ __PHP__
     );
 
     return $filePath.' generated.';
+  }
+
+  public function copyEventLogMigrationFile()
+  {
+    $this->migrationCreator->create('create_event_logs_table', $this->databasePath.DIRECTORY_SEPARATOR.'migrations', 'event_logs', 'event_logs');
+    $this->composer->dumpAutoload();
+
+    return 'event log migration file copied.';
   }
 }
