@@ -5,6 +5,6 @@ class LoggedIn
   public function handle()
   {
     $user = auth()->user();
-    eventlog($user, 'user.login', $user->title);
+    eventlog($user, 'auth.login', $user->title);
   }
 }

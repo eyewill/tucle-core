@@ -1,0 +1,61 @@
+@extends('layout')
+
+@include('tucle::module.datatables')
+@include('tucle::module.datatables.controls')
+@include('tucle::module.datatables.search')
+
+@section('content')
+  <div class="container">
+    @section('breadcrumbs')
+      {{ $presenter->renderBreadCrumbs('index') }}
+    @show
+    @section('page-header')
+      <div class="page-header">
+        <div class="row">
+          <div class="col-md-12">
+            <h1 class="form-title">{{ $presenter->getPageTitle() }}</h1>
+          </div>
+        </div>
+      </div>
+    @show
+    @section('entries')
+      <div class="table-actions" style="display:none">
+        <div class="row">
+          <div class="col-sm-12">
+          </div>
+        </div>
+      </div>
+      @include('tucle::partial.entries', [
+        'entries' => $entries,
+        'presenter' => $presenter,
+      ])
+      @show
+  </div>
+@endsection
+
+@section('stylesheet')
+@parent
+  <style>
+    .code {
+      padding: 0.5em;
+    }
+    .code:hover {
+      background: #fdfdfd;
+      cursor: pointer;
+    }
+    .code-raw {
+      display: none;
+    }
+  </style>
+@endsection
+
+@section('script')
+  @parent
+  <script>
+    $(function(){
+      $('.code').on('click', function () {
+        $(this).parent().find('.code').toggle();
+      });
+    });
+  </script>
+@endsection

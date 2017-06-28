@@ -155,7 +155,11 @@ class Initializer implements InitializerContracts
 
     if (in_array('eventlog', $this->tasks))
     {
-      yield $this->copyEventLogMigrationFile();
+      yield $this->makeEventLogMigrationFile();
+      yield $this->makeEventLogModel();
+      yield $this->makeEventLogPresenter();
+      yield $this->makeEventLogRoutes();
+      yield $this->makeEventLogViews();
     }
 
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
@@ -566,11 +570,75 @@ __PHP__
     return $filePath.' generated.';
   }
 
-  public function copyEventLogMigrationFile()
+  public function makeEventLogMigrationFile()
   {
-    $this->migrationCreator->create('create_event_logs_table', $this->databasePath.DIRECTORY_SEPARATOR.'migrations', 'event_logs', 'event_logs');
-    $this->composer->dumpAutoload();
+    try {
+      $this->migrationCreator->create('create_event_logs_table', $this->databasePath.DIRECTORY_SEPARATOR.'migrations', 'event_logs', 'event_logs');
+      $this->composer->dumpAutoload();
+      return 'event log migration file copied.';
+    } catch (Exception $e) {
+      return 'event log migration file can\'t copied.';
+    }
 
-    return 'event log migration file copied.';
+  }
+
+  public function makeEventLogModel()
+  {
+    $filePath = $this->app['path'].'/EventLog.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/eventlog/EventLog.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
+
+    return $filePath.' generated.';
+  }
+
+  public function makeEventLogPresenter()
+  {
+    $filePath = $this->app['path'].'/Http/Presenters/EventLogPresenter.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/eventlog/EventLogPresenter.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
+
+    return $filePath.' generated.';
+  }
+
+  public function makeEventLogRoutes()
+  {
+    $filePath = $this->app['path'].'/Http/routes/eventlog.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/eventlog/routes.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
+
+    return $filePath.' generated.';
+  }
+
+  public function makeEventLogViews()
+  {
+    $filePath = $this->resourcePath.'/views/event_log/index.blade.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/eventlog/views/index.blade.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
+
+    return $filePath.' generated.';
   }
 }

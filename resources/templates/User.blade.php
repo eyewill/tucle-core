@@ -1,5 +1,6 @@
 
 use Eyewill\TucleCore\Eloquent\Batch;
+use Eyewill\TucleCore\Eloquent\EventLogTrait;
 use Eyewill\TucleCore\Eloquent\Nullable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -9,6 +10,7 @@ class User extends Authenticatable {
 
   use Nullable;
   use Batch;
+  use EventLogTrait;
 
   /**
   */

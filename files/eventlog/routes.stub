@@ -1,0 +1,16 @@
+<?php
+
+use App\EventLog;
+use App\Http\Presenters\EventLogPresenter;
+
+Route::get('eventlog', function (EventLogPresenter $presenter) {
+
+  $total   = $presenter->getTotal(EventLog::class);
+  $entries = $presenter->getEntries(EventLog::class);
+
+  return view()->make('event_log.index', [
+    'presenter' => $presenter,
+    'total' => $total,
+    'entries' => $entries,
+  ]);
+})->name('eventlog.index');

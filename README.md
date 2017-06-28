@@ -16,14 +16,14 @@ $ composer require eyewill/tucle-core:dev-master
 <pre>
 # app.phpに追加
 $ vi config/app.php
-
+</pre>
+~~~php
   'providers' => [
     ...
     Eyewill\TucleCore\TucleCoreServiceProvider::class,
     ...
   ],
-
-</pre>
+~~~
 
 ## 使い方 <small>(How to use)</small>
 
@@ -76,7 +76,7 @@ $ gulp
 
 #### 入力フォームの定義
 
-<pre>
+~~~php
   public $forms = [
     ...
     // セレクトボックス
@@ -94,7 +94,7 @@ $ gulp
   {
     return ['1' => 'fuga', 2 => 'fuga'];
   }
-</pre>
+~~~
 
 
 ### リリースノート
@@ -108,15 +108,71 @@ $ gulp
 ##### アップグレード
 
 - tucle:init --only=eventlog を実行し、migrationを行う
-- 各モデルにuse EventLogTrait;を追加する
+- イベントログを記録したいモデルにuse EventLogTrait;を追加する
 - EventServiceProviderはEyewill\TucleCore\Providers\EventServiceProviderを継承するように変更する
 - config/tucle.phpに以下を追加
-<pre>
+~~~php
     'event_log' => [
       'enabled' => true,
       'user_credential_key' => 'email',
     ],
-</pre>
+~~~
+- resources/views/layout.blade.phpにイベントログへのリンクを追加
+~~~php
+    @if (config('tucle.event_log.enabled'))
+      @can('show-eventlog', App\EventLog::class)
+      <li>
+        <a href="{{ url('eventlog') }}">
+          <span class="fa fa-btn fa-list"></span>
+          イベントログ
+        </a>
+      </li>
+      @endcan
+    @endif
+~~~
+- app/Http/rotes.phpを以下のように変更
+~~~php
+    if (Gate::allows('show-'.$module->name(), $module->model))
+    {
+      $updatedAt = '-';
+      if (Schema::hasColumn(app($module->model)->getTable(), 'updated_at'))
+      {
+        $newest = app($module->model)->orderBy('updated_at', 'desc')->first();
+        $updatedAt = $newest && $newest->updated_at ? $newest->updated_at->format('Y/m/d H:i') : '-';
+      }
+      $entries[] = [
+        'label' => $module->label(),
+        'url' => $module->url(),
+        'count' => app($module->model)->count(),
+        'updated_at' => $updatedAt,
+      ];
+    }
+~~~
+- config/tucle.phpにeventlogモジュールを追加
+~~~php
+'modules' => [
+    // ...
+    [
+      'name' => 'eventlog',
+      'allows' => 'manager',
+      'model' => \App\EventLog::class,
+    ],
+],
+~~~
+
+##### 推奨するアップグレード
+
+- AuthServiceProviderからshow-userの定義を削除し、config/tucle.phpにuserモジュールを追加する
+~~~php
+'modules' => [
+    // ...
+    [
+      'name' => 'user',
+      'allows' => 'manager',
+      'model' => \App\User::class,
+    ],
+],
+~~~
 
 #### 0.2.0
 

@@ -6,6 +6,6 @@ class LoggedOut
   {
     $user = auth()->user();
     if ($user)
-      eventlog($user, 'user.logout', $user->title);
+      eventlog($user, 'auth.logout', $user->title);
   }
 }

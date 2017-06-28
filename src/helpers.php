@@ -43,7 +43,7 @@ if (!function_exists('eventlog')) {
       $params = request()->all();
     }
 
-    $params = array_except($params, ['_method', '_token', 'password', 'created_at', 'updated_at']);
+    $params = array_except($params, ['_method', '_token', 'remember_token', 'password', 'created_at', 'updated_at']);
 
     if (config('tucle.event_log.enabled'))
     {

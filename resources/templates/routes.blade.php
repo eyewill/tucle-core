@@ -13,12 +13,17 @@ Route::get('/', function (TucleHomePresenter $presenter) {
   {
     if (Gate::allows('show-'.$module->name(), $module->model))
     {
-      $newest = app($module->model)->orderBy('updated_at', 'desc')->first();
+      $updatedAt = '-';
+      if (Schema::hasColumn(app($module->model)->getTable(), 'updated_at'))
+      {
+        $newest = app($module->model)->orderBy('updated_at', 'desc')->first();
+        $updatedAt = $newest && $newest->updated_at ? $newest->updated_at->format('Y/m/d H:i') : '-';
+      }
       $entries[] = [
         'label' => $module->label(),
         'url' => $module->url(),
         'count' => app($module->model)->count(),
-        'updated_at' => $newest ? $newest->updated_at->format('Y/m/d H:i') : '-',
+        'updated_at' => $updatedAt,
       ];
     }
   }

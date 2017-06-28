@@ -65,12 +65,24 @@
               </a>
 
               <ul class="dropdown-menu" role="menu">
+                @can('show-user', App\User::class)
                 <li>
                   <a href="{{ url('user') }}">
                     <span class="fa fa-btn fa-user"></span>
                     ユーザー管理
                   </a>
                 </li>
+                @endcan
+                @if (config('tucle.event_log.enabled'))
+                  @can('show-eventlog', App\EventLog::class)
+                  <li>
+                    <a href="{{ url('eventlog') }}">
+                      <span class="fa fa-btn fa-list"></span>
+                      イベントログ
+                    </a>
+                  </li>
+                  @endcan
+                @endif
                 <li role="separator" class="divider"></li>
                 <li>
                   <a href="{{ url('logout') }}">

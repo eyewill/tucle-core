@@ -1,0 +1,121 @@
+<?php namespace App\Http\Presenters;
+
+use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
+
+class EventLogPresenter extends ModelPresenter
+{
+  public $forms = [];
+
+  /**
+   */
+  public $routes = [
+    'index' => 'eventlog.index',
+  ];
+
+  /**
+   */
+  public $tableColumns = [
+    [
+      'name' => 'id',
+      'label' => 'ID',
+    ],
+    [
+      'name' => 'login_id',
+      'label' => 'ログインID',
+    ],
+    [
+      'name' => 'role',
+      'label' => 'ロール',
+    ],
+    [
+      'name' => 'event',
+      'label' => 'イベント',
+    ],
+    [
+      'name' => 'params',
+      'label' => 'パラメータ',
+    ],
+    [
+      'name' => 'description',
+      'label' => 'description',
+    ],
+    [
+      'name' => 'client_ip_address',
+      'label' => 'IPアドレス',
+    ],
+    [
+      'name' => 'created_at',
+      'label' => '日時',
+      'searchable' => false,
+    ],
+  ];
+
+  /**
+   */
+  protected $breadCrumbs = [
+    [
+      'label' => 'イベントログ',
+      'route' => 'index',
+    ],
+  ];
+
+  /**
+   */
+  protected $filters = [];
+
+  /**
+   */
+  protected $pageTitle = 'イベントログ';
+
+  protected $hasRowActions = false;
+
+  /**
+   */
+  protected $viewBase = 'eventlog.';
+
+  /**
+   * @param $name
+   * @param $request
+   * @return array
+   */
+  protected function getBreadCrumbs($name, $request) {
+
+    $breadCrumbs = [
+      'index' => [
+        [
+          'label' => '一覧',
+        ],
+      ],
+    ];
+
+    return array_get($breadCrumbs, $name, []);
+  }
+
+  public function roleValues()
+  {
+    return array_pluck(config('tucle.roles', []), 'label', 'name');
+  }
+
+  public function roleTableColumn($model, $format)
+  {
+    $values = $this->roleValues();
+    $label = array_get($values, $model->role, 'label');
+
+    return sprintf($format, $label);
+  }
+
+  public function paramsTableColumn($model, $format)
+  {
+    $value = $model->params;
+    $value = mb_strimwidth($value, 0, 20, '…', 'UTF-8');
+    $format = '<td><pre class="code">%s</pre><pre class="code code-raw">%s</pre></td>';
+    $decodeValue = json_decode($model->params, true);
+    $json = '';
+    if (!is_null($decodeValue))
+    {
+      $json = json_encode($decodeValue, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+    }
+
+    return sprintf($format, $value, $json);
+  }
+}

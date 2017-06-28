@@ -9,10 +9,11 @@ class CreateEventLogsTable extends Migration {
   {
     Schema::create('event_logs', function (Blueprint $table) {
 
+      $table->increments('id');
       $table->string('login_id')->index();
       $table->string('role');
       $table->string('event');
-      $table->string('params');
+      $table->text('params');
       $table->text('description');
       $table->string('client_ip_address');
       $table->dateTime('created_at')->nullable();
