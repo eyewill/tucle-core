@@ -59,3 +59,10 @@ if (!function_exists('eventlog')) {
     }
   }
 }
+
+if (!function_exists('fakemodel')) {
+  function fakemodel()
+  {
+    return app()->make(\Eyewill\TucleCore\Database\FakeModelGenerator::class);
+  }
+}

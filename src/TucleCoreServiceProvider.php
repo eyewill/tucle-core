@@ -5,6 +5,7 @@ use Eyewill\TucleCore\Console\Commands\TucleMakeUser;
 use Eyewill\TucleCore\Contracts\Initializer;
 use Eyewill\TucleCore\Contracts\ModuleManager;
 use Eyewill\TucleCore\Contracts\NavigationManager;
+use Eyewill\TucleCore\Database\FakeModelGenerator;
 use Eyewill\TucleCore\Factories\Forms\PasswordFactory;
 use Eyewill\TucleCore\Factories\Forms\StaticFactory;
 use Eyewill\TucleCore\Factories\InitializerFactory;
@@ -86,6 +87,7 @@ class TucleCoreServiceProvider extends ServiceProvider
     $this->app->singleton(NavigationManager::class, function () {
       return new \Eyewill\TucleCore\NavigationManager(config('tucle.navigation', []));
     });
+    $this->app->singleton(FakeModelGenerator::class);
     foreach ($this->formFactories as $type => $concrete)
     {
       $this->app->bind('form.'.$type, $concrete);

@@ -99,6 +99,32 @@ $ gulp
 
 ### リリースノート
 
+#### develop
+
+##### 変更点
+
+- FakeModelGeneratorを追加
+
+##### アップグレード
+
+- ダミーフォルダとダミーファイルを生成
+~~~
+$ php artisan tucle:init --only=asset
+~~~
+
+##### 推奨するアップグレード
+
+- seederのfactory内の定義をFakeModelGeneratorを使う形に書き換える
+~~~php
+  $fakemodel = fakemodel();
+  $fakemodel->setData([
+    'title' => $fakemodel->faker()->sentence,
+  ]);
+  $fakemodel->image('main_image', 50);
+  $fakemodel->publishes();
+  return $fakemodel->getData();
+~~~
+
 #### 0.3.0
 
 ##### 変更点

@@ -118,6 +118,8 @@ class Initializer implements InitializerContracts
       yield $this->copyAssets('datatables');
       yield $this->copyAssets('datatables-i18n');
       yield $this->copyAssets('jquery-datatables-checkboxes');
+      yield $this->copyFilesDirectory('dummy_files');
+      yield $this->copyFilesDirectory('dummy_images');
     }
 
     if (in_array('packages', $this->tasks))
@@ -195,6 +197,18 @@ class Initializer implements InitializerContracts
     $this->app['files']->copyDirectory(__DIR__.'/../files/assets/'.$asset, $this->resourcePath.'/'.'assets/'.$asset);
 
     return 'assets/'.$asset.' copied.';
+  }
+
+  public function copyFilesDirectory($dirname)
+  {
+    if (!$this->force && $this->app['files']->exists($this->resourcePath.'/'.$dirname))
+    {
+      return $this->resourcePath.'/'.$dirname.' already exists';
+    }
+
+    $this->app['files']->copyDirectory(__DIR__.'/../files/'.$dirname, $this->resourcePath.'/'.$dirname);
+
+    return $dirname.' copied.';
   }
 
   public function copyLayout()
