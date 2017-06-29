@@ -138,16 +138,21 @@ class Presenter
 
   public function renderMakeDataTablesScript()
   {
-    $columnDefs = json_encode(array_get($this->dataTables, 'options.columnDefs', []));
+    $options = json_encode(array_get($this->dataTables, 'options', []));
     $script =<<<__SCRIPT__
 <script>
 $(function(){
   var factory = $.extend({}, DataTablesFactory);
-  var columnDefs = $columnDefs;
-  columnDefs.reverse();
-  $.each(columnDefs, function(i, val) {
-    factory.options.columnDefs.unshift(val);
+  var options = $options;
+  $.each(options, function (i, val) {
+    if (i == 'columnDefs') {
+      val.concat(factory.options.columnDefs);
+      factory.options.columnDefs = val;      
+    } else {
+      factory.options[i] = val;
+    }
   });
+  console.log(factory.options);
   factory.make();
 });
 </script>
