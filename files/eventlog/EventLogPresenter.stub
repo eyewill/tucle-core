@@ -65,6 +65,12 @@ class EventLogPresenter extends ModelPresenter
     ],
   ];
 
+  protected $dataTables = [
+    'options' => [
+      'columnDefs' => [],
+    ],
+  ];
+
   /**
    */
   protected $pageTitle = 'イベントログ';
