@@ -107,6 +107,12 @@ class UserPresenter extends ModelPresenter {
    */
   protected $filters = [];
 
+  protected $dataTables = [
+    'options' => [
+      'columnDefs' => [],
+    ],
+  ];
+
   /**
    */
   protected $pageTitle = 'ユーザー管理';
