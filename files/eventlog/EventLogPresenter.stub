@@ -32,12 +32,8 @@ class EventLogPresenter extends ModelPresenter
       'label' => 'イベント',
     ],
     [
-      'name' => 'params',
-      'label' => 'パラメータ',
-    ],
-    [
       'name' => 'description',
-      'label' => 'description',
+      'label' => '詳細',
     ],
     [
       'name' => 'client_ip_address',
@@ -62,6 +58,12 @@ class EventLogPresenter extends ModelPresenter
   /**
    */
   protected $filters = [];
+
+  protected $searchColumns = [
+    [
+      'name' => 'params',
+    ],
+  ];
 
   /**
    */
@@ -104,11 +106,11 @@ class EventLogPresenter extends ModelPresenter
     return sprintf($format, $label);
   }
 
-  public function paramsTableColumn($model, $format)
+  public function descriptionTableColumn($model, $format)
   {
     $value = $model->params;
     $value = mb_strimwidth($value, 0, 20, '…', 'UTF-8');
-    $format = '<td><pre class="code">%s</pre><pre class="code code-raw">%s</pre></td>';
+    $format = '<td>%s<pre class="code">%s</pre><pre class="code code-raw">%s</pre></td>';
     $decodeValue = json_decode($model->params, true);
     $json = '';
     if (!is_null($decodeValue))
@@ -116,6 +118,6 @@ class EventLogPresenter extends ModelPresenter
       $json = json_encode($decodeValue, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
     }
 
-    return sprintf($format, $value, $json);
+    return sprintf($format, $model->description, $value, $json);
   }
 }
