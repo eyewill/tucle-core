@@ -345,6 +345,6 @@
     };
   </script>
 
-  @include($presenter->view('partial.datatables.make'))
+  {{ $presenter->renderMakeDataTablesScript() }}
 
 @endsection

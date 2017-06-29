@@ -23,7 +23,6 @@ class Presenter
         'edit' => 'tucle::partial.actions.edit',
       ],
       'datatables' => [
-        'make' => 'tucle::partial.datatables.make',
         'filters' => 'tucle::partial.datatables.filters',
         'actions' => [
           'entries' => 'tucle::partial.datatables.actions.entries',
@@ -33,6 +32,7 @@ class Presenter
     ],
   ];
   protected $hasRowActions = true;
+  protected $dataTables = [];
 
   public function __construct(RouteManager $router, Request $request)
   {
@@ -133,5 +133,26 @@ class Presenter
     $html.= '</tr>';
 
     return new HtmlString($html);
+  }
+
+
+  public function renderMakeDataTablesScript()
+  {
+    $columnDefs = json_encode(array_get($this->dataTables, 'options.columnDefs', []));
+    $script =<<<__SCRIPT__
+<script>
+$(function(){
+  var factory = $.extend({}, DataTablesFactory);
+  var columnDefs = $columnDefs;
+  columnDefs.reverse();
+  $.each(columnDefs, function(i, val) {
+    factory.options.columnDefs.unshift(val);
+  });
+  factory.make();
+});
+</script>
+__SCRIPT__;
+
+    return new HtmlString($script);
   }
 }

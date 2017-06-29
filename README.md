@@ -104,12 +104,28 @@ $ gulp
 ##### 変更点
 
 - FakeModelGeneratorを追加
+- datatables/make.blade.phpを廃止
+- PresenterにrenderMakeDataTablesScriptを追加
 
 ##### アップグレード
 
 - ダミーフォルダとダミーファイルを生成
 ~~~
 $ php artisan tucle:init --only=asset
+~~~
+
+- make.blade.phpの設定をPresenterの$dataTablesに移動
+~~~php
+  protected $dataTables = [
+    'options' => [
+      'columnDefs' => [
+        [
+          'className' => 'align-middle text-center',
+          'targets' => [1,2,3],
+        ],
+      ],
+    ],
+  ];
 ~~~
 
 ##### 推奨するアップグレード
