@@ -146,13 +146,12 @@ $(function(){
   var options = $options;
   $.each(options, function (i, val) {
     if (i == 'columnDefs') {
-      val.concat(factory.options.columnDefs);
+      val = val.concat(factory.options.columnDefs);
       factory.options.columnDefs = val;      
     } else {
       factory.options[i] = val;
     }
   });
-  console.log(factory.options);
   factory.make();
 });
 </script>
