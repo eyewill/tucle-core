@@ -3,6 +3,7 @@
 use Faker\Generator;
 use File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class FakeModelGenerator
 {
@@ -23,6 +24,11 @@ class FakeModelGenerator
     return $this->faker;
   }
 
+  /**
+   * @param $key
+   * @param callable|null $callback
+   * @return mixed|Collection|array
+   */
   public function getRepository($key, callable $callback = null)
   {
     if (!array_key_exists($key, $this->repository))
@@ -66,22 +72,37 @@ class FakeModelGenerator
     }
   }
 
-  public function publishes($published_weight = 80, $terminated_weight = 20)
+  public function date($name, $weight = 50, $betweenFrom = '-1 year', $betweenTo = '+1 year')
   {
-    // 公開日時
-    $publishedAt = $this->faker->optional($published_weight)->dateTime;
-    // 公開終了日時 公開日時以降
-    $terminatedAt = null;
-    if (!is_null($publishedAt))
+    if ($betweenFrom instanceof \DateTime and $betweenTo instanceof \DateTime)
     {
-      $terminatedAt = clone $publishedAt;
-      $terminatedAt = $this->faker->optional($terminated_weight)->dateTimeBetween($publishedAt, $terminatedAt->modify('1 year'));
+      $date = $this->faker->optional($weight)->dateTimeBetween($betweenFrom, $betweenTo);
     }
+    elseif ($betweenFrom instanceof \DateTime)
+    {
+      $date = clone $betweenFrom;
+      $date = $this->faker->optional($weight)->dateTimeBetween($betweenFrom, $date->modify($betweenTo));
+    }
+    elseif ($betweenTo instanceof \DateTime)
+    {
+      $date = clone $betweenTo;
+      $date = $this->faker->optional($weight)->dateTimeBetween($date->modify($betweenFrom), $betweenTo);
+    }
+    else
+    {
+      $date = $this->faker->optional($weight)->dateTimeBetween($betweenFrom, $betweenTo);
+    }
+    $this->data[$name] = $date;
+    return $date;
+  }
 
-    $this->data = array_merge([
-      'published_at' => $publishedAt,
-      'terminated_at' => $terminatedAt,
-    ],$this->data);
+  public function publishes($published_weight = 80, $terminated_weight = 20, $betweenFrom = '-1 year', $betweenTo = '+1 year', $terminatedTo = '+1 year')
+  {
+    $date = $this->date('published_at', $published_weight, $betweenFrom, $betweenTo);
+    if (!is_null($date))
+    {
+      $this->date('terminated_at', $terminated_weight, $date, $terminatedTo);
+    }
   }
 
   /**
@@ -98,7 +119,7 @@ class FakeModelGenerator
       $tmpImagePath = '/tmp/'.uniqid().'_'.basename($imagePath);
       File::copy($imagePath, $tmpImagePath);
       $this->data[$name] = $tmpImagePath;
-      printf("\e[0J\rtmp image set to %s ", $name);
+      printf("\e[0J\rtmp image set to %s \r", $name);
     }
   }
 
@@ -111,7 +132,7 @@ class FakeModelGenerator
       $tmpFilePath = '/tmp/'.uniqid().'_'.basename($filePath);
       File::copy($filePath, $tmpFilePath);
       $this->data[$name] = $tmpFilePath;
-      printf("\e[0J\rtmp file set to %s ", $name);
+      printf("\e[0J\rtmp file set to %s \r", $name);
     }
   }
 }
