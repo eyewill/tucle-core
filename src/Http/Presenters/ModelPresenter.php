@@ -209,6 +209,7 @@ class ModelPresenter extends Presenter
       {
         $type = array_get($tableColumn, 'type');
         $name = array_get($tableColumn, 'name');
+        $label = array_get($tableColumn, 'label');
         $filter = array_get($tableColumn, 'filter', []);
         if ($type == 'status')
         {
@@ -227,6 +228,7 @@ class ModelPresenter extends Presenter
         $filter = array_merge([
           'index' => $index,
           'name'  => $name,
+          'label' => $label,
         ], $filter);
 
         $filters[] = $filter;
