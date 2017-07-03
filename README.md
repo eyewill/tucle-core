@@ -106,6 +106,7 @@ $ gulp
 - FakeModelGeneratorを追加
 - datatables/make.blade.phpを廃止
 - PresenterにrenderMakeDataTablesScriptを追加
+- ModelPresenterの$tableColumnsでフィルタの設定ができるようにした(statusのフィルタはデフォルトで有効)
 
 ##### アップグレード
 
@@ -128,6 +129,8 @@ $ php artisan tucle:init --only=asset
   ];
 ~~~
 
+- Presenterのfilters設定からstatusの定義を削除
+
 ##### 推奨するアップグレード
 
 - seederのfactory内の定義をFakeModelGeneratorを使う形に書き換える
@@ -139,6 +142,27 @@ $ php artisan tucle:init --only=asset
   $fakemodel->image('main_image', 50);
   $fakemodel->publishes();
   return $fakemodel->getData();
+~~~
+
+- Presenterのfilters設定を$tableColumnsに移動
+~~~php
+  $tableColumns =  [
+    // ...
+    [
+      'name' => 'top_flg',
+      'label' => 'top_flg',
+      'filter' => [
+        'label' => 'トップフラグ',
+        'type' => 'select',
+        'values' => [
+          '' => '未選択',
+          0 => 'あり',
+          1 => 'なし',
+        ]
+      ],
+    ],
+    // ...
+  ],
 ~~~
 
 #### 0.3.0

@@ -16,7 +16,7 @@ class ModelPresenter extends Presenter
   protected $html;
   protected $forms = [];
   protected $dateFormat = [];
-  protected $filters = [];
+  protected $filters = null;
   protected $queries = [];
   protected $limit = 100;
   protected $defaultSortColumn = 'id';
@@ -202,12 +202,45 @@ class ModelPresenter extends Presenter
 
   public function getFilters()
   {
+    if (is_null($this->filters))
+    {
+      $filters = [];
+      foreach ($this->tableColumns() as $index => $tableColumn)
+      {
+        $type = array_get($tableColumn, 'type');
+        $name = array_get($tableColumn, 'name');
+        $filter = array_get($tableColumn, 'filter', []);
+        if ($type == 'status')
+        {
+          $filter = array_merge([
+            'name' => 'status',
+            'label' => '公開状態',
+            'type' => 'checkbox',
+            'index' => $index,
+          ], $filter);
+        }
+        elseif (!array_key_exists('filter', $tableColumn))
+        {
+          continue;
+        }
+
+        $filter = array_merge([
+          'index' => $index,
+          'name'  => $name,
+        ], $filter);
+
+        $filters[] = $filter;
+      }
+
+      $this->filters = $filters;
+    }
+
     return $this->filters;
   }
 
   public function hasFilters()
   {
-    return !empty($this->filters);
+    return !empty($this->getFilters());
   }
 
   public function filterTriggerId($spec)
