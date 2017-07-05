@@ -22,6 +22,7 @@ class ModelPresenter extends Presenter
   protected $defaultSortColumn = 'id';
   protected $defaultSortOrder = 'desc';
   protected $searchColumns = [];
+  protected $hasCheckbox;
 
   public function __construct(RouteManager $router, Request $request, FormBuilder $form, HtmlBuilder $html)
   {
@@ -517,5 +518,19 @@ class ModelPresenter extends Presenter
     $this->getRouter()->only([
       'delete_file',
     ], $model);
+  }
+
+  public function hasCheckbox()
+  {
+    if (is_null($this->hasCheckbox))
+    {
+      $columns = $this->tableColumns();
+      $value = array_first($columns, function($index, $value) {
+        return array_get($value, 'type') == 'checkbox';
+      });
+      $this->hasCheckbox = !is_null($value);
+    }
+
+    return $this->hasCheckbox;
   }
 }

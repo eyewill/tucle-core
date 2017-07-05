@@ -15,8 +15,10 @@
     公開終了
   </button>
   @endif
+  @if ($presenter->hasRoute('batch.delete'))
   <button class="btn btn-sm btn-danger" data-batch-url="{{ $presenter->route('batch.delete') }}" data-batch-name="delete" data-batch-confirm=":count件のレコードを削除します。よろしいですか？" disabled>
     <span class="fa fa-trash-o"></span>
     削除
   </button>
+  @endif
 </div>

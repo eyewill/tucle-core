@@ -28,7 +28,9 @@
     <div class="table-actions" style="display:none">
       <div class="row">
         <div class="col-sm-12">
-          @include($presenter->view('partial.datatables.actions.entries'))
+          @if ($presenter->hasCheckbox())
+            @include($presenter->view('partial.datatables.actions.entries'))
+          @endif
         </div>
       </div>
     </div>
