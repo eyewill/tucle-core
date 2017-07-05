@@ -1,5 +1,6 @@
 <?php namespace App\Http\Presenters;
 
+use App\User;
 use Eyewill\TucleCore\Http\Presenters\ModelPresenter;
 
 class EventLogPresenter extends ModelPresenter
@@ -22,10 +23,20 @@ class EventLogPresenter extends ModelPresenter
     [
       'name' => 'login_id',
       'label' => 'ログインID',
+      'filter' => [
+        'type' => 'select',
+        'empty_label' => 'すべて表示',
+      ],
     ],
     [
       'name' => 'role',
       'label' => 'ロール',
+      'filter' => [
+        'type' => 'checkbox',
+        'values' => [
+          1 => 'on',
+        ],
+      ],
     ],
     [
       'name' => 'event',
@@ -55,19 +66,9 @@ class EventLogPresenter extends ModelPresenter
     ],
   ];
 
-  /**
-   */
-  protected $filters = [];
-
   protected $searchColumns = [
     [
       'name' => 'params',
-    ],
-  ];
-
-  protected $dataTables = [
-    'options' => [
-      'columnDefs' => [],
     ],
   ];
 
@@ -79,7 +80,7 @@ class EventLogPresenter extends ModelPresenter
 
   /**
    */
-  protected $viewBase = 'eventlog.';
+  protected $viewBase = 'event_log.';
 
   /**
    * @param $name
@@ -99,17 +100,29 @@ class EventLogPresenter extends ModelPresenter
     return array_get($breadCrumbs, $name, []);
   }
 
+  public function loginIdFilterValues()
+  {
+    $name = config('tucle.event_log.user_credential_key');
+    return User::query()->pluck($name, $name);
+  }
+
   public function roleValues()
   {
     return array_pluck(config('tucle.roles', []), 'label', 'name');
   }
 
+  public function roleFilterValues()
+  {
+    return $this->roleValues();
+  }
+
   public function roleTableColumn($model, $format)
   {
     $values = $this->roleValues();
+    $format = '<td data-search="%s">%s</td>';
     $label = array_get($values, $model->role, 'label');
 
-    return sprintf($format, $label);
+    return sprintf($format, $model->role, $label);
   }
 
   public function descriptionTableColumn($model, $format)
