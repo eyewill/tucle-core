@@ -33,9 +33,6 @@ class EventLogPresenter extends ModelPresenter
       'label' => 'ロール',
       'filter' => [
         'type' => 'checkbox',
-        'values' => [
-          1 => 'on',
-        ],
       ],
     ],
     [
