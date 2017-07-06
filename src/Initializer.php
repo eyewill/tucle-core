@@ -49,7 +49,6 @@ class Initializer implements InitializerContracts
     $this->databasePath = $container->databasePath();
     $this->setForce($force);
     $this->setTasks($only);
-    $this->app['view']->addNamespace('Template', __DIR__.'/../resources/templates');
   }
 
   public function setForce($force)
@@ -135,7 +134,7 @@ class Initializer implements InitializerContracts
 
     if (in_array('routes', $this->tasks))
     {
-      yield $this->updateHttpRoutes();
+      yield $this->makeHttpRoutes();
     }
 
     if (in_array('providers', $this->tasks))
@@ -273,21 +272,19 @@ class Initializer implements InitializerContracts
     return $path.' copied.';
   }
 
-  public function updateHttpRoutes()
+  public function makeHttpRoutes()
   {
-    $homeRoute = $this->app['router']->getRoutes()->getByName('home');
-    $routesPath = $this->app['path'].'/Http/routes.php';
-    if (!$this->force && !is_null($homeRoute)) {
-      return $routesPath.' already exists.';
+    $filePath = $this->app['path'].'/Http/routes.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
     }
 
-    $code = '';
-    $code.= '<?php'.PHP_EOL;
-    $code.= $this->app['view']->make('Template::routes')->render();
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/routes.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
 
-    $this->app['files']->put($routesPath, $code);
-
-    return $routesPath.' generated.';
+    return $filePath.' generated.';
   }
 
   public function makeConfigFile()

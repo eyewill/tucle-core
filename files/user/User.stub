@@ -1,3 +1,4 @@
+<?php namespace App;
 
 use Eyewill\TucleCore\Eloquent\Batch;
 use Eyewill\TucleCore\Eloquent\EventLogTrait;

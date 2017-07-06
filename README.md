@@ -107,6 +107,7 @@ $ gulp
 - datatables/make.blade.phpを廃止
 - PresenterにrenderMakeDataTablesScriptを追加
 - ModelPresenterの$tableColumnsでフィルタの設定ができるようにした(statusのフィルタはデフォルトで有効)
+- EventLog更新
 
 ##### アップグレード
 
@@ -163,6 +164,11 @@ $ php artisan tucle:init --only=asset
     ],
     // ...
   ],
+~~~
+
+- EventLogのViewを更新
+~~~
+$ php artisan tucle:init --only=eventlog --force
 ~~~
 
 #### 0.3.0

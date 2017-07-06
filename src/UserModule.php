@@ -39,7 +39,6 @@ class UserModule implements InitializerContracts
     $this->providerPath = $container['path'].'/Providers';
     $this->setForce($force);
     $this->setTasks($only);
-    $this->app['view']->addNamespace('Template', __DIR__.'/../resources/templates');
   }
 
   public function setForce($force)
@@ -100,10 +99,10 @@ class UserModule implements InitializerContracts
       return $filePath . ' already exists.';
     }
 
-    $code = '';
-    $code.= '<?php namespace App;'.PHP_EOL;
-    $code.= view()->make('Template::User')->render();
-    $this->app['files']->put($filePath, $code);
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/user/User.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
 
     return $filePath.' generated.';
   }
@@ -116,10 +115,9 @@ class UserModule implements InitializerContracts
     }
 
     $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
-    $code = '';
-    $code.= '<?php namespace App\Http\Presenters;'.PHP_EOL;
-    $code.= view()->make('Template::UserPresenter')->render();
-    $this->app['files']->put($filePath, $code);
+    $templatePath = __DIR__.'/../files/user/UserPresenter.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
 
     return $filePath.' generated.';
   }
