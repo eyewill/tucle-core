@@ -128,9 +128,18 @@ class ModelPresenter extends Presenter
     return $builder->get();
   }
 
+  /**
+   * 全件数取得
+   * group byが含まれるSQLでも正しく動作するように、サブクエリとしてカウントする
+   * @param $model
+   * @return int
+   */
   public function getTotal($model)
   {
-    return $this->getEntriesBuilder($model)->count();
+    $builder = $this->getEntriesBuilder($model);
+    return DB::table(DB::raw("({$builder->toSql()}) as sub"))
+      ->mergeBindings($builder->getQuery())
+      ->count();
   }
 
   public function getLimit()
