@@ -68,6 +68,11 @@ class User extends Authenticatable {
     }
   }
 
+  public function setDisabledAttribute($value)
+  {
+    $this->attributes['disabled'] = $value?1:0;
+  }
+
   public function active()
   {
     return !$this->disabled;
