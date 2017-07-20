@@ -19,12 +19,14 @@ class Role
     {
       if (is_array($module))
       {
-        $name = $path = $module['name'];
+        $name = $module['name'];
+        $path = isset($module['path']) ? $module['path'] : $name;
 
         if ($request->route()->getPrefix())
         {
           $path = $request->route()->getPrefix().'/'.$name;
         }
+        $path = str_replace('_', '/', $path);
         if ($request->is($path) || $request->is($path.'/*'))
         {
           if (app(Gate::class)->denies('show-'.$name, $module['model']))
