@@ -137,8 +137,17 @@ class ModelPresenter extends Presenter
   public function getTotal($model)
   {
     $builder = $this->getEntriesBuilder($model);
+    if ($builder instanceof \Eloquent)
+    {
+      $query = $builder->getBaseQuery();
+    }
+    else
+    {
+      $query = $builder->getQuery();
+    }
+
     return DB::table(DB::raw("({$builder->toSql()}) as sub"))
-      ->mergeBindings($builder->getQuery())
+      ->mergeBindings($query)
       ->count();
   }
 
