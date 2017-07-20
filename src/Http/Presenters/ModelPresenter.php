@@ -137,7 +137,7 @@ class ModelPresenter extends Presenter
   public function getTotal($model)
   {
     $builder = $this->getEntriesBuilder($model);
-    if ($builder instanceof \Eloquent)
+    if ($model instanceof Builder || $model instanceof Relation)
     {
       $query = $builder->getBaseQuery();
     }
