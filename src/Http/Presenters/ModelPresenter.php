@@ -96,7 +96,7 @@ class ModelPresenter extends Presenter
 
   public function getEntries($model)
   {
-    if ($model instanceof Builder || $model instanceof Relation)
+    if ($model instanceof Builder)
     {
       $builder = $model;
     }
