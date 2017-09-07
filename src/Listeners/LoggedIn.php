@@ -1,10 +1,15 @@
 <?php namespace Eyewill\TucleCore\Listeners;
 
+use App\User;
+use Illuminate\Auth\Events\Login;
+
 class LoggedIn
 {
-  public function handle()
+  public function handle(Login $login)
   {
-    $user = auth()->user();
-    eventlog($user, 'auth.login', $user->title);
+    if ($login->user instanceof User)
+    {
+      eventlog($login->user, 'auth.login', $login->user->title);
+    }
   }
 }
