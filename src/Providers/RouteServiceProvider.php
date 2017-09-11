@@ -53,9 +53,13 @@ class RouteServiceProvider extends ServiceProvider
   {
     $router->group([
       'namespace' => $this->namespace,
-      'middleware' => 'web',
+      'middleware' => 'cms',
     ], function ($router) {
       require app_path('Http/routes.php');
+      foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
+      {
+        include $file;
+      }
     });
 
     $router->group([
@@ -64,16 +68,6 @@ class RouteServiceProvider extends ServiceProvider
     ], function ($router) {
       $router->auth();
     });
-    $router->group([
-      'namespace' => $this->namespace,
-      'middleware' => ['web', 'auth'],
-    ], function ($router) {
-      foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
-      {
-        include $file;
-      }
-    });
-
   }
 
 }

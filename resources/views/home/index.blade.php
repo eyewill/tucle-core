@@ -14,7 +14,7 @@
             <th class="active text-right">登録数</th>
             <th class="active text-right">最終更新日</th>
           </tr>
-          @foreach ($entries as $module)
+          @foreach ($presenter->entries() as $module)
             <tr class="clickable">
               <td>
                 <a href="{{ $module['url'] }}" style="display:block">
@@ -39,3 +39,11 @@
   </div>
 @endsection
 
+@section('stylesheet')
+  @parent
+  <style>
+    .clickable:hover {
+      cursor: pointer;
+    }
+  </style>
+@endsection
