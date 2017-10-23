@@ -3,7 +3,6 @@
 class Module
 {
   protected $attributes = [];
-  protected $presenter;
 
   public function __construct($module = [])
   {
@@ -17,6 +16,7 @@ class Module
         'name' => $module,
         'allows' => null,
         'model' => null,
+        'presenter' => null,
       ];
     }
     if (array_has($this->attributes, 'presenter'))
@@ -27,7 +27,7 @@ class Module
     {
       $class = 'App\\Http\\Presenters\\'.studly_case($this->name).'Presenter';
     }
-    $this->presenter = app($class);
+    $this->attributes['presenter'] = app($class);
   }
 
   public function __set($name, $value)

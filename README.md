@@ -108,6 +108,8 @@ $ gulp
 - PresenterにrenderMakeDataTablesScriptを追加
 - ModelPresenterの$tableColumnsでフィルタの設定ができるようにした(statusのフィルタはデフォルトで有効)
 - EventLog更新
+- cmsミドルウェアグループを追加
+- config/module.phpにpresenterを指定できるようにした(presenterを指定しない場合、nameからPresenter名を推測する)
 
 ##### アップグレード
 
@@ -169,6 +171,26 @@ $ php artisan tucle:init --only=asset
 - EventLogのViewを更新
 ~~~
 $ php artisan tucle:init --only=eventlog --force
+~~~
+
+- Kernelを更新
+~~~
+$ php artisan tucle:init --only=kernel --force
+~~~
+
+- config/tucle.phpのmodulesエントリーにpresenterを追加
+~~~
+  'modules' => [
+    [
+      'name' => 'news',
+      'allows' => 'manager',
+      'model' => \App\News::class,
+      'presenter' => \App\Http\Presenters\NewsPresenter::class,
+    ],
+  ],
+  [
+    // ...
+  ],
 ~~~
 
 #### 0.3.0
