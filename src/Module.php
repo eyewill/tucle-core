@@ -19,7 +19,14 @@ class Module
         'model' => null,
       ];
     }
-    $class = 'App\\Http\\Presenters\\'.studly_case($this->name).'Presenter';
+    if (array_has($this->attributes, 'presenter'))
+    {
+      $class = $this->attributes['presenter'];
+    }
+    else
+    {
+      $class = 'App\\Http\\Presenters\\'.studly_case($this->name).'Presenter';
+    }
     $this->presenter = app($class);
   }
 
