@@ -32,6 +32,7 @@ class Presenter
     ],
   ];
   protected $hasRowActions = true;
+  protected $hasSearchBox = true;
   protected $dataTables = [];
 
   public function __construct(RouteManager $router, Request $request)
@@ -76,6 +77,11 @@ class Presenter
   public function hasRowActions()
   {
     return $this->hasRowActions;
+  }
+
+  public function hasSearchBox()
+  {
+    return $this->hasSearchBox;
   }
 
   function routeName($action = null)

@@ -2,8 +2,9 @@
 
 @include('tucle::module.datatables')
 @include('tucle::module.datatables.controls')
+@if ($presenter->hasSearchBox())
 @include('tucle::module.datatables.search')
-
+@endif
 @section('content')
 <div class="container">
 
