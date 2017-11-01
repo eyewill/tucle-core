@@ -110,6 +110,8 @@ $ gulp
 - EventLog更新
 - cmsミドルウェアグループを追加
 - config/module.phpにpresenterを指定できるようにした(presenterを指定しない場合、nameからPresenter名を推測する)
+- PresenterにhasSearchBoxプロパティを追加
+- UserPresenterに無効列、無効フィルタ、ロールフィルタを追加
 
 ##### アップグレード
 
@@ -191,6 +193,11 @@ $ php artisan tucle:init --only=kernel --force
   [
     // ...
   ],
+~~~
+
+- Userモジュールを更新
+~~~
+$ php artisan tucle:makeuser --force
 ~~~
 
 #### 0.3.0

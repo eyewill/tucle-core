@@ -92,6 +92,16 @@ class UserPresenter extends ModelPresenter {
     [
       'name' => 'role',
       'label' => 'ロール',
+      'filter' => [
+        'type' => 'checkbox',
+      ],
+    ],
+    [
+      'name' => 'disabled',
+      'label' => 'ステータス',
+      'filter' => [
+        'type' => 'checkbox',
+      ],
     ],
   ];
 
@@ -106,7 +116,13 @@ class UserPresenter extends ModelPresenter {
 
   protected $dataTables = [
     'options' => [
-      'columnDefs' => [],
+      'columnDefs' => [
+        [
+          'width' => '80px',
+          'className' => 'align-middle text-center',
+          'targets' => [4],
+        ],
+      ],
     ],
   ];
 
@@ -149,6 +165,16 @@ class UserPresenter extends ModelPresenter {
     return array_get($breadCrumbs, $name, []);
   }
 
+  public function renderTableRowClass($model)
+  {
+    if ($model->active())
+    {
+      return '';
+    }
+
+    return 'mute';
+  }
+
   public function roleValues()
   {
     return array_pluck(config('tucle.roles', []), 'label', 'name');
@@ -158,8 +184,27 @@ class UserPresenter extends ModelPresenter {
   {
     $values = $this->roleValues();
     $label = array_get($values, $model->role, 'label');
+    $format = '<td data-search="%s">%s</td>';
 
-    return sprintf($format, $label);
+    return sprintf($format, $model->role, $label);
   }
 
+  public function roleFilterValues()
+  {
+    return $this->roleValues();
+  }
+
+  public function disabledFilterValues()
+  {
+    return [
+      '1' => '無効',
+      '0' => '有効',
+    ];
+  }
+
+  public function disabledTableColumn($model, $format)
+  {
+    $format = '<td data-search="%s">%s</td>';
+    return sprintf($format, $model->disabled, array_get($this->disabledFilterValues(), $model->disabled, '-'));
+  }
 }
