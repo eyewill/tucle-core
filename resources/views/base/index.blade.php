@@ -5,6 +5,10 @@
 @if ($presenter->hasSearchBox())
 @include('tucle::module.datatables.search')
 @endif
+@if ($presenter->hasFilters())
+@include($presenter->view('partial.datatables.filters'))
+@endif
+
 @section('content')
 <div class="container">
 
@@ -26,12 +30,14 @@
   @show
 
   @section('entries')
-    <div class="table-actions" style="display:none">
-      <div class="row">
-        <div class="col-sm-12">
-          @if ($presenter->hasCheckbox())
-            @include($presenter->view('partial.datatables.actions.entries'))
-          @endif
+    <div style="display: none">
+      <div class="table-actions">
+        <div class="row">
+          <div class="col-sm-12">
+            @if ($presenter->hasCheckbox())
+              @include($presenter->view('partial.datatables.actions.entries'))
+            @endif
+          </div>
         </div>
       </div>
     </div>
@@ -40,9 +46,6 @@
       'presenter' => $presenter,
     ])
   @show
-
-  @include($presenter->view('partial.datatables.filters'))
-
 </div>
 @endsection
 

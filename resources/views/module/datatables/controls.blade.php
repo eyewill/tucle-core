@@ -1,7 +1,7 @@
 @section('content')
   @parent
-  <div class="table-controls" style="display: none; float: left">
-    <label style="font-weight: normal">
+  <div style="display:none">
+    <label class="table-controls">
       {{ $presenter->renderTakeSelector(isset($total) ? $total : null) }} 取得
       &nbsp;
     </label>

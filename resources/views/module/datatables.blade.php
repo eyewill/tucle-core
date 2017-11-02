@@ -36,6 +36,12 @@
     var DataTablesFactory = {
       table: '#entries',
       options: {
+        dom:
+        "<'row'<'col-sm-12 tucle-table-search'>>" +
+        "<'row'<'col-sm-12 tucle-table-filter'>>" +
+        "<'row'<'col-sm-6 tucle-table-action'><'col-sm-6'p>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-5'li><'col-sm-7'p>>",
         columnDefs: [],
         select: {
           style: 'multi',
@@ -91,36 +97,24 @@
           }).on('deselect', function (e, dt, type, indexes) {
             DataTablesFactory.toggle(dt);
           });
-          $('#entries_wrapper .row:eq(0)').after($('.table-actions').show());
-          $('#entries_wrapper div[id$=_filter] input').prop('class', 'form-control input-md');
 
-          // .table-actionsにフィルターを追加
-//          $('#entries_wrapper .row:eq(0)').after($('.table-filters').show());
-          $('#entries_wrapper .table-actions .row .col-sm-12').append($('.table-filters').show());
+          // Tucleフィルタ
+          $('#entries_wrapper .tucle-table-filter').append($('.table-filters').show());
 
-          // 検索ボックスのサイズ変更
-          $('#entries_wrapper input[type=search]').removeClass('input-md').addClass('input-sm');
-
-          // 検索ボックスをクリア可能にする
-          if (0) {
-            $('#entries_wrapper input[type=search]').clearable(function () {
-              dt.search('').draw();
-            }, -40);
-          }
-
-          // 全件表示用リンク
-          $('#entries_wrapper .row:eq(0) > div:eq(0)').prepend($('.table-controls').show());
-
-          // 検索をサーバーサイドに変更
-          $('#entries_filter').hide();
-          $("#entries_wrapper .row:eq(0) > div:eq(1)").prepend($('.table-search').show());
-
-          // カスタムフィルタ
+          // Tucleフィルタイベントを登録
           DataTablesFilter.register(dt);
 
-          DataTablesFilter.filter();
+          // Tucleテーブルアクション
+          $('#entries_wrapper .tucle-table-action').append($('.table-actions'));
 
-//          console.log('draw initialized.');
+          // Tucle検索
+          $('#entries_wrapper .tucle-table-search').append($('.table-search'));
+
+          // Tucle表示件数コントロールを標準の件数表示に追加
+          $('#entries_wrapper .dataTables_length').prepend($('.table-controls'));
+
+          // Tucleフィルタを実行
+          DataTablesFilter.filter();
 
           $('[data-batch-name]').on('click', function (e) {
             var name = $(this).data('batch-name');
@@ -146,6 +140,10 @@
           });
 
           $(DataTablesFactory.table).show();
+        },
+        drawCallback: function () {
+          // ペジネーションのサイズを変更
+          $('.dataTables_paginate > .pagination').addClass('pagination-sm');
         }
       },
       toggle: function (dt) {
