@@ -1,0 +1,65 @@
+<?php
+
+return [
+
+  'brand' => 'TUCLE5',
+
+  'front_url' => env('FRONT_URL', 'http://localhost'),
+
+  /**
+   * modules 使用するモジュールを列挙する
+   *
+   * - name 識別名
+   * - allows アクセスできるユーザーのroleをカンマ区切りで列挙。
+   *   adminは暗黙的に全てのモジュールにアクセス可能
+   * - model 使用するモデル
+   * - presenter 使用するプレゼンター
+   */
+  'modules' => [
+    [
+      'name' => 'eventlog',
+      'allows' => 'admin',
+      'model' => \App\EventLog::class,
+      'presenter' => \App\Http\Presenters\EventLogPresenter::class,
+    ],
+  ],
+
+  /**
+   * navigation ナビゲーションに表示するモジュールを指定する
+   *
+   * - name モジュール名
+   * - label optional ナビゲーション固有のラベルを表示したい場合とグループを使用する場合に使用する
+   * - group グループ内に表示するモジュールを配列で指定する
+   */
+  'navigation' => [
+    [
+      'name' => 'eventlog',
+    ],
+    [
+      'label' => 'グループ',
+      'group' => [
+        [
+          'name' => 'eventlog',
+        ],
+      ],
+    ],
+  ],
+
+  'roles' => [
+    [
+      'name' => 'admin',
+      'label' => 'システム管理者',
+      'default_url' => '/',
+    ],
+    [
+      'name' => 'user',
+      'label' => '一般ユーザー',
+      'default_url' => '/',
+    ],
+  ],
+
+  'event_log' => [
+    'enabled' => true,
+    'user_credential_key' => 'email',
+  ],
+];

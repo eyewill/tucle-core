@@ -310,7 +310,7 @@ class Initializer implements InitializerContracts
       return $configFilePath . ' already exists.';
     }
 
-    $templatePath = __DIR__.'/../files/config.php';
+    $templatePath = __DIR__.'/../files/config/tucle.stub';
     $template = $this->app['files']->get($templatePath);
     $this->app['files']->put($configFilePath, $template);
 
@@ -324,7 +324,7 @@ class Initializer implements InitializerContracts
       return $configFilePath . ' already exists.';
     }
 
-    $templatePath = __DIR__.'/../files/config/app.php';
+    $templatePath = __DIR__.'/../files/config/app.stub';
     $template = $this->app['files']->get($templatePath);
     $this->app['files']->put($configFilePath, $template);
 
