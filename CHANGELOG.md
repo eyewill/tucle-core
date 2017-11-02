@@ -4,6 +4,14 @@
 
 ##### 変更点
 
+##### アップグレード
+
+##### 推奨するアップグレード
+
+#### 0.4.0
+
+##### 変更点
+
 - FakeModelGeneratorを追加
 - datatables/make.blade.phpを廃止
 - PresenterにrenderMakeDataTablesScriptを追加
