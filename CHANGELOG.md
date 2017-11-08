@@ -5,6 +5,7 @@
 ##### 変更点
 
 - 一覧ページのペジネーションを上部にも設置、datatablesに関するviewを更新
+- tucle:initでException/Handler.phpとviews/common.blade.phpを生成
 
 ##### アップグレード
 
@@ -17,7 +18,10 @@ $ npm run prod
 
 ##### 推奨するアップグレード
 
-- 
+- Exception/Handler.phpとviews/common.blade.phpを生成
+~~~
+$ php artisan tucle:init --only=exception --force
+~~~
 
 #### 0.4.0
 

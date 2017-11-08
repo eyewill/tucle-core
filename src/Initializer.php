@@ -13,6 +13,8 @@ class Initializer implements InitializerContracts
   protected $resourcePath;
   protected $configPath;
   protected $providerPath;
+  protected $databasePath;
+  protected $exceptionPath;
   protected $composer;
   protected $migrationCreator;
   protected $filesystem;
@@ -31,6 +33,7 @@ class Initializer implements InitializerContracts
     'lang',
     'kernel',
     'eventlog',
+    'exception',
   ];
 
   protected $tasks = [];
@@ -46,6 +49,7 @@ class Initializer implements InitializerContracts
     $this->configPath = $container->basePath().'/config';
     $this->providerPath = $container['path'].'/Providers';
     $this->databasePath = $container->databasePath();
+    $this->exceptionPath = $container['path'].'/Exceptions';
     $this->setForce($force);
     $this->setTasks($only);
   }
@@ -167,6 +171,12 @@ class Initializer implements InitializerContracts
       yield $this->makeEventLogViews();
     }
 
+    if (in_array('exception', $this->tasks))
+    {
+      yield $this->makeExceptionHandler();
+      yield $this->makeErrorView();
+    }
+    
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
   }
 
@@ -439,6 +449,36 @@ class Initializer implements InitializerContracts
 
     $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
     $templatePath = __DIR__.'/../files/eventlog/views/index.blade.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
+
+    return $filePath.' generated.';
+  }
+  
+  public function makeExceptionHandler()
+  {
+    $filePath = $this->exceptionPath.'/Handler.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/Exceptions/Handler.stub';
+    $template = $this->app['files']->get($templatePath);
+    $this->app['files']->put($filePath, $template);
+
+    return $filePath.' generated.';
+  }
+  
+  public function makeErrorView()
+  {
+    $filePath = $this->resourcePath.'/views/errors/common.blade.php';
+    if (!$this->force && $this->app['files']->exists($filePath)) {
+      return $filePath . ' already exists.';
+    }
+
+    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
+    $templatePath = __DIR__.'/../files/Exceptions/views/common.blade.stub';
     $template = $this->app['files']->get($templatePath);
     $this->app['files']->put($filePath, $template);
 
