@@ -24,6 +24,21 @@ $ npm run prod
 ~~~
 $ php artisan tucle:init --only=kernel --force
 ~~~
+
+##### 推奨するアップグレード
+
+- Exception/Handler.phpとviews/common.blade.phpを生成
+~~~
+$ php artisan tucle:init --only=exception --force
+~~~
+- layoutを更新
+~~~
+$ php artisan tucle:init --only=layout --force
+~~~
+- AuthControllerとauth viewを生成
+~~~
+$ php artisan tucle:init --only=auth --force
+~~~
 - EventLogPresenterのloginIdFilterValues()を更新
 ~~~
   public function loginIdFilterValues()
@@ -56,21 +71,6 @@ $ php artisan tucle:init --only=lang --force
 
 +  'auth_credential_key' => 'login_id',
  ];
-~~~
-
-##### 推奨するアップグレード
-
-- Exception/Handler.phpとviews/common.blade.phpを生成
-~~~
-$ php artisan tucle:init --only=exception --force
-~~~
-- layoutを更新
-~~~
-$ php artisan tucle:init --only=layout --force
-~~~
-- AuthControllerとauth viewを生成
-~~~
-$ php artisan tucle:init --only=auth --force
 ~~~
 
 #### 0.4.0
