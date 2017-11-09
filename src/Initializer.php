@@ -159,7 +159,9 @@ class Initializer implements InitializerContracts
 
     if (in_array('kernel', $this->tasks))
     {
-      yield $this->copyKernel();
+      yield $this->makeRoleMiddleware();
+      yield $this->makeExpiresMiddleware();
+      yield $this->makeKernel();
     }
 
     if (in_array('eventlog', $this->tasks))
@@ -246,18 +248,6 @@ class Initializer implements InitializerContracts
     $this->app['files']->copyDirectory(__DIR__.'/../files/lang', $this->resourcePath.'/'.'lang');
 
     return 'lang copied.';
-  }
-
-  public function copyKernel()
-  {
-    if (!$this->force && $this->app['files']->exists($this->app['path'].'/Http/Kernel.php'))
-    {
-      return $this->app['path'].'/Http/Kernel.php already exists';
-    }
-
-    $this->app['files']->copy(__DIR__.'/../files/Http/Kernel.php', $this->app['path'].'/Http/Kernel.php');
-
-    return 'kernel copied.';
   }
 
   public function copyAuthView()
@@ -484,4 +474,47 @@ class Initializer implements InitializerContracts
 
     return $filePath.' generated.';
   }
+
+  public function makeKernel()
+  {
+    $src = __DIR__.'/../files/Http/Kernel.stub';
+    $dest = $this->app['path'].'/Http/Kernel.php';
+    if (!$this->force && $this->app['files']->exists($dest))
+    {
+      return $dest.' already exists';
+    }
+
+    $this->app['files']->copy($src, $dest);
+
+    return 'kernel generated.';
+  }
+
+  public function makeRoleMiddleware()
+  {
+    $src = __DIR__.'/../files/Http/Middleware/Role.stub';
+    $dest = $this->app['path'].'/Http/Middleware/Role.php';
+    if (!$this->force && $this->app['files']->exists($dest))
+    {
+      return $dest.' already exists';
+    }
+
+    $this->app['files']->copy($src, $dest);
+
+    return 'Role Middleware generated.';
+  }
+
+  public function makeExpiresMiddleware()
+  {
+    $src = __DIR__.'/../files/Http/Middleware/Expires.stub';
+    $dest = $this->app['path'].'/Http/Middleware/Expires.php';
+    if (!$this->force && $this->app['files']->exists($dest))
+    {
+      return $dest.' already exists';
+    }
+
+    $this->app['files']->copy($src, $dest);
+
+    return 'Expires Middleware generated.';
+  }
+
 }
