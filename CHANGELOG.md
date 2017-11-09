@@ -6,6 +6,9 @@
 
 - 一覧ページのペジネーションを上部にも設置、datatablesに関するviewを更新
 - tucle:initでException/Handler.phpとviews/common.blade.phpを生成
+- tucle:initでHttp/Kernel.phpをコピーする形に変更
+- tucle:initでRole Middlewareをコピーする形に変更
+- Expire Middlewareを追加
 
 ##### アップグレード
 
