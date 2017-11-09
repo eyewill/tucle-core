@@ -68,6 +68,10 @@ $ php artisan tucle:init --only=exception --force
 ~~~
 $ php artisan tucle:init --only=layout --force
 ~~~
+- AuthControllerとauth viewを生成
+~~~
+$ php artisan tucle:init --only=auth --force
+~~~
 
 #### 0.4.0
 
