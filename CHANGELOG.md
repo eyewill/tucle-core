@@ -18,6 +18,10 @@
 $ npm run prod
 ~~~
 
+- Http/Kernel.php、Role Middleware、Expire Middlewareを生成
+~~~
+$ php artisan tucle:init --only=kernel --force
+~~~
 
 ##### 推奨するアップグレード
 
