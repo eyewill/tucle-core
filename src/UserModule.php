@@ -157,8 +157,8 @@ class UserModule implements InitializerContracts
         $code = '';
         $code.= 'return ['.PHP_EOL;
         $rules = [
-          'name' => 'required',
-          'email' => 'required|unique:users',
+          'user_name' => 'required',
+          'login_id' => 'required|unique:users',
           'password' => 'required',
           'role' => 'required',
         ];
@@ -175,8 +175,8 @@ class UserModule implements InitializerContracts
         $code = '';
         $code.= '$user = $this->route(\'user\');'.PHP_EOL;
         $code.= 'return ['.PHP_EOL;
-        $code.= "'name' => 'required',".PHP_EOL;
-        $code.= "'email' => 'required|unique:users,email,'.\$user->id,".PHP_EOL;
+        $code.= "'usre_name' => 'required',".PHP_EOL;
+        $code.= "'login_id' => 'required|unique:users,login_id,'.\$user->id,".PHP_EOL;
         $code.= "'role' => 'required',".PHP_EOL;
         $code.= '];';
 
