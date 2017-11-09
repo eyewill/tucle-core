@@ -9,6 +9,8 @@
 - tucle:initでHttp/Kernel.phpをコピーする形に変更
 - tucle:initでRole Middlewareをコピーする形に変更
 - Expire Middlewareを追加
+- tucle.event_log.user_credential_keyをtucle.auth_credential_keyに変更
+- Userモジュールを更新
 
 ##### アップグレード
 
@@ -17,10 +19,42 @@
 ~~~
 $ npm run prod
 ~~~
-
 - Http/Kernel.php、Role Middleware、Expire Middlewareを生成
 ~~~
 $ php artisan tucle:init --only=kernel --force
+~~~
+- EventLogPresenterのloginIdFilterValues()を更新
+~~~
+  public function loginIdFilterValues()
+  {
+    $name = config('tucle.auth_credential_key');
+    return User::query()->pluck($name, $name);
+  }
+~~~
+- usersのmigrationファイルを更新
+~~~
+- $table->string('name');
+- $table->string('email')->unique();
++ $table->string('user_name');
++ $table->string('login_id')->unique();
+~~~
+- Userモジュールを更新
+~~~
+$ php artisan tucle:makeuser --force
+~~~
+- 言語ファイルを更新
+~~~
+$ php artisan tucle:init --only=lang --force
+~~~
+- config/tucle.phpからevent_log.user_credential_keyを削除し、auth_credential_keyを追加
+~~~
+   'event_log' => [
+     'enabled' => true,
+-    'user_credential_key' => 'email',
+   ],
+
++  'auth_credential_key' => 'login_id',
+ ];
 ~~~
 
 ##### 推奨するアップグレード
@@ -50,7 +84,6 @@ $ php artisan tucle:init --only=exception --force
 ~~~
 $ php artisan tucle:init --only=asset
 ~~~
-
 - make.blade.phpの設定をPresenterの$dataTablesに移動
 ~~~php
   protected $dataTables = [
@@ -79,7 +112,6 @@ $ php artisan tucle:init --only=asset
   $fakemodel->publishes();
   return $fakemodel->getData();
 ~~~
-
 - Presenterのfilters設定を$tableColumnsに移動
 ~~~php
   $tableColumns =  [
@@ -105,12 +137,10 @@ $ php artisan tucle:init --only=asset
 ~~~
 $ php artisan tucle:init --only=eventlog --force
 ~~~
-
 - Kernelを更新
 ~~~
 $ php artisan tucle:init --only=kernel --force
 ~~~
-
 - config/tucle.phpのmodulesエントリーにpresenterを追加
 ~~~
   'modules' => [
@@ -125,7 +155,6 @@ $ php artisan tucle:init --only=kernel --force
     // ...
   ],
 ~~~
-
 - Userモジュールを更新
 ~~~
 $ php artisan tucle:makeuser --force

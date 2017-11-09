@@ -132,7 +132,15 @@ class Initializer implements InitializerContracts
 
     if (in_array('auth', $this->tasks))
     {
-      yield $this->copyAuthView();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/auth/views',
+        $this->resourcePath.'/'.'views/auth'
+      );
+
+      yield $this->makeFromStub(
+        __DIR__.'/../files/auth/Http/Controllers/AuthController.stub',
+        $this->app['path'].'/Http/Controllers/Auth/AuthController.php'
+      );
     }
 
     if (in_array('routes', $this->tasks))
@@ -250,18 +258,6 @@ class Initializer implements InitializerContracts
     return 'lang copied.';
   }
 
-  public function copyAuthView()
-  {
-    if (!$this->force && $this->app['files']->exists($this->resourcePath.'/'.'views/auth'))
-    {
-      return $this->resourcePath.'/'.'views/auth'.' already exists';
-    }
-
-    $this->app['files']->copyDirectory(__DIR__.'/../files/auth', $this->resourcePath.'/'.'views/auth');
-
-    return 'auth view copied.';
-  }
-
   public function copyBower()
   {
     $path = $this->basePath.'/'.'bower.json';
@@ -376,7 +372,11 @@ class Initializer implements InitializerContracts
   public function makeEventLogMigrationFile()
   {
     try {
-      $this->migrationCreator->create('create_event_logs_table', $this->databasePath.DIRECTORY_SEPARATOR.'migrations', 'event_logs', 'event_logs');
+      $this->migrationCreator->create(
+        'create_event_logs_table',
+        $this->databasePath.DIRECTORY_SEPARATOR.'migrations',
+        'event_logs',
+        'event_logs');
       $this->composer->dumpAutoload();
       return 'event log migration file copied.';
     } catch (Exception $e) {
@@ -517,4 +517,24 @@ class Initializer implements InitializerContracts
     return 'Expires Middleware generated.';
   }
 
+  protected function makeFromStub($src, $dest, $name = null)
+  {
+    $name = $name ?: $dest;
+
+    if (!$this->force && $this->app['files']->exists($dest))
+    {
+      return $dest.' already exists';
+    }
+
+    if ($this->app['files']->isDirectory($src))
+    {
+      $this->app['files']->copyDirectory($src, $dest);
+    }
+    else
+    {
+      $this->app['files']->copy($src, $dest);
+    }
+
+    return $name.' generated.';
+  }
 }

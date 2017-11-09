@@ -16,8 +16,8 @@ class User extends Authenticatable {
   /**
   */
   protected $fillable = [
-    'name',
-    'email',
+    'user_name',
+    'login_id',
     'password',
     'role',
     'remember_token',
@@ -46,7 +46,7 @@ class User extends Authenticatable {
   */
   public function getTitleAttribute($value)
   {
-    return $this->attributes['name'];
+    return $this->attributes['user_name'];
   }
 
   /**

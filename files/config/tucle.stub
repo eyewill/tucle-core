@@ -60,6 +60,7 @@ return [
 
   'event_log' => [
     'enabled' => true,
-    'user_credential_key' => 'email',
   ],
+
+  'auth_credential_key' => 'login_id',
 ];

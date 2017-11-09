@@ -14,7 +14,7 @@ class UserPresenter extends ModelPresenter {
       'forms' => [
         [
           'type' => 'text',
-          'name' => 'name',
+          'name' => 'user_name',
           'label' => 'ユーザー名',
           'attr' => [
             'placeholder' => '',
@@ -35,7 +35,7 @@ class UserPresenter extends ModelPresenter {
       'forms' => [
         [
           'type' => 'text',
-          'name' => 'email',
+          'name' => 'login_id',
           'label' => 'ログインID',
           'attr' => [
             'placeholder' => '',
@@ -81,12 +81,12 @@ class UserPresenter extends ModelPresenter {
       'type' => 'checkbox',
     ],
     [
-      'name' => 'name',
+      'name' => 'user_name',
       'label' => 'ユーザー名',
       'links' => true,
     ],
     [
-      'name' => 'email',
+      'name' => 'login_id',
       'label' => 'ログインID',
     ],
     [

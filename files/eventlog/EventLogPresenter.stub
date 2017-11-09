@@ -99,7 +99,7 @@ class EventLogPresenter extends ModelPresenter
 
   public function loginIdFilterValues()
   {
-    $name = config('tucle.event_log.user_credential_key');
+    $name = config('tucle.auth_credential_key');
     return User::query()->pluck($name, $name);
   }
 

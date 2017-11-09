@@ -48,7 +48,7 @@ if (!function_exists('eventlog')) {
     if (config('tucle.event_log.enabled'))
     {
       DB::table('event_logs')->insert([
-        'login_id' => $user->{config('tucle.event_log.user_credential_key', 'email')},
+        'login_id' => $user->{config('tucle.auth_credential_key', 'email')},
         'role' => $user->role,
         'event' => $event,
         'params' => json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
