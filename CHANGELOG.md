@@ -11,6 +11,7 @@
 - Expire Middlewareを追加
 - tucle.event_log.user_credential_keyをtucle.auth_credential_keyに変更
 - Userモジュールを更新
+- layoutを更新
 
 ##### アップグレード
 
@@ -62,6 +63,10 @@ $ php artisan tucle:init --only=lang --force
 - Exception/Handler.phpとviews/common.blade.phpを生成
 ~~~
 $ php artisan tucle:init --only=exception --force
+~~~
+- layoutを更新
+~~~
+$ php artisan tucle:init --only=layout --force
 ~~~
 
 #### 0.4.0
