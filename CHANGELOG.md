@@ -12,6 +12,7 @@
 - tucle.event_log.user_credential_keyをtucle.auth_credential_keyに変更
 - Userモジュールを更新
 - layoutを更新
+- .btn-actionsに隙間ができる問題を修正
 
 ##### アップグレード
 
@@ -23,6 +24,10 @@ $ npm run prod
 - Http/Kernel.php、Role Middleware、Expire Middlewareを生成
 ~~~
 $ php artisan tucle:init --only=kernel --force
+~~~
+- リソースを更新
+~~~
+> gulp
 ~~~
 
 ##### 推奨するアップグレード
