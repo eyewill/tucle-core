@@ -4,6 +4,14 @@
 
 ##### 変更点
 
+##### アップグレード
+
+##### 推奨するアップグレード
+
+#### 0.5.0
+
+##### 変更点
+
 - 一覧ページのペジネーションを上部にも設置、datatablesに関するviewを更新
 - tucle:initでException/Handler.phpとviews/common.blade.phpを生成
 - tucle:initでHttp/Kernel.phpをコピーする形に変更
