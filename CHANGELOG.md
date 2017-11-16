@@ -4,9 +4,20 @@
 
 ##### 変更点
 
+- Model用トレイトとしてSortableを追加
+- Model用インターフェースとしてSortableInterfaceを追加
+- ModelPresenterにソート用のメソッドを追加
+- indexページのactionに並び替え用リンクを追加
+
+
 ##### アップグレード
 
 ##### 推奨するアップグレード
+
+- 並び替え機能を追加したいモジュールにTucleBuilderを再実行(テーブルにorderフィールドが存在する必要あり)
+~~~
+$ php artisan tucle:builder module_name --force
+~~~
 
 #### 0.5.0
 
