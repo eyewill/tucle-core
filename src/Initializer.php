@@ -150,9 +150,18 @@ class Initializer implements InitializerContracts
 
     if (in_array('providers', $this->tasks))
     {
-      yield $this->makeEventServiceProvider();
-      yield $this->makeAuthServiceProvider();
-      yield $this->makeRouteServiceProvider();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Providers/EventServiceProvider.stub',
+        $this->providerPath.'/EventServiceProvider.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Providers/AuthServiceProvider.stub',
+        $this->providerPath.'/AuthServiceProvider.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Providers/RouteServiceProvider.stub',
+        $this->providerPath.'/RouteServiceProvider.php'
+      );
     }
 
     if (in_array('layout', $this->tasks))
@@ -325,48 +334,6 @@ class Initializer implements InitializerContracts
     $this->app['files']->put($configFilePath, $template);
 
     return $configFilePath.' generated.';
-  }
-
-  public function makeAuthServiceProvider()
-  {
-    $filePath = $this->providerPath.'/AuthServiceProvider.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/Providers/AuthServiceProvider.php';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-
-  public function makeEventServiceProvider()
-  {
-    $filePath = $this->providerPath.'/EventServiceProvider.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/Providers/EventServiceProvider.php';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-
-  public function makeRouteServiceProvider()
-  {
-    $filePath = $this->providerPath.'/RouteServiceProvider.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/Providers/RouteServiceProvider.php';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
   }
 
   public function makeEventLogMigrationFile()

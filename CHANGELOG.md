@@ -8,9 +8,15 @@
 - Model用インターフェースとしてSortableInterfaceを追加
 - ModelPresenterにソート用のメソッドを追加
 - indexページのactionに並び替え用リンクを追加
-
+- CMSのルートを/adminに変更
+- ServiceProviderを参照する形からコピーする形に変更(以前のServiceProviderは0.7.0で削除される予定)
 
 ##### アップグレード
+
+- ServiceProviderを生成
+~~~
+$ php artisan tucle:init --only=providers --force
+~~~
 
 ##### 推奨するアップグレード
 

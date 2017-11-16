@@ -6,6 +6,11 @@ use Eyewill\TucleCore\Module;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+/**
+ * Class AuthServiceProvider
+ * @package Eyewill\TucleCore\Providers
+ * @deprecated Make from files/Providers/AuthServiceProvider.stub in tucle:init
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
