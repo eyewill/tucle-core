@@ -4,6 +4,10 @@ return [
 
   'brand' => 'TUCLE5',
 
+  'copyright' => 'Eyewill',
+
+  'powered_by' => 'Tucle5.2',
+
   'front_url' => env('FRONT_URL', 'http://localhost'),
 
   /**

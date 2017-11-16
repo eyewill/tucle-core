@@ -10,6 +10,8 @@
 - indexページのactionに並び替え用リンクを追加
 - CMSのルートを/adminに変更
 - ServiceProviderを参照する形からコピーする形に変更(以前のServiceProviderは0.7.0で削除される予定)
+- .env.localを生成するようにした
+- config/tucle.phpにcopyrightとpowered_byを追加
 
 ##### アップグレード
 
@@ -23,6 +25,13 @@ $ php artisan tucle:init --only=providers --force
 - 並び替え機能を追加したいモジュールにTucleBuilderを再実行(テーブルにorderフィールドが存在する必要あり)
 ~~~
 $ php artisan tucle:builder module_name --force
+~~~
+
+- config/tucle.phpにcopyrightとpowered_byを追加
+~~~
+  'copyright' => 'Eyewill',
+
+  'powered_by' => 'Tucle5.2',
 ~~~
 
 #### 0.5.0

@@ -104,8 +104,18 @@ class Initializer implements InitializerContracts
 
     if (in_array('config', $this->tasks))
     {
-      yield $this->makeConfigFile();
-      yield $this->makeAppConfigFile();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/config/tucle.stub',
+        $this->configPath.'/tucle.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/config/app.stub',
+        $this->configPath.'/app.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/config/.env.stub',
+        $this->basePath.'/.env.local'
+      );
     }
 
     if (in_array('composer', $this->tasks))
@@ -306,34 +316,6 @@ class Initializer implements InitializerContracts
     $this->app['files']->put($filePath, $template);
 
     return $filePath.' generated.';
-  }
-
-  public function makeConfigFile()
-  {
-    $configFilePath = $this->configPath.'/tucle.php';
-    if (!$this->force && $this->app['files']->exists($configFilePath)) {
-      return $configFilePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/config/tucle.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($configFilePath, $template);
-
-    return $configFilePath.' generated.';
-  }
-
-  public function makeAppConfigFile()
-  {
-    $configFilePath = $this->configPath.'/app.php';
-    if (!$this->force && $this->app['files']->exists($configFilePath)) {
-      return $configFilePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/config/app.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($configFilePath, $template);
-
-    return $configFilePath.' generated.';
   }
 
   public function makeEventLogMigrationFile()
