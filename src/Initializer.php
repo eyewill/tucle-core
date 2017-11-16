@@ -100,6 +100,7 @@ class Initializer implements InitializerContracts
       yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
       yield $this->composer->add('primalbase/view-builder', 'dev-master');
       yield $this->composer->add('eyewill/tucle-builder', 'dev-master');
+      yield $this->composer->add('bugsnag/bugsnag-laravel', '^2.0');
     }
 
     if (in_array('config', $this->tasks))
