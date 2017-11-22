@@ -13,12 +13,29 @@
 - .env.localを生成するようにした
 - config/tucle.phpにcopyrightとpowered_byを追加
 - Bugsnagを追加
+- login,logoutのurlを/admin/login,/admin/logoutに変更
+- user,eventlogのURLを修正
 
 ##### アップグレード
 
-- ServiceProviderを生成
+- ServiceProviderを更新
 ~~~
 $ php artisan tucle:init --only=providers --force
+~~~
+
+- authモジュールを更新
+~~~
+$ php artisan tucle:init --only=auth --force
+~~~
+
+- Authenticateミドルウェアを更新
+~~~
+$ php artisan tucle:init --only=kernel --force
+~~~
+
+- レイアウトを更新
+~~~
+$ php artisan tucle:init --only=layout --force
 ~~~
 
 ##### 推奨するアップグレード

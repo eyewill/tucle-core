@@ -64,7 +64,7 @@
               <ul class="dropdown-menu" role="menu">
                 @can('show-user', App\User::class)
                 <li>
-                  <a href="{{ url('user') }}">
+                  <a href="{{ route('user.index') }}">
                     <span class="fa fa-btn fa-user"></span>
                     ユーザー管理
                   </a>
@@ -73,7 +73,7 @@
                 @if (config('tucle.event_log.enabled'))
                   @can('show-eventlog', App\EventLog::class)
                   <li>
-                    <a href="{{ url('eventlog') }}">
+                    <a href="{{ route('eventlog.index') }}">
                       <span class="fa fa-btn fa-list"></span>
                       イベントログ
                     </a>

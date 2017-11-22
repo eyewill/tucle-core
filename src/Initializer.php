@@ -187,9 +187,22 @@ class Initializer implements InitializerContracts
 
     if (in_array('kernel', $this->tasks))
     {
-      yield $this->makeRoleMiddleware();
-      yield $this->makeExpiresMiddleware();
-      yield $this->makeKernel();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Middleware/Role.stub',
+        $this->app['path'].'/Http/Middleware/Role.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Middleware/Expires.stub',
+        $this->app['path'].'/Http/Middleware/Expires.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Middleware/Authenticate.stub',
+        $this->app['path'].'/Http/Middleware/Authenticate.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Kernel.stub',
+        $this->app['path'].'/Http/Kernel.php'
+      );
     }
 
     if (in_array('eventlog', $this->tasks))
@@ -423,48 +436,6 @@ class Initializer implements InitializerContracts
     $this->app['files']->put($filePath, $template);
 
     return $filePath.' generated.';
-  }
-
-  public function makeKernel()
-  {
-    $src = __DIR__.'/../files/Http/Kernel.stub';
-    $dest = $this->app['path'].'/Http/Kernel.php';
-    if (!$this->force && $this->app['files']->exists($dest))
-    {
-      return $dest.' already exists';
-    }
-
-    $this->app['files']->copy($src, $dest);
-
-    return 'kernel generated.';
-  }
-
-  public function makeRoleMiddleware()
-  {
-    $src = __DIR__.'/../files/Http/Middleware/Role.stub';
-    $dest = $this->app['path'].'/Http/Middleware/Role.php';
-    if (!$this->force && $this->app['files']->exists($dest))
-    {
-      return $dest.' already exists';
-    }
-
-    $this->app['files']->copy($src, $dest);
-
-    return 'Role Middleware generated.';
-  }
-
-  public function makeExpiresMiddleware()
-  {
-    $src = __DIR__.'/../files/Http/Middleware/Expires.stub';
-    $dest = $this->app['path'].'/Http/Middleware/Expires.php';
-    if (!$this->force && $this->app['files']->exists($dest))
-    {
-      return $dest.' already exists';
-    }
-
-    $this->app['files']->copy($src, $dest);
-
-    return 'Expires Middleware generated.';
   }
 
   protected function makeFromStub($src, $dest, $name = null)

@@ -7,7 +7,7 @@
                 <div class="panel panel-default panel-login">
                     <div class="panel-heading">ログイン</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('login') }}">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has(config('tucle.auth_credential_key')) ? ' has-error' : '' }}">
