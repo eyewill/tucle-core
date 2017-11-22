@@ -1,0 +1,32 @@
+<?php
+
+use App\User;
+use Illuminate\Database\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+  /**
+   * Run the database seeds.
+   *
+   * @return void
+   */
+  public function run()
+  {
+    if (app()->environment('local'))
+    {
+      DB::table('users')->truncate();
+      User::create([
+        'user_name'     => '管理者',
+        config('tucle.auth_credential_key') => 'admin',
+        'password' => 'password',
+        'role' => 'admin',
+      ]);
+      User::create([
+        'user_name'     => 'ユーザー',
+        config('tucle.auth_credential_key') => 'user',
+        'password' => 'password',
+        'role' => 'user',
+      ]);
+    }
+  }
+}

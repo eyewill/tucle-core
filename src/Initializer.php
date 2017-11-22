@@ -34,6 +34,7 @@ class Initializer implements InitializerContracts
     'kernel',
     'eventlog',
     'exception',
+    'seeds',
   ];
 
   protected $tasks = [];
@@ -219,7 +220,20 @@ class Initializer implements InitializerContracts
       yield $this->makeExceptionHandler();
       yield $this->makeErrorView();
     }
-    
+
+    if (in_array('seeds', $this->tasks))
+    {
+      yield $this->makeFromStub(
+        __DIR__.'/../files/database/seeds/DatabaseSeeder.stub',
+        $this->databasePath.'/seeds/DatabaseSeeder.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/database/seeds/UsersTableSeeder.stub',
+        $this->databasePath.'/seeds/UsersTableSeeder.php'
+      );
+      $this->composer->dumpAutoload();
+    }
+
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
   }
 
@@ -446,6 +460,8 @@ class Initializer implements InitializerContracts
     {
       return $dest.' already exists';
     }
+
+    $this->app['files']->makeDirectory(dirname($dest), 02755, true, true);
 
     if ($this->app['files']->isDirectory($src))
     {
