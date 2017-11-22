@@ -15,6 +15,7 @@
 - Bugsnagを追加
 - login,logoutのurlを/admin/login,/admin/logoutに変更
 - user,eventlogのURLを修正
+- デフォルトのシードを追加
 
 ##### アップグレード
 
@@ -59,6 +60,11 @@ $ php artisan tucle:init --only=composer,config --force
 - .envにBUGSNAG_API_KEYをセット
 ~~~
 BUGSNAG_API_KEY=*****
+~~~
+
+~~~
+# シードを更新
+$ php artisan tucle:init --only=seeds --force
 ~~~
 
 #### 0.5.0
