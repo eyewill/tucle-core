@@ -1,6 +1,12 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="btn-toolbar pull-right">
+      @if ($presenter->hasRoute('sort'))
+      <a href="{{ $presenter->route('sort') }}" class="btn btn-info">
+        <span class="fa fa-reorder"></span>
+        並び替え
+      </a>
+      @endif
       @if ($presenter->hasRoute('front.index'))
       <a href="{{ $presenter->route('front.index') }}" class="btn btn-primary" target="_blank">
         <span class="fa fa-external-link"></span>

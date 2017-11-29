@@ -1,16 +1,8 @@
-<?php
+<?php namespace App\Providers;
 
-namespace Eyewill\TucleCore\Providers;
-
-use File;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
-/**
- * Class RouteServiceProvider
- * @package Eyewill\TucleCore\Providers
- * @deprecated Make from files/Providers/RouteServiceProvider.stub in tucle:init
- */
 class RouteServiceProvider extends ServiceProvider
 {
   /**
@@ -59,6 +51,7 @@ class RouteServiceProvider extends ServiceProvider
     $router->group([
       'namespace' => $this->namespace,
       'middleware' => 'cms',
+      'prefix' => 'admin',
     ], function ($router) {
       require app_path('Http/routes.php');
       foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
@@ -70,8 +63,22 @@ class RouteServiceProvider extends ServiceProvider
     $router->group([
       'namespace' => $this->namespace,
       'middleware' => 'web',
+      'prefix' => 'admin',
     ], function ($router) {
-      $router->auth();
+      $router->get('login', 'Auth\AuthController@showLoginForm')->name('login');
+      $router->post('login', 'Auth\AuthController@login');
+      $router->get('logout', 'Auth\AuthController@logout')->name('logout');
+    });
+
+    $router->group([
+      'namespace' => 'Http/Frontend/Controllers',
+      'middleware' => 'web',
+    ], function (Router $router) {
+
+      foreach ($this->app['files']->glob(app_path('Http/Frontend/routes/*.php')) as $file)
+      {
+        include $file;
+      }
     });
   }
 

@@ -23,6 +23,7 @@ class ModelPresenter extends Presenter
   protected $defaultSortOrder = 'desc';
   protected $searchColumns = [];
   protected $hasCheckbox;
+  protected $orderValues;
 
   public function __construct(RouteManager $router, Request $request, FormBuilder $form, HtmlBuilder $html)
   {
@@ -74,21 +75,29 @@ class ModelPresenter extends Presenter
     }
     if (request()->has('s'))
     {
-      $builder->where(function($query) use ($builder) {
-        foreach($this->searchColumns($builder) as $column)
-        {
-          $name = $column['name'];
-          $type = $column['type'];
-          if ($type == 'date')
+      $searchKeyword = request('s');
+      $searchKeyword = str_replace('　', ' ', $searchKeyword);
+      $keywordList = explode(' ', $searchKeyword);
+      $searchColumns = $this->searchColumns($builder);
+      foreach ($keywordList as $keyword)
+      {
+        $builder->where(function($query) use ($searchColumns, $keyword) {
+
+          foreach($searchColumns as $column)
           {
-            $query->orWhere(DB::raw("DATE_FORMAT($name, '%Y/%m/%d')"), 'like', request('s').'%');
+            $name = $column['name'];
+            $type = $column['type'];
+            if ($type == 'date')
+            {
+              $query->orWhere(DB::raw("DATE_FORMAT($name, '%Y/%m/%d')"), 'like', $keyword.'%');
+            }
+            else
+            {
+              $query->orWhere($name, 'like', '%'.$keyword.'%');
+            }
           }
-          else
-          {
-            $query->orWhere($name, 'like', '%'.request('s').'%');
-          }
-        }
-      });
+        });
+      }
     }
 
     return $builder;
@@ -550,5 +559,51 @@ class ModelPresenter extends Presenter
     }
 
     return $this->hasCheckbox;
+  }
+
+  /**
+   * @param $model
+   * @return array
+   */
+  protected function getOrderValues($model)
+  {
+    if (is_null($this->orderValues))
+    {
+      $entries = $this->getEntriesBuilder($model)
+        ->orderBy('order', 'asc')
+        ->get();
+
+      $this->orderValues = $entries;
+    }
+
+    return $this->orderValues;
+  }
+
+  /**
+   * @param $model
+   * @return string
+   */
+  public function orderAction($model)
+  {
+    $entries = $this->getOrderValues(get_class($model));
+    $values = [];
+    foreach ($entries as $entry)
+    {
+      $label = mb_strimwidth($entry->title, 0, 18, '…', 'UTF-8');
+      if ($entry->id == $model->id)
+      {
+        $values[$entry->order] = '並び順を変更';
+      }
+      else
+      {
+        $values[$entry->order] = $label.'の上に移動';
+      }
+    }
+    $html = $this->getForm()->select('order',
+      $values+['-1' => '一番下に移動'],
+      $model->order,
+      ['class' => 'form-control input-sm', 'data-source-id' => $model->id]);
+
+    return $html;
   }
 }

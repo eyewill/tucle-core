@@ -162,6 +162,7 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
 
+    Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
     Barryvdh\Debugbar\ServiceProvider::class,
     Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     Collective\Html\HtmlServiceProvider::class,
@@ -219,5 +220,6 @@ return [
 
     'Html' => Collective\Html\HtmlFacade::class,
     'Form' => Collective\Html\FormFacade::class,
+    'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
   ],
 ];

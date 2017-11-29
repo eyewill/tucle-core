@@ -34,6 +34,7 @@ class Initializer implements InitializerContracts
     'kernel',
     'eventlog',
     'exception',
+    'seeds',
   ];
 
   protected $tasks = [];
@@ -100,12 +101,23 @@ class Initializer implements InitializerContracts
       yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
       yield $this->composer->add('primalbase/view-builder', 'dev-master');
       yield $this->composer->add('eyewill/tucle-builder', 'dev-master');
+      yield $this->composer->add('bugsnag/bugsnag-laravel', '^2.0');
     }
 
     if (in_array('config', $this->tasks))
     {
-      yield $this->makeConfigFile();
-      yield $this->makeAppConfigFile();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/config/tucle.stub',
+        $this->configPath.'/tucle.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/config/app.stub',
+        $this->configPath.'/app.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/config/.env.stub',
+        $this->basePath.'/.env.local'
+      );
     }
 
     if (in_array('composer', $this->tasks))
@@ -150,9 +162,18 @@ class Initializer implements InitializerContracts
 
     if (in_array('providers', $this->tasks))
     {
-      yield $this->makeEventServiceProvider();
-      yield $this->makeAuthServiceProvider();
-      yield $this->makeRouteServiceProvider();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Providers/EventServiceProvider.stub',
+        $this->providerPath.'/EventServiceProvider.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Providers/AuthServiceProvider.stub',
+        $this->providerPath.'/AuthServiceProvider.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Providers/RouteServiceProvider.stub',
+        $this->providerPath.'/RouteServiceProvider.php'
+      );
     }
 
     if (in_array('layout', $this->tasks))
@@ -167,9 +188,22 @@ class Initializer implements InitializerContracts
 
     if (in_array('kernel', $this->tasks))
     {
-      yield $this->makeRoleMiddleware();
-      yield $this->makeExpiresMiddleware();
-      yield $this->makeKernel();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Middleware/Role.stub',
+        $this->app['path'].'/Http/Middleware/Role.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Middleware/Expires.stub',
+        $this->app['path'].'/Http/Middleware/Expires.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Middleware/Authenticate.stub',
+        $this->app['path'].'/Http/Middleware/Authenticate.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Http/Kernel.stub',
+        $this->app['path'].'/Http/Kernel.php'
+      );
     }
 
     if (in_array('eventlog', $this->tasks))
@@ -186,7 +220,20 @@ class Initializer implements InitializerContracts
       yield $this->makeExceptionHandler();
       yield $this->makeErrorView();
     }
-    
+
+    if (in_array('seeds', $this->tasks))
+    {
+      yield $this->makeFromStub(
+        __DIR__.'/../files/database/seeds/DatabaseSeeder.stub',
+        $this->databasePath.'/seeds/DatabaseSeeder.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/database/seeds/UsersTableSeeder.stub',
+        $this->databasePath.'/seeds/UsersTableSeeder.php'
+      );
+      $this->composer->dumpAutoload();
+    }
+
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
   }
 
@@ -299,76 +346,6 @@ class Initializer implements InitializerContracts
     return $filePath.' generated.';
   }
 
-  public function makeConfigFile()
-  {
-    $configFilePath = $this->configPath.'/tucle.php';
-    if (!$this->force && $this->app['files']->exists($configFilePath)) {
-      return $configFilePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/config/tucle.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($configFilePath, $template);
-
-    return $configFilePath.' generated.';
-  }
-
-  public function makeAppConfigFile()
-  {
-    $configFilePath = $this->configPath.'/app.php';
-    if (!$this->force && $this->app['files']->exists($configFilePath)) {
-      return $configFilePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/config/app.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($configFilePath, $template);
-
-    return $configFilePath.' generated.';
-  }
-
-  public function makeAuthServiceProvider()
-  {
-    $filePath = $this->providerPath.'/AuthServiceProvider.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/Providers/AuthServiceProvider.php';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-
-  public function makeEventServiceProvider()
-  {
-    $filePath = $this->providerPath.'/EventServiceProvider.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/Providers/EventServiceProvider.php';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-
-  public function makeRouteServiceProvider()
-  {
-    $filePath = $this->providerPath.'/RouteServiceProvider.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $templatePath = __DIR__.'/../files/Providers/RouteServiceProvider.php';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-
   public function makeEventLogMigrationFile()
   {
     try {
@@ -475,48 +452,6 @@ class Initializer implements InitializerContracts
     return $filePath.' generated.';
   }
 
-  public function makeKernel()
-  {
-    $src = __DIR__.'/../files/Http/Kernel.stub';
-    $dest = $this->app['path'].'/Http/Kernel.php';
-    if (!$this->force && $this->app['files']->exists($dest))
-    {
-      return $dest.' already exists';
-    }
-
-    $this->app['files']->copy($src, $dest);
-
-    return 'kernel generated.';
-  }
-
-  public function makeRoleMiddleware()
-  {
-    $src = __DIR__.'/../files/Http/Middleware/Role.stub';
-    $dest = $this->app['path'].'/Http/Middleware/Role.php';
-    if (!$this->force && $this->app['files']->exists($dest))
-    {
-      return $dest.' already exists';
-    }
-
-    $this->app['files']->copy($src, $dest);
-
-    return 'Role Middleware generated.';
-  }
-
-  public function makeExpiresMiddleware()
-  {
-    $src = __DIR__.'/../files/Http/Middleware/Expires.stub';
-    $dest = $this->app['path'].'/Http/Middleware/Expires.php';
-    if (!$this->force && $this->app['files']->exists($dest))
-    {
-      return $dest.' already exists';
-    }
-
-    $this->app['files']->copy($src, $dest);
-
-    return 'Expires Middleware generated.';
-  }
-
   protected function makeFromStub($src, $dest, $name = null)
   {
     $name = $name ?: $dest;
@@ -525,6 +460,8 @@ class Initializer implements InitializerContracts
     {
       return $dest.' already exists';
     }
+
+    $this->app['files']->makeDirectory(dirname($dest), 02755, true, true);
 
     if ($this->app['files']->isDirectory($src))
     {

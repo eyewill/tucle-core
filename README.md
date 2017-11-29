@@ -1,17 +1,32 @@
-## インストール <small>(Install)</small>
+## インストール 
+
+#### for Vagrant
+
+~~~ruby
+# プロジェクト用に空のフォルダを作成し、Vagurantfileの共有フォルダに追加
+config.vm.synced_folder "host/path/to/example-project", "guest/path/to/example-project"
+~~~
+
+~~~
+# vagrantを再起動し、共有フォルダに移動
+> vagrant reload
+> vagrant ssh
+$ cd guest/path/to/example-project
+~~~
+
+##### ウェブサーバーとデータベースを作成
+
+#### 共通
 
 <pre>
 # laravelプロジェクト作成
-$ composer create-project "laravel/laravel=~5.2.0" example-project
+$ composer create-project "laravel/laravel=~5.2.0" .
 </pre>
 
 <pre>
 # TucleCoreをインストール
-$ cd example-project
 $ composer require eyewill/tucle-core:dev-master
 </pre>
-
-
 
 <pre>
 # app.phpに追加
@@ -25,7 +40,7 @@ $ vi config/app.php
   ],
 ~~~
 
-## 使い方 <small>(How to use)</small>
+## 使い方
 
 ### 初期化
 
@@ -38,6 +53,21 @@ $ php artisan tucle:init
 実行するとルートフォルダに.tucleというファイルが作成されます。
 
 .tucleが作成されていて生成対象のファイルが存在する場合、そのタスクはスキップします。
+
+~~~bash
+# .envを更新
+vi .env
+~~~
+
+~~~bash
+# マイグレーション
+$ php artisan migrate
+~~~
+
+~~~bash
+# デフォルトの管理ユーザーを作成
+$ php artisan db:seed
+~~~
 
 ### ユーザー管理モジュールを作成
 
@@ -63,12 +93,12 @@ $ php artisan tucle:init --force --only=assets,packages
 
 ### リソースを更新 (Resources)
 
-<pre>
-# after run in console on windows
-$ npm install
-$ bower install
-$ gulp
-</pre>
+~~~
+# Vagrantの場合、host(windows)側で実行する
+> npm install
+> bower install
+> gulp
+~~~
 
 必ず最初に一回実行する必要があります
 

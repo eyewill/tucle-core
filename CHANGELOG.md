@@ -4,9 +4,68 @@
 
 ##### 変更点
 
+- Model用トレイトとしてSortableを追加
+- Model用インターフェースとしてSortableInterfaceを追加
+- ModelPresenterにソート用のメソッドを追加
+- indexページのactionに並び替え用リンクを追加
+- CMSのルートを/adminに変更
+- ServiceProviderを参照する形からコピーする形に変更(以前のServiceProviderは0.7.0で削除される予定)
+- .env.localを生成するようにした
+- config/tucle.phpにcopyrightとpowered_byを追加
+- Bugsnagを追加
+- login,logoutのurlを/admin/login,/admin/logoutに変更
+- user,eventlogのURLを修正
+- デフォルトのシードを追加
+
 ##### アップグレード
 
+- ServiceProviderを更新
+~~~
+$ php artisan tucle:init --only=providers --force
+~~~
+
+- authモジュールを更新
+~~~
+$ php artisan tucle:init --only=auth --force
+~~~
+
+- Authenticateミドルウェアを更新
+~~~
+$ php artisan tucle:init --only=kernel --force
+~~~
+
+- レイアウトを更新
+~~~
+$ php artisan tucle:init --only=layout --force
+~~~
+
 ##### 推奨するアップグレード
+
+- 並び替え機能を追加したいモジュールにTucleBuilderを再実行(テーブルにorderフィールドが存在する必要あり)
+~~~
+$ php artisan tucle:builder module_name --force
+~~~
+
+- config/tucle.phpにcopyrightとpowered_byを追加
+~~~
+  'copyright' => 'Eyewill',
+
+  'powered_by' => 'Tucle5.2',
+~~~
+
+- composerとapp.phpを更新
+~~~
+$ php artisan tucle:init --only=composer,config --force
+~~~
+- .envにBUGSNAG_API_KEYをセット
+~~~
+BUGSNAG_API_KEY=*****
+~~~
+
+~~~
+# シードを更新
+$ php artisan tucle:init --only=seeds --force
+~~~
 
 #### 0.5.0
 

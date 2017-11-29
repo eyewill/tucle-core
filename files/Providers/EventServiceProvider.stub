@@ -1,13 +1,8 @@
-<?php namespace Eyewill\TucleCore\Providers;
+<?php namespace App\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-/**
- * Class EventServiceProvider
- * @package Eyewill\TucleCore\Providers
- * @deprecated Make from files/Providers/EventServiceProvider.stub in tucle:init
- */
 class EventServiceProvider extends ServiceProvider
 {
   protected $listen = [
