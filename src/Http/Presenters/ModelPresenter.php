@@ -75,21 +75,29 @@ class ModelPresenter extends Presenter
     }
     if (request()->has('s'))
     {
-      $builder->where(function($query) use ($builder) {
-        foreach($this->searchColumns($builder) as $column)
-        {
-          $name = $column['name'];
-          $type = $column['type'];
-          if ($type == 'date')
+      $searchKeyword = request('s');
+      $searchKeyword = str_replace('　', ' ', $searchKeyword);
+      $keywordList = explode(' ', $searchKeyword);
+      $searchColumns = $this->searchColumns($builder);
+      foreach ($keywordList as $keyword)
+      {
+        $builder->where(function($query) use ($searchColumns, $keyword) {
+
+          foreach($searchColumns as $column)
           {
-            $query->orWhere(DB::raw("DATE_FORMAT($name, '%Y/%m/%d')"), 'like', request('s').'%');
+            $name = $column['name'];
+            $type = $column['type'];
+            if ($type == 'date')
+            {
+              $query->orWhere(DB::raw("DATE_FORMAT($name, '%Y/%m/%d')"), 'like', $keyword.'%');
+            }
+            else
+            {
+              $query->orWhere($name, 'like', '%'.$keyword.'%');
+            }
           }
-          else
-          {
-            $query->orWhere($name, 'like', '%'.request('s').'%');
-          }
-        }
-      });
+        });
+      }
     }
 
     return $builder;
