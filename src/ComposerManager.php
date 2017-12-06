@@ -35,6 +35,54 @@ class ComposerManager
     return 'add '.$name.':'.$version.' to composer.json';
   }
 
+  public function addAutoload($name, $value, $dev = false)
+  {
+    if (!File::exists($this->path))
+    {
+      return 'composer.json not exists.';
+    }
+
+    $composerJson = json_decode(File::get($this->path), true);
+    $baseKey = $dev ? 'autoload-dev' : 'autoload';
+    $values = [];
+    if (!is_array($value))
+    {
+      $values[] = $value;
+    }
+    else
+    {
+      $values = $value;
+    }
+
+    if (!array_key_exists($baseKey, $composerJson))
+    {
+      $composerJson[$baseKey] = [];
+    }
+    if (!array_key_exists($name, $composerJson[$baseKey]))
+    {
+      $composerJson[$baseKey][$name] = [];
+    }
+    if (array_values($values) === $values) // 配列(連想配列ではない)
+    {
+      foreach ($values as $value)
+      {
+        $composerJson[$baseKey][$name][] = $value;
+      }
+    }
+    else
+    {
+      foreach ($values as $key => $value)
+      {
+        $composerJson[$baseKey][$name][$key] = $value;
+      }
+    }
+
+    $this->updates = true;
+    File::put($this->path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+    return 'add values to '.$baseKey.':'.$name.' in composer.json';
+  }
+
+
   public function scripts($command, $index = 1, $event = 'post-update-cmd')
   {
     if (!File::exists($this->path))

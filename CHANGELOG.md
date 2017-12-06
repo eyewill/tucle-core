@@ -3,6 +3,7 @@
 #### develop
 
 - フロントエンドトップページはデフォルトで管理画面にリダイレクト
+- helpers.phpを追加
 
 ##### 変更点
 
@@ -17,6 +18,11 @@
 - routesとServiceProviderを更新 
 ~~~
 $ php artisan tucle:init --only=routes,providers --force
+~~~
+
+- helpersを更新
+~~~
+$ php artisan tucle:init --only=helpers,composer --force
 ~~~
 
 #### 0.5.4

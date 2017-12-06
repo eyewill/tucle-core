@@ -35,6 +35,7 @@ class Initializer implements InitializerContracts
     'eventlog',
     'exception',
     'seeds',
+    'helpers',
   ];
 
   protected $tasks = [];
@@ -102,6 +103,7 @@ class Initializer implements InitializerContracts
       yield $this->composer->add('primalbase/view-builder', 'dev-master');
       yield $this->composer->add('eyewill/tucle-builder', 'dev-master');
       yield $this->composer->add('bugsnag/bugsnag-laravel', '^2.0');
+      yield $this->composer->addAutoload('files', 'app/Http/helpers.php');
     }
 
     if (in_array('config', $this->tasks))
@@ -117,6 +119,14 @@ class Initializer implements InitializerContracts
       yield $this->makeFromStub(
         __DIR__.'/../files/config/.env.stub',
         $this->basePath.'/.env.local'
+      );
+    }
+
+    if (in_array('helpers', $this->tasks))
+    {
+      yield $this->makeFromStub(
+        __DIR__.'/../files/helpers.stub',
+        $this->app['path'].'/helpers.php'
       );
     }
 
