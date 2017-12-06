@@ -2,6 +2,25 @@
 
 #### develop
 
+- フロントエンドトップページはデフォルトで管理画面にリダイレクト
+
+##### 変更点
+
+- 
+
+##### アップグレード
+
+- 
+
+##### 推奨するアップグレード
+
+- routesとServiceProviderを更新 
+~~~
+$ php artisan tucle:init --only=routes,providers --force
+~~~
+
+#### 0.5.4
+
 ##### 変更点
 
 - Model用トレイトとしてSortableを追加

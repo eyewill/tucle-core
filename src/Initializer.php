@@ -157,7 +157,15 @@ class Initializer implements InitializerContracts
 
     if (in_array('routes', $this->tasks))
     {
-      yield $this->makeHttpRoutes();
+      yield $this->makeFromStub(
+        __DIR__ . '/../files/Http/routes.stub',
+        $this->app['path'].'/Http/routes.php'
+      );
+
+      yield $this->makeFromStub(
+        __DIR__ . '/../files/Http/Frontend/routes.stub',
+        $this->app['path'].'/Http/Frontend/routes.php'
+      );
     }
 
     if (in_array('providers', $this->tasks))
@@ -329,21 +337,6 @@ class Initializer implements InitializerContracts
     $this->app['files']->copy(__DIR__.'/../files/gulpfile.js', $path);
 
     return $path.' copied.';
-  }
-
-  public function makeHttpRoutes()
-  {
-    $filePath = $this->app['path'].'/Http/routes.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
-    $templatePath = __DIR__.'/../files/routes.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
   }
 
   public function makeEventLogMigrationFile()

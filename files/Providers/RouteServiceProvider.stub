@@ -48,33 +48,41 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapWebRoutes(Router $router)
   {
+    // 管理画面のルーティング
     $router->group([
       'namespace' => $this->namespace,
-      'middleware' => 'cms',
       'prefix' => 'admin',
     ], function ($router) {
-      require app_path('Http/routes.php');
-      foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
-      {
-        include $file;
-      }
+
+      $router->group([
+        'middleware' => 'cms',
+      ], function () {
+
+          require app_path('Http/routes.php');
+          foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
+          {
+            include $file;
+          }
+      });
+
+      // 認証のルーティング
+      $router->group([
+        'middleware' => 'web',
+      ], function ($router) {
+
+        $router->get('login', 'Auth\AuthController@showLoginForm')->name('login');
+        $router->post('login', 'Auth\AuthController@login');
+        $router->get('logout', 'Auth\AuthController@logout')->name('logout');
+      });
     });
 
-    $router->group([
-      'namespace' => $this->namespace,
-      'middleware' => 'web',
-      'prefix' => 'admin',
-    ], function ($router) {
-      $router->get('login', 'Auth\AuthController@showLoginForm')->name('login');
-      $router->post('login', 'Auth\AuthController@login');
-      $router->get('logout', 'Auth\AuthController@logout')->name('logout');
-    });
-
+    // フロントエンドのルーティング
     $router->group([
       'namespace' => 'Http/Frontend/Controllers',
       'middleware' => 'web',
     ], function (Router $router) {
 
+      require app_path('Http/Frontend/routes.php');
       foreach ($this->app['files']->glob(app_path('Http/Frontend/routes/*.php')) as $file)
       {
         include $file;
