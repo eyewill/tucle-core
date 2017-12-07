@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use DB;
+use Eloquent;
 use Eyewill\TucleCore\Contracts\Eloquent\ExpirableInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -63,6 +64,10 @@ class ModelPresenter extends Presenter
     return $columns;
   }
 
+  /**
+   * @param Builder|Relation|string $model
+   * @return Builder|Relation
+   */
   public function getEntriesBuilder($model)
   {
     if ($model instanceof Builder || $model instanceof Relation)
@@ -562,7 +567,7 @@ class ModelPresenter extends Presenter
   }
 
   /**
-   * @param $model
+   * @param Builder|Relation|string $model
    * @return array
    */
   protected function getOrderValues($model)
@@ -580,7 +585,7 @@ class ModelPresenter extends Presenter
   }
 
   /**
-   * @param $model
+   * @param Eloquent $model
    * @return string
    */
   public function orderAction($model)
@@ -592,11 +597,11 @@ class ModelPresenter extends Presenter
       $label = mb_strimwidth($entry->title, 0, 18, '…', 'UTF-8');
       if ($entry->id == $model->id)
       {
-        $values[$entry->order] = '並び順を変更';
+        $values[$entry->order] = '移動先を選択';
       }
       else
       {
-        $values[$entry->order] = $label.'の上に移動';
+        $values[$entry->order] = $entry->order.': '.$label.'の上に移動';
       }
     }
     $html = $this->getForm()->select('order',
