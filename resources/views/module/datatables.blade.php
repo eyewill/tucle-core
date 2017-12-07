@@ -37,11 +37,12 @@
       table: '#entries',
       options: {
         dom:
-        "<'row'<'col-sm-12 tucle-table-search'>>" +
         "<'row'<'col-sm-12 tucle-table-filter'>>" +
+        "<'row'<'col-sm-6 tucle-table-control'l><'col-sm-6 tucle-table-search'>>" +
         "<'row'<'col-sm-6 tucle-table-action'><'col-sm-6'p>>" +
         "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-5'li><'col-sm-7'p>>",
+        "<'row'<'col-sm-6 tucle-table-control'l><'col-sm-6'p>>"+
+        "<'row'<'col-sm-12'i>>",
         columnDefs: [],
         select: {
           style: 'multi',
@@ -99,7 +100,7 @@
           });
 
           // Tucleフィルタ
-          $('#entries_wrapper .tucle-table-filter').append($('.table-filters').show());
+          $('#entries_wrapper .tucle-table-filter').append($('.table-filters'));
 
           // Tucleフィルタイベントを登録
           DataTablesFilter.register(dt);
@@ -110,8 +111,8 @@
           // Tucle検索
           $('#entries_wrapper .tucle-table-search').append($('.table-search'));
 
-          // Tucle表示件数コントロールを標準の件数表示に追加
-          $('#entries_wrapper .dataTables_length').prepend($('.table-controls'));
+          // Tucle表示件数コントロール
+          $('#entries_wrapper .tucle-table-control').prepend($('.table-controls'));
 
           // Tucleフィルタを実行
           DataTablesFilter.filter();
