@@ -1,6 +1,34 @@
 ### リリースノート
 
-#### develop
+#### 0.5.5
+
+##### 変更点
+
+- フロントエンドトップページはデフォルトで管理画面にリダイレクト
+- helpers.phpを追加
+- 一覧の件数表示を上部にも表示
+- 並び順変更セレクトボックスに並び順を表示
+
+##### アップグレード
+
+- リソースを更新
+~~~
+$ npm run prod
+~~~
+
+##### 推奨するアップグレード
+
+- routesとServiceProviderを更新 
+~~~
+$ php artisan tucle:init --only=routes,providers --force
+~~~
+
+- helpersを更新
+~~~
+$ php artisan tucle:init --only=helpers,composer --force
+~~~
+
+#### 0.5.4
 
 ##### 変更点
 
