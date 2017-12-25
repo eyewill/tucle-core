@@ -33,11 +33,15 @@ table.dataTable.dt-checkboxes-select tbody tr .dt-checkboxes {
 }
 
 #entries_wrapper .dataTables_paginate,
-#entries_wrapper .dataTables_length,
 #entries_wrapper .table-filters,
 #entries_wrapper .table-search,
-#entries_wrapper .tucle-table-action {
+#entries_wrapper .tucle-table-action,
+#entries_wrapper .tucle-table-control {
   margin-top: 10px;
+}
+
+#entries_wrapper .dataTables_length {
+  display: inline-block;
 }
 
 .table-actions .btn-actions {
@@ -46,10 +50,20 @@ table.dataTable.dt-checkboxes-select tbody tr .dt-checkboxes {
 
 #entries_wrapper .table-controls {
   font-weight: normal;
+  display: inline-block;
+}
+
+#entries_wrapper .table-controls select {
+  display: inline-block;
 }
 
 #entries_wrapper .table-search {
   text-align: right;
+}
+
+#entries_wrapper .table-search input {
+  display: inline-block;
+  width: 150px;
 }
 
 #entries_wrapper .table-filters {
