@@ -6,11 +6,12 @@ class MigrationCreator extends IlluminateMigrationCreator
 {
   protected function getStub($table, $create)
   {
-    return $this->files->get($this->getStubPath().'/event_logs.stub');
+    $prefix = $create ? 'create_' : 'update_';
+    return $this->files->get($this->getStubPath().'/'.$prefix.$table.'.stub');
   }
 
   public function getStubPath()
   {
-    return __DIR__.'/stubs';
+    return __DIR__.'/../../../files/database/migrations';
   }
 }

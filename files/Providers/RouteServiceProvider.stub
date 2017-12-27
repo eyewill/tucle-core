@@ -1,6 +1,6 @@
 <?php namespace App\Providers;
 
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
@@ -17,25 +17,27 @@ class RouteServiceProvider extends ServiceProvider
   /**
    * Define your route model bindings, pattern filters, etc.
    *
-   * @param  \Illuminate\Routing\Router  $router
    * @return void
    */
-  public function boot(Router $router)
+  public function boot()
   {
-    $router->middleware('json', \Eyewill\TucleCore\Http\Middleware\Json::class);
+    Route::middleware('json', \Eyewill\TucleCore\Http\Middleware\Json::class);
 
-    parent::boot($router);
+    parent::boot();
   }
 
   /**
    * Define the routes for the application.
    *
-   * @param  \Illuminate\Routing\Router  $router
    * @return void
    */
-  public function map(Router $router)
+  public function map()
   {
-    $this->mapWebRoutes($router);
+    $this->mapApiRoutes();
+
+    $this->mapWebRoutes();
+
+    //
   }
 
   /**
@@ -43,13 +45,12 @@ class RouteServiceProvider extends ServiceProvider
    *
    * These routes all receive session state, CSRF protection, etc.
    *
-   * @param  \Illuminate\Routing\Router  $router
    * @return void
    */
-  protected function mapWebRoutes(Router $router)
+  protected function mapWebRoutes()
   {
     // 管理画面のルーティング
-    $router->group([
+    Route::group([
       'namespace' => $this->namespace,
       'prefix' => 'admin',
     ], function ($router) {
@@ -58,36 +59,53 @@ class RouteServiceProvider extends ServiceProvider
         'middleware' => 'cms',
       ], function () {
 
-          require app_path('Http/routes.php');
-          foreach ($this->app['files']->glob($this->app['path'].'/Http/routes/*.php') as $file)
-          {
-            include $file;
-          }
+        require base_path('routes/admin.php');
+        foreach ($this->app['files']->glob(base_path('routes/admin/*.php')) as $file)
+        {
+          include $file;
+        }
       });
 
       // 認証のルーティング
-      $router->group([
+      Route::group([
         'middleware' => 'web',
       ], function ($router) {
 
-        $router->get('login', 'Auth\AuthController@showLoginForm')->name('login');
-        $router->post('login', 'Auth\AuthController@login');
-        $router->get('logout', 'Auth\AuthController@logout')->name('logout');
+        $router->get('login', 'Auth\LoginController@showLoginForm')->name('login');
+        $router->post('login', 'Auth\LoginController@login');
+        $router->get('logout', 'Auth\LoginController@logout')->name('logout');
       });
     });
 
     // フロントエンドのルーティング
-    $router->group([
+    Route::group([
       'namespace' => 'Http/Frontend/Controllers',
       'middleware' => 'web',
-    ], function (Router $router) {
+    ], function ($router) {
 
-      require app_path('Http/Frontend/routes.php');
-      foreach ($this->app['files']->glob(app_path('Http/Frontend/routes/*.php')) as $file)
+      require base_path('/routes/web.php');
+      foreach ($this->app['files']->glob(base_path('routes/web/*.php')) as $file)
       {
         include $file;
       }
     });
-  }
+    }
 
+  /**
+   * Define the "api" routes for the application.
+   *
+   * These routes are typically stateless.
+   *
+   * @return void
+   */
+  protected function mapApiRoutes()
+  {
+    Route::group([
+      'middleware' => 'api',
+      'namespace' => $this->namespace,
+      'prefix' => 'api',
+    ], function ($router) {
+      require base_path('routes/api.php');
+    });
+  }
 }

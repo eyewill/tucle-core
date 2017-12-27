@@ -2,7 +2,7 @@
 
 use Eyewill\TucleCore\Console\Commands\TucleInit;
 use Eyewill\TucleCore\Console\Commands\TucleMakeUser;
-use Eyewill\TucleCore\Contracts\Initializer;
+use Eyewill\TucleCore\Contracts\Generator;
 use Eyewill\TucleCore\Contracts\ModuleManager;
 use Eyewill\TucleCore\Contracts\NavigationManager;
 use Eyewill\TucleCore\Database\FakeModelGenerator;
@@ -80,7 +80,7 @@ class TucleCoreServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    $this->app->singleton(Initializer::class, InitializerFactory::class);
+    $this->app->singleton(Generator::class, InitializerFactory::class);
     $this->app->singleton(ModuleManager::class, function () {
       return new \Eyewill\TucleCore\ModuleManager(config('tucle.modules', []));
     });

@@ -1,6 +1,5 @@
 <?php namespace Eyewill\TucleCore\Contracts;
 
-interface Initializer
+interface Generator
 {
-
 }

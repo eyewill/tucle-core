@@ -1,3 +1,5 @@
+### This package for laravel 5.3, [for 5.2 is here](https://github.com/eyewill/tucle-core/tree/0.5.x).
+
 ## インストール 
 
 #### for Vagrant
@@ -16,11 +18,18 @@ $ cd guest/path/to/example-project
 
 ##### ウェブサーバーとデータベースを作成
 
+#### recommend
+
+<pre>
+# install prestissimo
+$ composer global require hirak/prestissimo
+</pre>
+
 #### 共通
 
 <pre>
 # laravelプロジェクト作成
-$ composer create-project "laravel/laravel=~5.2.0" .
+$ composer create-project "laravel/laravel=~5.3.0" .
 </pre>
 
 <pre>
@@ -64,11 +73,6 @@ vi .env
 $ php artisan migrate
 ~~~
 
-~~~bash
-# デフォルトの管理ユーザーを作成
-$ php artisan db:seed
-~~~
-
 ### ユーザー管理モジュールを作成
 
 <pre>
@@ -78,6 +82,12 @@ $ php artisan tucle:makeuser --force
 ユーザー管理画面を作成します
 データベースのマイグレーションが終わってから実行してください
 --forceをつけない場合、User.phpは更新されません
+
+### デフォルトの管理ユーザーを作成
+
+~~~bash
+$ php artisan db:seed
+~~~
 
 ### 再生成
 
@@ -94,10 +104,10 @@ $ php artisan tucle:init --force --only=assets,packages
 ### リソースを更新 (Resources)
 
 ~~~
-# Vagrantの場合、host(windows)側で実行する
-> npm install
+> yarn
+> yarn global add bower
 > bower install
-> gulp
+> yarn run prod
 ~~~
 
 必ず最初に一回実行する必要があります

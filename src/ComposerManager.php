@@ -126,4 +126,9 @@ class ComposerManager
     $this->updates = false;
     return $process->getOutput();
   }
+
+  public function setUpdate()
+  {
+    $this->updates = true;
+  }
 }

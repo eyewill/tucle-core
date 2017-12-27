@@ -1,26 +1,7 @@
 <?php namespace Eyewill\TucleCore;
 
-use Exception;
-use Eyewill\TucleCore\Contracts\Initializer as InitializerContracts;
-use Eyewill\TucleCore\Database\Migrations\MigrationCreator;
-use Illuminate\Container\Container;
-
-class Initializer implements InitializerContracts
+class Initializer extends Generator
 {
-  protected $app;
-  protected $basePath;
-  protected $publicPath;
-  protected $resourcePath;
-  protected $configPath;
-  protected $providerPath;
-  protected $databasePath;
-  protected $exceptionPath;
-  protected $composer;
-  protected $migrationCreator;
-  protected $filesystem;
-  protected $router;
-  protected $force;
-  protected $only;
   protected $allTasks = [
     'assets',
     'packages',
@@ -38,64 +19,13 @@ class Initializer implements InitializerContracts
     'helpers',
   ];
 
-  protected $tasks = [];
-
-  public function __construct(Container $container, ComposerManager $composer, MigrationCreator $migrationCreator, $force = false, $only = null)
-  {
-    $this->app = $container;
-    $this->composer = $composer;
-    $this->migrationCreator = $migrationCreator;
-    $this->basePath = $container->basePath();
-    $this->publicPath = $container['path.public'];
-    $this->resourcePath = $container->basePath().'/resources';
-    $this->configPath = $container->basePath().'/config';
-    $this->providerPath = $container['path'].'/Providers';
-    $this->databasePath = $container->databasePath();
-    $this->exceptionPath = $container['path'].'/Exceptions';
-    $this->setForce($force);
-    $this->setTasks($only);
-  }
-
-  public function setForce($force)
-  {
-    if (!$this->app['files']->exists($this->basePath.'/.tucle'))
-    {
-      $this->force = true;
-      return;
-    }
-
-    $this->force = $force;
-  }
-
-  public function setTasks($only = null)
-  {
-    if (is_null($only))
-    {
-      $this->tasks = $this->allTasks;
-      return;
-    }
-
-    if (is_array($only))
-    {
-      $this->tasks = $only;
-      return;
-    }
-
-    $this->tasks = explode(',', $only);
-  }
-
-  public function getAllTasks()
-  {
-    return $this->allTasks;
-  }
-
   public function generator()
   {
     if (in_array('composer', $this->tasks))
     {
-      yield $this->composer->add('laravelcollective/html', '5.2.*');
+      yield $this->composer->add('laravelcollective/html', '5.3.*');
       yield $this->composer->add('codesleeve/laravel-stapler', '1.0.*');
-      yield $this->composer->add('barryvdh/laravel-debugbar', '^2.3');
+      yield $this->composer->add('barryvdh/laravel-debugbar', '~2.4');
       yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
       yield $this->composer->scripts('php artisan ide-helper:generate', 1);
       yield $this->composer->scripts('php artisan ide-helper:meta', 2);
@@ -103,7 +33,7 @@ class Initializer implements InitializerContracts
       yield $this->composer->add('primalbase/view-builder', 'dev-master');
       yield $this->composer->add('eyewill/tucle-builder', 'dev-master');
       yield $this->composer->add('bugsnag/bugsnag-laravel', '^2.0');
-      yield $this->composer->addAutoload('files', 'app/Http/helpers.php');
+      yield $this->composer->addAutoload('files', 'app/helpers.php');
     }
 
     if (in_array('config', $this->tasks))
@@ -117,7 +47,7 @@ class Initializer implements InitializerContracts
         $this->configPath.'/app.php'
       );
       yield $this->makeFromStub(
-        __DIR__.'/../files/config/.env.stub',
+        __DIR__ . '/../files/.env.local.stub',
         $this->basePath.'/.env.local'
       );
     }
@@ -154,27 +84,29 @@ class Initializer implements InitializerContracts
 
     if (in_array('auth', $this->tasks))
     {
+      yield $this->makeMigrationFromStub('users');
+
       yield $this->makeFromStub(
         __DIR__.'/../files/auth/views',
         $this->resourcePath.'/'.'views/auth'
       );
 
       yield $this->makeFromStub(
-        __DIR__.'/../files/auth/Http/Controllers/AuthController.stub',
-        $this->app['path'].'/Http/Controllers/Auth/AuthController.php'
+        __DIR__.'/../files/auth/Http/Controllers/LoginController.stub',
+        $this->app['path'].'/Http/Controllers/Auth/LoginController.php'
       );
     }
 
     if (in_array('routes', $this->tasks))
     {
       yield $this->makeFromStub(
-        __DIR__ . '/../files/Http/routes.stub',
-        $this->app['path'].'/Http/routes.php'
+        __DIR__ . '/../files/routes/admin.stub',
+        $this->basePath.'/routes/admin.php'
       );
 
       yield $this->makeFromStub(
-        __DIR__ . '/../files/Http/Frontend/routes.stub',
-        $this->app['path'].'/Http/Frontend/routes.php'
+        __DIR__ . '/../files/routes/web.stub',
+        $this->basePath.'/routes/web.php'
       );
     }
 
@@ -226,11 +158,16 @@ class Initializer implements InitializerContracts
 
     if (in_array('eventlog', $this->tasks))
     {
-      yield $this->makeEventLogMigrationFile();
+      yield $this->makeMigrationFromStub('event_logs');
       yield $this->makeEventLogModel();
       yield $this->makeEventLogPresenter();
-      yield $this->makeEventLogRoutes();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/eventlog/routes.stub',
+        $this->basePath.'/routes/admin/eventlog.php'
+      );
       yield $this->makeEventLogViews();
+
+      $this->composer->dumpAutoload();
     }
 
     if (in_array('exception', $this->tasks))
@@ -349,22 +286,6 @@ class Initializer implements InitializerContracts
     return $path.' copied.';
   }
 
-  public function makeEventLogMigrationFile()
-  {
-    try {
-      $this->migrationCreator->create(
-        'create_event_logs_table',
-        $this->databasePath.DIRECTORY_SEPARATOR.'migrations',
-        'event_logs',
-        'event_logs');
-      $this->composer->dumpAutoload();
-      return 'event log migration file copied.';
-    } catch (Exception $e) {
-      return 'event log migration file can\'t copied.';
-    }
-
-  }
-
   public function makeEventLogModel()
   {
     $filePath = $this->app['path'].'/EventLog.php';
@@ -389,21 +310,6 @@ class Initializer implements InitializerContracts
 
     $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
     $templatePath = __DIR__.'/../files/eventlog/EventLogPresenter.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-
-  public function makeEventLogRoutes()
-  {
-    $filePath = $this->app['path'].'/Http/routes/eventlog.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
-    $templatePath = __DIR__.'/../files/eventlog/routes.stub';
     $template = $this->app['files']->get($templatePath);
     $this->app['files']->put($filePath, $template);
 
@@ -453,28 +359,5 @@ class Initializer implements InitializerContracts
     $this->app['files']->put($filePath, $template);
 
     return $filePath.' generated.';
-  }
-
-  protected function makeFromStub($src, $dest, $name = null)
-  {
-    $name = $name ?: $dest;
-
-    if (!$this->force && $this->app['files']->exists($dest))
-    {
-      return $dest.' already exists';
-    }
-
-    $this->app['files']->makeDirectory(dirname($dest), 02755, true, true);
-
-    if ($this->app['files']->isDirectory($src))
-    {
-      $this->app['files']->copyDirectory($src, $dest);
-    }
-    else
-    {
-      $this->app['files']->copy($src, $dest);
-    }
-
-    return $name.' generated.';
   }
 }

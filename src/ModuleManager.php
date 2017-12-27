@@ -22,7 +22,7 @@ class ModuleManager extends Collection
 
   public function find($name)
   {
-    return $this->first(function($index, $module) use ($name) {
+    return $this->first(function($module, $index) use ($name) {
       return ($module->name == $name);
     });
   }
