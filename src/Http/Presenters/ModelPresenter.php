@@ -557,7 +557,7 @@ class ModelPresenter extends Presenter
     if (is_null($this->hasCheckbox))
     {
       $columns = $this->tableColumns();
-      $value = array_first($columns, function($index, $value) {
+      $value = array_first($columns, function($value) {
         return array_get($value, 'type') == 'checkbox';
       });
       $this->hasCheckbox = !is_null($value);

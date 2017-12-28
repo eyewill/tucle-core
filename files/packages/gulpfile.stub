@@ -12,8 +12,14 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
+  var tucle_core_base_path = 'vendor/eyewill/tucle-core';
+  var app_scss = 'app.scss';
+  if (process.env.TUCLE_CORE_DEV) {
+    tucle_core_base_path =  '../packages/TucleCore';
+    app_scss = 'app-dev.scss';
+  }
   mix
-    .sass(['app.scss'], 'public/css/app.css')
+    .sass([app_scss], 'public/css/app.css')
     .copy('bower_components/font-awesome/fonts', 'public/build/fonts')
     .copy('bower_components/bootstrap/fonts', 'public/build/bootstrap/fonts')
     .version('css/app.css');
@@ -34,11 +40,11 @@ elixir(function(mix) {
   mix
     .copy('bower_components/datatables.net-select/js', 'public/assets/datatables/js')
     .copy('bower_components/datatables.net-select-bs/css', 'public/assets/datatables/css')
-    .copy('resources/assets/datatables/*.js', 'public/assets/datatables/js')
-    .copy('resources/assets/datatables/*.css', 'public/assets/datatables/css')
-    .copy('resources/assets/datatables-i18n/Japanese.json', 'public/assets/datatables/i18n/Japanese.json')
-    .copy('resources/assets/jquery-datatables-checkboxes/js', 'public/assets/datatables/js')
-    .copy('resources/assets/jquery-datatables-checkboxes/css', 'public/assets/datatables/css');
+    .copy(tucle_core_base_path+'/files/assets/datatables/*.js', 'public/assets/datatables/js')
+    .copy(tucle_core_base_path+'/files/assets/datatables/*.css', 'public/assets/datatables/css')
+    .copy(tucle_core_base_path+'/assets/datatables-i18n/Japanese.json', 'public/assets/datatables/i18n/Japanese.json')
+    .copy(tucle_core_base_path+'/assets/jquery-datatables-checkboxes/js', 'public/assets/datatables/js')
+    .copy(tucle_core_base_path+'/assets/jquery-datatables-checkboxes/css', 'public/assets/datatables/css');
 
   /* CKEditor */
   mix
@@ -46,7 +52,7 @@ elixir(function(mix) {
     .copy('bower_components/ckeditor/lang/ja.js', 'public/assets/ckeditor/lang/ja.js')
     .copy('bower_components/ckeditor/contents.css', 'public/assets/ckeditor/contents.css')
     .copy('bower_components/ckeditor/plugins', 'public/assets/ckeditor/plugins')
-    .copy('resources/assets/ckeditor', 'public/assets/ckeditor');
+    .copy(tucle_core_base_path+'/assets/ckeditor', 'public/assets/ckeditor');
 
   /* bootstrap file input */
   mix

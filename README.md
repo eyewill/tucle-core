@@ -108,9 +108,19 @@ $ php artisan tucle:init --force --only=assets,packages
 > yarn global add bower
 > bower install
 > yarn run prod
+# TucleCoreをpackagesフォルダから読み込む場合は
+> yarn run prod-dev
 ~~~
 
 必ず最初に一回実行する必要があります
+
+### migrate buildのconfigを出力
+
+~~~bash
+> php artisan vendor:publish --provider="Primalbase\Migrate\MigrateServiceProvider"
+> vi config/migrate-build.php
+> php artisan migrate:build table_name
+~~~
 
 ### Presenter
 

@@ -6,7 +6,7 @@ return [
 
   'copyright' => 'Eyewill',
 
-  'powered_by' => 'Tucle5.2',
+  'powered_by' => 'Tucle5.3',
 
   'front_url' => env('FRONT_URL', 'http://localhost'),
 

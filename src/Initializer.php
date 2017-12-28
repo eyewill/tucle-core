@@ -68,18 +68,32 @@ class Initializer extends Generator
     if (in_array('assets', $this->tasks))
     {
       yield $this->makeAssetsSass();
-      yield $this->copyAssets('ckeditor');
-      yield $this->copyAssets('datatables');
-      yield $this->copyAssets('datatables-i18n');
-      yield $this->copyAssets('jquery-datatables-checkboxes');
+//      yield $this->copyAssets('ckeditor');
+//      yield $this->copyAssets('datatables');
+//      yield $this->copyAssets('datatables-i18n');
+//      yield $this->copyAssets('jquery-datatables-checkboxes');
       yield $this->copyFilesDirectory('dummy_files');
       yield $this->copyFilesDirectory('dummy_images');
+      yield $this->makeFromStub(
+        __dir__.'/../files/assets/.gitignore.stub',
+        $this->publicPath.'/assets/.gitignore'
+      );
     }
 
     if (in_array('packages', $this->tasks))
     {
-      yield $this->copyBower();
-      yield $this->copyGulpfile();
+      yield $this->makeFromStub(
+        __DIR__ . '/../files/packages/package.stub',
+        $this->basePath.'/'.'package.json'
+      );
+      yield $this->makeFromStub(
+        __DIR__ . '/../files/packages/bower.stub',
+        $this->basePath.'/'.'bower.json'
+      );
+      yield $this->makeFromStub(
+        __DIR__ . '/../files/packages/gulpfile.stub',
+        $this->basePath.'/'.'gulpfile.js'
+      );
     }
 
     if (in_array('auth', $this->tasks))
@@ -172,8 +186,14 @@ class Initializer extends Generator
 
     if (in_array('exception', $this->tasks))
     {
-      yield $this->makeExceptionHandler();
-      yield $this->makeErrorView();
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Exceptions/Handler.stub',
+        $this->exceptionPath.'/Handler.php'
+      );
+      yield $this->makeFromStub(
+        __DIR__.'/../files/Exceptions/views/common.blade.stub',
+        $this->resourcePath.'/views/errors/common.blade.php'
+      );
     }
 
     if (in_array('seeds', $this->tasks))
@@ -203,8 +223,14 @@ class Initializer extends Generator
     $scss = '';
     $pos = strpos(__DIR__, 'packages');
     if ($pos === false)
+    {
       $pos = strpos(__DIR__, 'vendor');
-    $dir = substr(__DIR__, $pos).'/../resources/assets/sass';
+      $dir = substr(__DIR__, $pos).'/../resources/assets/sass';
+    }
+    else
+    {
+      $dir = '../'.substr(__DIR__, $pos).'/../resources/assets/sass';
+    }
     $scss.= '@import "'.$dir.'/tucle";'.PHP_EOL;
 
     file_put_contents($path, $scss);
@@ -260,32 +286,6 @@ class Initializer extends Generator
     return 'lang copied.';
   }
 
-  public function copyBower()
-  {
-    $path = $this->basePath.'/'.'bower.json';
-    if (!$this->force && $this->app['files']->exists($path))
-    {
-      return $path.' already exists.';
-    }
-
-    $this->app['files']->copy(__DIR__.'/../files/bower.json', $path);
-
-    return $path.' copied.';
-  }
-
-  public function copyGulpfile()
-  {
-    $path = $this->basePath.'/'.'gulpfile.js';
-    if (!$this->force && $this->app['files']->exists($path))
-    {
-      return $path.' already exists.';
-    }
-
-    $this->app['files']->copy(__DIR__.'/../files/gulpfile.js', $path);
-
-    return $path.' copied.';
-  }
-
   public function makeEventLogModel()
   {
     $filePath = $this->app['path'].'/EventLog.php';
@@ -325,36 +325,6 @@ class Initializer extends Generator
 
     $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
     $templatePath = __DIR__.'/../files/eventlog/views/index.blade.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-  
-  public function makeExceptionHandler()
-  {
-    $filePath = $this->exceptionPath.'/Handler.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
-    $templatePath = __DIR__.'/../files/Exceptions/Handler.stub';
-    $template = $this->app['files']->get($templatePath);
-    $this->app['files']->put($filePath, $template);
-
-    return $filePath.' generated.';
-  }
-  
-  public function makeErrorView()
-  {
-    $filePath = $this->resourcePath.'/views/errors/common.blade.php';
-    if (!$this->force && $this->app['files']->exists($filePath)) {
-      return $filePath . ' already exists.';
-    }
-
-    $this->app['files']->makeDirectory(dirname($filePath), 02755, true, true);
-    $templatePath = __DIR__.'/../files/Exceptions/views/common.blade.stub';
     $template = $this->app['files']->get($templatePath);
     $this->app['files']->put($filePath, $template);
 
