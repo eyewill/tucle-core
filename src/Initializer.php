@@ -67,11 +67,14 @@ class Initializer extends Generator
 
     if (in_array('assets', $this->tasks))
     {
-      yield $this->makeAssetsSass();
-//      yield $this->copyAssets('ckeditor');
-//      yield $this->copyAssets('datatables');
-//      yield $this->copyAssets('datatables-i18n');
-//      yield $this->copyAssets('jquery-datatables-checkboxes');
+      yield $this->makeFromStub(
+        __dir__.'/../files/assets/app.stub',
+        $this->resourcePath.'/assets/sass/app.scss'
+      );
+      yield $this->makeFromStub(
+        __dir__.'/../files/assets/app-dev.stub',
+        $this->resourcePath.'/assets/sass/app-dev.scss'
+      );
       yield $this->copyFilesDirectory('dummy_files');
       yield $this->copyFilesDirectory('dummy_images');
       yield $this->makeFromStub(
@@ -210,44 +213,6 @@ class Initializer extends Generator
     }
 
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');
-  }
-
-  public function makeAssetsSass()
-  {
-    $path = $this->resourcePath.'/assets/sass/app.scss';
-    if (!$this->force && $this->app['files']->exists($path))
-    {
-      return $path.' already exists';
-    }
-
-    $scss = '';
-    $pos = strpos(__DIR__, 'packages');
-    if ($pos === false)
-    {
-      $pos = strpos(__DIR__, 'vendor');
-      $dir = substr(__DIR__, $pos).'/../resources/assets/sass';
-    }
-    else
-    {
-      $dir = '../'.substr(__DIR__, $pos).'/../resources/assets/sass';
-    }
-    $scss.= '@import "'.$dir.'/tucle";'.PHP_EOL;
-
-    file_put_contents($path, $scss);
-
-    return $path.' created.';
-  }
-
-  public function copyAssets($asset)
-  {
-    if (!$this->force && $this->app['files']->exists($this->resourcePath.'/'.'assets/'.$asset))
-    {
-      return $this->resourcePath.'/'.'assets/'.$asset.' already exists';
-    }
-
-    $this->app['files']->copyDirectory(__DIR__.'/../files/assets/'.$asset, $this->resourcePath.'/'.'assets/'.$asset);
-
-    return 'assets/'.$asset.' copied.';
   }
 
   public function copyFilesDirectory($dirname)
