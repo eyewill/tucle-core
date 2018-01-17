@@ -50,6 +50,10 @@ class Initializer extends Generator
         __DIR__ . '/../files/.env.local.stub',
         $this->basePath.'/.env.local'
       );
+      yield $this->makeFromStub(
+        __DIR__ . '/../files/.gitignore.stub',
+        $this->basePath.'/.gitignore'
+      );
     }
 
     if (in_array('helpers', $this->tasks))
@@ -75,8 +79,6 @@ class Initializer extends Generator
         __dir__.'/../files/assets/app-dev.stub',
         $this->resourcePath.'/assets/sass/app-dev.scss'
       );
-      yield $this->copyFilesDirectory('dummy_files');
-      yield $this->copyFilesDirectory('dummy_images');
       yield $this->makeFromStub(
         __dir__.'/../files/assets/.gitignore.stub',
         $this->publicPath.'/assets/.gitignore'

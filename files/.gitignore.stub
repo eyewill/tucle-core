@@ -1,0 +1,9 @@
+/node_modules
+/public/system
+/storage/*.key
+/vendor
+/.idea
+.env
+.phpstorm.meta.php
+_ide_helper.php
+/bower_components
