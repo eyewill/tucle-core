@@ -35,7 +35,19 @@ $ composer create-project "laravel/laravel=~5.3.0" .
 <pre>
 # TucleCoreをインストール
 $ composer require eyewill/tucle-core:dev-master
+
+# 開発時はcomposer.jsonのautoload-devに以下を追加 して、composer update
+"autoload-dev": {
+    "files": [
+        "../packages/TucleBuilder/vendor/autoload.php",
+        "../packages/TucleCore/vendor/autoload.php",
+        "../packages/TucleCore/src/helpers.php"
+    ]
+}
+
+$ composer dumpautoload
 </pre>
+
 
 <pre>
 # app.phpに追加
@@ -66,6 +78,12 @@ $ php artisan tucle:init
 ~~~bash
 # .envを更新
 vi .env
+APP_URL=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+MAIL_PORT=1025
+FRONT_URL=
 ~~~
 
 ~~~bash
