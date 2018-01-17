@@ -13,6 +13,8 @@ class FileFactory extends Factory
       array_get($attributes, 'attr.class', 'file-loading'));
     array_set($attributes, 'attr.data-allowed-file-extensions',
       array_get($attributes, 'attr.data-allowed-file-extensions', '["pdf", "xls", "xlsx", "csv"]'));
+    array_set($attributes, 'attr.multiple',
+      array_get($attributes, 'attr.multiple', true));
 
     parent::__construct($attributes, $mergeAttributes);
   }

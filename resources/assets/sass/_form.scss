@@ -15,20 +15,6 @@ input.form-control {
   margin-bottom: 5px;
 }
 
-.form-group .file-preview,
-.form-group .file-preview:hover {
-  display: table-cell;
-  margin: 0;
-  padding: 0;
-  border: none;
-  box-shadow: none;
-  text-align: center;
-}
-
-.form-group .file-preview-frame {
-  margin: 0 0 8px 0;
-}
-
 .form-group .btn-navigate {
   display: none;
 }
@@ -119,4 +105,11 @@ hr.form-separator {
 /* IEのみ クリアボタン非表示 */
 input::-ms-clear {
   display: none;
+}
+
+/* Bootstrap Fileinput explorer theme */
+#cms .theme-explorer .explorer-frame .kv-file-content {
+  width: 160px;
+  height: auto;
+  padding: 5px;
 }
