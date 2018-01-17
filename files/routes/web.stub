@@ -1,0 +1,11 @@
+<?php
+/**
+* Index
+* route GET /
+* name front.home
+*/
+Route::get('/', function () {
+
+  return redirect()->route('home');
+
+})->name('front.home');

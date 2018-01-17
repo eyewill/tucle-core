@@ -2,22 +2,9 @@
 
 use Exception;
 use Eyewill\TucleBuilder\Factories\RequestsBuilderFactory;
-use Eyewill\TucleCore\Contracts\Initializer as InitializerContracts;
-use Illuminate\Container\Container;
 
-class UserModule implements InitializerContracts
+class UserModule extends Generator
 {
-  protected $app;
-  protected $basePath;
-  protected $publicPath;
-  protected $resourcePath;
-  protected $configPath;
-  protected $providerPath;
-  protected $composer;
-  protected $filesystem;
-  protected $router;
-  protected $force;
-  protected $only;
   protected $allTasks = [
     'model',
     'presenter',
@@ -25,48 +12,6 @@ class UserModule implements InitializerContracts
     'views',
     'requests',
   ];
-
-  protected $tasks = [];
-
-  public function __construct(Container $container, ComposerManager $composer, $force = false, $only = null)
-  {
-    $this->app = $container;
-    $this->composer = $composer;
-    $this->basePath = $container->basePath();
-    $this->publicPath = $container['path.public'];
-    $this->resourcePath = $container->basePath().'/resources';
-    $this->configPath = $container->basePath().'/config';
-    $this->providerPath = $container['path'].'/Providers';
-    $this->setForce($force);
-    $this->setTasks($only);
-  }
-
-  public function setForce($force)
-  {
-    $this->force = $force;
-  }
-
-  public function setTasks($only = null)
-  {
-    if (is_null($only))
-    {
-      $this->tasks = $this->allTasks;
-      return;
-    }
-
-    if (is_array($only))
-    {
-      $this->tasks = $only;
-      return;
-    }
-
-    $this->tasks = explode(',', $only);
-  }
-
-  public function getAllTasks()
-  {
-    return $this->allTasks;
-  }
 
   public function generator()
   {

@@ -3,12 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -18,10 +16,12 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
-        ValidationException::class,
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Validation\ValidationException::class,
     ];
 
     /**
@@ -29,76 +29,91 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
-        parent::report($e);
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-  public function render($request, Exception $e)
-  {
-
-    if (config('app.debug'))
+    public function render($request, Exception $exception)
     {
-      return parent::render($request, $e);
+        if (config('app.debug'))
+        {
+            return parent::render($request, $exception);
+        }
+
+        if ($exception instanceof TokenMismatchException)
+        {
+            return redirect()
+              ->back()
+              ->with('error', 'セッションがタイムアウトしたか、アクセスできないページです');
+        }
+
+        if ($exception instanceof HttpException)
+        {
+            $status = $exception->getStatusCode();
+            $message = $this->getMessage($status);
+
+            return response()->view("errors.common", [
+                'exception' => $exception,
+                'message' => $message,
+            ], $status);
+        }
+
+        return response()->view("errors.common", [
+            'exception' => $exception,
+            'message' => 'ページを表示できませんでした',
+        ], 500);
     }
 
-    if ($e instanceof TokenMismatchException)
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
     {
-      return redirect()
-        ->back()
-        ->with('error', 'セッションがタイムアウトしたか、アクセスできないページです');
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+
+        return redirect()->guest('admin/login');
     }
 
-    if ($this->isHttpException($e))
+    public function getMessage($statusCode)
     {
-      $status = $e->getStatusCode();
-      $message = $this->getMessage($status);
-
-      return response()->view("errors.common", [
-        'exception' => $e,
-        'message' => $message,
-      ], $status);
+      switch ($statusCode)
+      {
+        case 400:
+          return 'Bad Request';
+        case 401:
+          return '認証に失敗しました';
+        case 403:
+          return 'アクセス権がありません';
+        case 404:
+          return '存在しないページです';
+        case 408:
+          return 'タイムアウトです';
+        case 414:
+          return 'リクエストURIが長すぎます';
+        case 500:
+          return 'Internal Server Error';
+        case 503:
+          return 'Service Unavailable';
+        default:
+          return 'エラー';
+      }
     }
-
-    return response()->view("errors.common", [
-      'exception' => $e,
-      'message' => 'ページを表示できませんでした',
-    ], 500);
-  }
-
-  public function getMessage($statusCode)
-  {
-    switch ($statusCode)
-    {
-      case 400:
-        return 'Bad Request';
-      case 401:
-        return '認証に失敗しました';
-      case 403:
-        return 'アクセス権がありません';
-      case 404:
-        return '存在しないページです';
-      case 408:
-        return 'タイムアウトです';
-      case 414:
-        return 'リクエストURIが長すぎます';
-      case 500:
-        return 'Internal Server Error';
-      case 503:
-        return 'Service Unavailable';
-      default:
-        return 'エラー';
-    }
-  }
 
 }

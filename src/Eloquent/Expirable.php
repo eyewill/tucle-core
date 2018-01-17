@@ -92,7 +92,7 @@ trait Expirable
       $query->where(function ($query) {
         $query->where($this->getTable().'.published_at', '<=', DB::raw('NOW()'));
         $query->where(function ($query) {
-          $query->orWhereNull($this->getTable().'.terminated_at');
+          $query->whereNull($this->getTable().'.terminated_at');
           $query->orWhere($this->getTable().'.terminated_at', '>', DB::raw('NOW()'));
         });
       });
@@ -110,7 +110,7 @@ trait Expirable
   public function scopeEffective($query)
   {
     $query->where(function ($query) {
-      $query->orWhere(function ($query) {
+      $query->where(function ($query) {
         $query->candidates();
       });
       $query->orWhere(function ($query) {

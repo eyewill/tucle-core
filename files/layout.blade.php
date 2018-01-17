@@ -82,7 +82,7 @@
                 @endif
                 <li role="separator" class="divider"></li>
                 <li>
-                  <a href="{{ url('logout') }}">
+                  <a href="{{ url('admin/logout') }}">
                     <i class="fa fa-btn fa-sign-out"></i>
                     ログアウト
                   </a>

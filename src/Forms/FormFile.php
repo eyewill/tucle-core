@@ -17,6 +17,21 @@ class FormFile extends FormInput
     $name = $spec->getName();
     $attributes = $spec->getAttributes()->get();
     $html = '';
+    $html.= <<< __SCRIPT__
+<script>
+$(function(){
+    var teTagBef = '<tr class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
+      ' data-template="{template}"', teContent = '<td class="kv-file-content"><a class="kv-file-zoom" onclick="return false" href="#" data-trigger="fileinput">\\n';
+    \$.fn.fileinputThemes.explorer.previewMarkupTags = {
+      tagBefore1: teTagBef + '>' + teContent,
+      tagBefore2: teTagBef + ' title="{caption}">' + teContent,
+      tagAfter: '</a></td>\\n{footer}</tr>\\n'
+    }
+    \$.fn.fileinputLocales['ja']['removeLabel'] = 'キャンセル';  
+});
+</script>
+__SCRIPT__;
+
     if (!is_null($model) && $model->{$name}->originalFilename())
     {
       $html.= $this->renderFileExists($name, $model, $attributes);
@@ -60,6 +75,7 @@ class FormFile extends FormInput
 <script>
     $(function(){
       $('[name=${name}_uploaded]').fileinput({
+        theme: 'explorer',
         overwriteInitial: false,
         language: 'ja',
         showClose: false,
@@ -67,11 +83,10 @@ class FormFile extends FormInput
         showCaption: false,
         showRemove: false,
         showBrowse: false,
-        maxImageWidth: 150,
         maxFileCount: 1,
-        resizeImage: true,
         initialPreview: $preview,
         initialPreviewAsData: true,
+        autoOrientImage: false,
         initialPreviewConfig: [{
           type: '$type',
           showDrag: false,
@@ -82,7 +97,14 @@ class FormFile extends FormInput
             _token: '$token',
             _method: 'DELETE'
           }
-        }]
+        }],
+        previewSettings: {
+          image: {
+            height: '160px',
+            'max-width': 'inherit',
+            'max-height': 'inherit'
+          }
+        }
       }).on('filepredelete', function(e, key) {
         return !confirm("ファイルを削除します。よろしいですか？");
       }).on('filedeleted', function(e, k, xhr, data) {
@@ -116,15 +138,23 @@ __SCRIPT__;
 <script>
     $(function(){
       $('[name=$name]').fileinput({
+        theme: 'explorer',
         language: 'ja',
-      //  showClose: false,
+        showClose: false,
         showUpload: false,
         showCaption: false,
-        showRemove: false,
-        maxImageWidth: 150,
+        showRemove: true,
+        showCancel: false,
         maxFileCount: 1,
-        resizeImage: true,
         textEncoding: 'SJIS',
+        autoOrientImage: false,
+        previewSettings: {
+          image: {
+            height: '160px',
+            'max-width': 'inherit',
+            'max-height': 'inherit'
+          }
+        }
       }).on('fileloaded', function (e) {
         if ($('[name=${name}_uploaded]').length > 0) {
           $('[name=${name}_uploaded]').data().fileinput.\$container.hide(500);
