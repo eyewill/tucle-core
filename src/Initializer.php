@@ -66,7 +66,10 @@ class Initializer extends Generator
 
     if (in_array('composer', $this->tasks))
     {
-      yield $this->composer->update();
+      foreach ($this->composer->update() as $output)
+      {
+        yield $output;
+      }
     }
 
     if (in_array('assets', $this->tasks))
@@ -186,7 +189,10 @@ class Initializer extends Generator
       );
       yield $this->makeEventLogViews();
 
-      $this->composer->dumpAutoload();
+      foreach ($this->composer->dumpAutoload() as $output)
+      {
+        yield $output;
+      }
     }
 
     if (in_array('exception', $this->tasks))
@@ -211,7 +217,11 @@ class Initializer extends Generator
         __DIR__.'/../files/database/seeds/UsersTableSeeder.stub',
         $this->databasePath.'/seeds/UsersTableSeeder.php'
       );
-      $this->composer->dumpAutoload();
+      foreach ($this->composer->dumpAutoload() as $output)
+      {
+        yield $output;
+      }
+
     }
 
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');

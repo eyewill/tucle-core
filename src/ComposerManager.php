@@ -1,28 +1,33 @@
 <?php namespace Eyewill\TucleCore;
 
-use File;
+use Illuminate\Container\Container;
 use Symfony\Component\Process\Process;
 
 class ComposerManager
 {
+  protected $app;
   protected $path;
+  protected $filesystem;
+  protected $log;
 
   protected $updates = false;
 
-  public function __construct()
+  public function __construct(Container $container)
   {
+    $this->app = $container;
+    $this->filesystem = $container['files'];
+    $this->log = $container['log'];
     $this->path = base_path('composer.json');
   }
 
-
   public function add($name, $version, $dev = false)
   {
-    if (!File::exists($this->path))
+    if (!$this->filesystem->exists($this->path))
     {
       return 'composer.json not exists.';
     }
 
-    $composerJson = json_decode(File::get($this->path), true);
+    $composerJson = json_decode($this->filesystem->get($this->path), true);
     $prefix = $dev ? 'require-dev.' : 'require.';
     if (array_has($composerJson, $prefix.$name))
     {
@@ -31,18 +36,18 @@ class ComposerManager
 
     array_set($composerJson, $prefix.$name, $version);
     $this->updates = true;
-    File::put($this->path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+    $this->filesystem->put($this->path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
     return 'add '.$name.':'.$version.' to composer.json';
   }
 
   public function addAutoload($name, $value, $dev = false)
   {
-    if (!File::exists($this->path))
+    if (!$this->filesystem->exists($this->path))
     {
       return 'composer.json not exists.';
     }
 
-    $composerJson = json_decode(File::get($this->path), true);
+    $composerJson = json_decode($this->filesystem->get($this->path), true);
     $baseKey = $dev ? 'autoload-dev' : 'autoload';
     $values = [];
     if (!is_array($value))
@@ -78,19 +83,19 @@ class ComposerManager
     }
 
     $this->updates = true;
-    File::put($this->path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+    $this->filesystem->put($this->path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
     return 'add values to '.$baseKey.':'.$name.' in composer.json';
   }
 
 
   public function scripts($command, $index = 1, $event = 'post-update-cmd')
   {
-    if (!File::exists($this->path))
+    if (!$this->filesystem->exists($this->path))
     {
       return 'composer.json not exists.';
     }
 
-    $composerJson = json_decode(File::get($this->path), true);
+    $composerJson = json_decode($this->filesystem->get($this->path), true);
     $commandList = array_get($composerJson, 'scripts.'.$event);
     if (in_array($command, $commandList))
     {
@@ -99,7 +104,7 @@ class ComposerManager
 
     array_splice($commandList, $index, 0, $command);
     array_set($composerJson, 'scripts.'.$event, $commandList);
-    File::put($this->path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+    $this->filesystem->put($this->path, json_encode($composerJson, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 
     return 'add '.$command.' to '.$event;
   }
@@ -111,20 +116,30 @@ class ComposerManager
       return 'composer.json not updated.';
     }
 
-    $process = new Process('composer update');
+    $command = 'composer update';
+    $process = new Process($command);
     $process->setTimeout(0);
-    $process->run();
+    $process->start();
+    yield '> '.$command;
+    foreach ($process as $type => $data)
+    {
+      yield trim($data);
+    }
     $this->updates = false;
-    return $process->getOutput();
   }
 
   public function dumpAutoload()
   {
-    $process = new Process('composer dumpautoload');
+    $command = 'composer dumpautoload';
+    $process = new Process($command);
     $process->setTimeout(0);
-    $process->run();
+    $process->start();
+    yield '> '.$command;
+    foreach ($process as $type => $data)
+    {
+      yield trim($data);
+    }
     $this->updates = false;
-    return $process->getOutput();
   }
 
   public function setUpdate()
