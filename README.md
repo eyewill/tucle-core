@@ -4,13 +4,13 @@
 
 #### for Vagrant
 
+##### プロジェクト用に空のフォルダを作成し、Vagurantfileの共有フォルダに追加
 ~~~ruby
-# プロジェクト用に空のフォルダを作成し、Vagurantfileの共有フォルダに追加
 config.vm.synced_folder "host/path/to/example-project", "guest/path/to/example-project"
 ~~~
 
+##### vagrantを再起動し、共有フォルダに移動
 ~~~
-# vagrantを再起動し、共有フォルダに移動
 > vagrant reload
 > vagrant ssh
 $ cd guest/path/to/example-project
@@ -20,23 +20,24 @@ $ cd guest/path/to/example-project
 
 #### recommend
 
-<pre>
-# install prestissimo
+##### Composer高速化プラグインをインストール
+~~~bash
 $ composer global require hirak/prestissimo
-</pre>
+~~~
 
 #### 共通
 
-<pre>
-# laravelプロジェクト作成
+##### laravelプロジェクト作成
+~~~bash
 $ composer create-project "laravel/laravel=~5.3.0" .
-</pre>
+~~~
 
-<pre>
-# TucleCoreをインストール
+##### TucleCoreをインストール
+~~~bash
 $ composer require eyewill/tucle-core:dev-master
 
-# 開発時はcomposer.jsonのautoload-devに以下を追加 して、composer update
+# 開発時はcomposer.jsonのautoload-devに以下を追加
+$ vi composer.json
 "autoload-dev": {
     "files": [
         "../packages/TucleBuilder/vendor/autoload.php",
@@ -44,30 +45,26 @@ $ composer require eyewill/tucle-core:dev-master
         "../packages/TucleCore/src/helpers.php"
     ]
 }
-
 $ composer dumpautoload
-</pre>
+~~~
 
-
-<pre>
-# app.phpに追加
+##### TucleCoreサービスプロバイダを登録
+~~~bash
 $ vi config/app.php
-</pre>
-~~~php
-  'providers' => [
-    ...
-    Eyewill\TucleCore\TucleCoreServiceProvider::class,
-    ...
-  ],
+'providers' => [
+  ...
+  Eyewill\TucleCore\TucleCoreServiceProvider::class,
+  ...
+],
 ~~~
 
 ## 使い方
 
 ### 初期化
 
-<pre>
+~~~bash
 $ php artisan tucle:init
-</pre>
+~~~
 
 インストール後一度だけ実行してください。
 
@@ -93,12 +90,14 @@ $ php artisan migrate
 
 ### ユーザー管理モジュールを作成
 
-<pre>
+~~~bash
 $ php artisan tucle:makeuser --force
-</pre>
+~~~
 
 ユーザー管理画面を作成します
+
 データベースのマイグレーションが終わってから実行してください
+
 --forceをつけない場合、User.phpは更新されません
 
 ### デフォルトの管理ユーザーを作成
@@ -109,9 +108,9 @@ $ php artisan db:seed
 
 ### 再生成
 
-<pre>
+~~~bash
 $ php artisan tucle:init --force --only=assets,packages
-</pre>
+~~~
 
 強制的に上書き実行させる場合は--forceをつけてください。
 
@@ -121,7 +120,7 @@ $ php artisan tucle:init --force --only=assets,packages
 
 ### リソースを更新 (Resources)
 
-~~~
+~~~bash
 > yarn
 > yarn global add bower
 > bower install
@@ -157,7 +156,7 @@ $ php artisan tucle:init --force --only=assets,packages
     ...
   ],
   ...
-  // フィールド名のキャメルケース+Valuesでセレクトボックスの値を定義できる
+  // フィールド名のキャメルケース+Valuesでセレクトボックスの値取得用コールバックになる
   public function categoryIdValues()
   {
     return ['1' => 'fuga', 2 => 'fuga'];
