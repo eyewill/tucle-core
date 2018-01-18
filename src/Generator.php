@@ -28,6 +28,7 @@ class Generator implements GeneratorContracts
   {
     $this->app = $container;
     $this->composer = $composer;
+    $this->filesystem = $container['files'];
     $this->migrationCreator = $migrationCreator;
     $this->basePath = $container->basePath();
     $this->publicPath = $container['path.public'];
@@ -42,7 +43,7 @@ class Generator implements GeneratorContracts
 
   public function setForce($force)
   {
-    if (!$this->app['files']->exists($this->basePath.'/.tucle'))
+    if (!$this->filesystem->exists($this->basePath.'/.tucle'))
     {
       $this->force = true;
       return;
@@ -78,20 +79,20 @@ class Generator implements GeneratorContracts
   {
     $name = $name ?: $dest;
 
-    if (!$this->force && $this->app['files']->exists($dest))
+    if (!$this->force && $this->filesystem->exists($dest))
     {
       return $dest.' already exists';
     }
 
-    $this->app['files']->makeDirectory(dirname($dest), 02755, true, true);
+    $this->filesystem->makeDirectory(dirname($dest), 02755, true, true);
 
-    if ($this->app['files']->isDirectory($src))
+    if ($this->filesystem->isDirectory($src))
     {
-      $this->app['files']->copyDirectory($src, $dest);
+      $this->filesystem->copyDirectory($src, $dest);
     }
     else
     {
-      $this->app['files']->copy($src, $dest);
+      $this->filesystem->copy($src, $dest);
     }
 
     return $name.' generated.';

@@ -109,11 +109,15 @@ class FakeModelGenerator
    * @param $name
    * @param int $weight
    * @param string $extension * or jpg or {jpg,png,gif} ...
+   * @param array|null $paths dummy image file paths if set null use default image paths
    */
-  public function image($name, $weight = 50, $extension = '*')
+  public function image($name, $weight = 50, $extension = '*', $paths = null)
   {
-    $entries = File::glob(resource_path().'/dummy_images/*.'.$extension);
-    $imagePath = $this->faker->optional($weight)->randomElement($entries);
+    if (is_null($paths))
+    {
+      $paths = File::glob(__DIR__.'/../resources/dummy_images/*.'.$extension);
+    }
+    $imagePath = $this->faker->optional($weight)->randomElement($paths);
     if ($imagePath)
     {
       $tmpImagePath = '/tmp/'.uniqid().'_'.basename($imagePath);
@@ -123,10 +127,19 @@ class FakeModelGenerator
     }
   }
 
-  public function file($name, $weight = 50, $extension = '*')
+  /**
+   * @param $name
+   * @param int $weight
+   * @param string $extension * or jpg or {pdf,xlsx,docx} ...
+   * @param array|null $paths dummy image file paths if set null use default image paths
+   */
+  public function file($name, $weight = 50, $extension = '*', $paths = null)
   {
-    $entries = File::glob(resource_path().'/dummy_files/*.'.$extension);
-    $filePath = $this->faker->optional($weight)->randomElement($entries);
+    if (is_null($paths))
+    {
+      $paths = File::glob(__DIR__.'/../resources/dummy_files/*.'.$extension);
+    }
+    $filePath = $this->faker->optional($weight)->randomElement($paths);
     if ($filePath)
     {
       $tmpFilePath = '/tmp/'.uniqid().'_'.basename($filePath);

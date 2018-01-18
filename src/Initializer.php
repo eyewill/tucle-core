@@ -50,6 +50,10 @@ class Initializer extends Generator
         __DIR__ . '/../files/.env.local.stub',
         $this->basePath.'/.env.local'
       );
+      yield $this->makeFromStub(
+        __DIR__ . '/../files/.gitignore.stub',
+        $this->basePath.'/.gitignore'
+      );
     }
 
     if (in_array('helpers', $this->tasks))
@@ -62,7 +66,10 @@ class Initializer extends Generator
 
     if (in_array('composer', $this->tasks))
     {
-      yield $this->composer->update();
+      foreach ($this->composer->update() as $output)
+      {
+        yield $output;
+      }
     }
 
     if (in_array('assets', $this->tasks))
@@ -75,8 +82,6 @@ class Initializer extends Generator
         __dir__.'/../files/assets/app-dev.stub',
         $this->resourcePath.'/assets/sass/app-dev.scss'
       );
-      yield $this->copyFilesDirectory('dummy_files');
-      yield $this->copyFilesDirectory('dummy_images');
       yield $this->makeFromStub(
         __dir__.'/../files/assets/.gitignore.stub',
         $this->publicPath.'/assets/.gitignore'
@@ -184,7 +189,10 @@ class Initializer extends Generator
       );
       yield $this->makeEventLogViews();
 
-      $this->composer->dumpAutoload();
+      foreach ($this->composer->dumpAutoload() as $output)
+      {
+        yield $output;
+      }
     }
 
     if (in_array('exception', $this->tasks))
@@ -209,7 +217,11 @@ class Initializer extends Generator
         __DIR__.'/../files/database/seeds/UsersTableSeeder.stub',
         $this->databasePath.'/seeds/UsersTableSeeder.php'
       );
-      $this->composer->dumpAutoload();
+      foreach ($this->composer->dumpAutoload() as $output)
+      {
+        yield $output;
+      }
+
     }
 
     $this->app['files']->put($this->basePath.'/.tucle', 'installed.');

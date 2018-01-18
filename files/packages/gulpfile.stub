@@ -42,9 +42,9 @@ elixir(function(mix) {
     .copy('bower_components/datatables.net-select-bs/css', 'public/assets/datatables/css')
     .copy(tucle_core_base_path+'/files/assets/datatables/*.js', 'public/assets/datatables/js')
     .copy(tucle_core_base_path+'/files/assets/datatables/*.css', 'public/assets/datatables/css')
-    .copy(tucle_core_base_path+'/assets/datatables-i18n/Japanese.json', 'public/assets/datatables/i18n/Japanese.json')
-    .copy(tucle_core_base_path+'/assets/jquery-datatables-checkboxes/js', 'public/assets/datatables/js')
-    .copy(tucle_core_base_path+'/assets/jquery-datatables-checkboxes/css', 'public/assets/datatables/css');
+    .copy(tucle_core_base_path+'/files/assets/datatables-i18n/Japanese.json', 'public/assets/datatables/i18n/Japanese.json')
+    .copy(tucle_core_base_path+'/files/assets/jquery-datatables-checkboxes/js', 'public/assets/datatables/js')
+    .copy(tucle_core_base_path+'/files/assets/jquery-datatables-checkboxes/css', 'public/assets/datatables/css');
 
   /* CKEditor */
   mix
