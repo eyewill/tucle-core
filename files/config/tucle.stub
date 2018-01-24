@@ -21,8 +21,14 @@ return [
    */
   'modules' => [
     [
+      'name' => 'user',
+      'allows' => 'manager',
+      'model' => \App\User::class,
+      'presenter' => \App\Http\Presenters\UserPresenter::class,
+    ],
+    [
       'name' => 'eventlog',
-      'allows' => 'admin',
+      'allows' => null,
       'model' => \App\EventLog::class,
       'presenter' => \App\Http\Presenters\EventLogPresenter::class,
     ],
@@ -53,6 +59,11 @@ return [
     [
       'name' => 'admin',
       'label' => 'システム管理者',
+      'default_url' => '/',
+    ],
+    [
+      'name' => 'manager',
+      'label' => 'サイト管理者',
       'default_url' => '/',
     ],
     [

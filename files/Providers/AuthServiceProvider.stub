@@ -1,49 +1,51 @@
-<?php namespace App\Providers;
+<?php
 
-use Eyewill\TucleCore\Module;
+namespace App\Providers;
+
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Eyewill\TucleCore\Module;
 
 class AuthServiceProvider extends ServiceProvider
 {
-  /**
-   * The policy mappings for the application.
-   *
-   * @var array
-   */
-  protected $policies = [
-    'App\Model' => 'App\Policies\ModelPolicy',
-  ];
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        'App\Model' => 'App\Policies\ModelPolicy',
+    ];
 
-  /**
-   * Register any authentication / authorization services.
-   *
-   * @return void
-   */
-  public function boot()
-  {
-    $this->registerPolicies();
-
-    Gate::before(function ($user, $ability) {
-
-      if ($user->role == 'admin')
-      {
-        return true;
-      }
-    });
-
-    /** @var Module $module */
-    foreach (module()->all() as $module)
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
     {
-      Gate::define('show-'.$module->name(), function ($user) use ($module) {
+        $this->registerPolicies();
 
-        if (is_null($module->model))
+        Gate::before(function ($user, $ability) {
+
+            if ($user->role == 'admin')
+            {
+                return true;
+            }
+        });
+
+        /** @var Module $module */
+        foreach (module()->all() as $module)
         {
-          return true;
-        }
+            Gate::define('show-'.$module->name(), function ($user) use ($module) {
 
-        return in_array($user->role, explode(',', $module->allows()));
-      });
+                if (is_null($module->model))
+                {
+                    return true;
+                }
+
+                return in_array($user->role, explode(',', $module->allows()));
+            });
+        }
     }
-  }
 }

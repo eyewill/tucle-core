@@ -13,12 +13,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-      'Illuminate\Auth\Events\Login' => [
-        'Eyewill\TucleCore\Listeners\LoggedIn',
-      ],
-      'Illuminate\Auth\Events\Logout' => [
-        'Eyewill\TucleCore\Listeners\LoggedOut',
-      ],
+        'Illuminate\Auth\Events\Login' => [
+            'Eyewill\TucleCore\Listeners\LoggedIn',
+        ],
+        'Illuminate\Auth\Events\Logout' => [
+            'Eyewill\TucleCore\Listeners\LoggedOut',
+        ],
     ];
 
     /**

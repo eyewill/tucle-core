@@ -1,80 +1,89 @@
-<?php namespace App;
+<?php
 
+namespace App;
+
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Eyewill\TucleCore\Eloquent\Batch;
 use Eyewill\TucleCore\Eloquent\EventLogTrait;
 use Eyewill\TucleCore\Eloquent\Nullable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-/**
-*/
-class User extends Authenticatable {
+class User extends Authenticatable
+{
+    use Notifiable;
+    use Nullable;
+    use Batch;
+    use EventLogTrait;
 
-  use Nullable;
-  use Batch;
-  use EventLogTrait;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_name',
+        'login_id',
+        'password',
+        'role',
+        'remember_token',
+        'disabled',
+    ];
 
-  /**
-  */
-  protected $fillable = [
-    'user_name',
-    'login_id',
-    'password',
-    'role',
-    'remember_token',
-    'disabled',
-  ];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
-  protected $hidden = [
-    'password',
-    'remember_token',
-  ];
+    /**
+    */
+    protected $nullable = [
+        'remember_token',
+    ];
 
-  /**
-  */
-  protected $nullable = [
-    'remember_token',
-  ];
-
-  /**
-  */
-  public function __toString() {
-    return $this->id;
-  }
-
-  /**
-  * @param $value
-  */
-  public function getTitleAttribute($value)
-  {
-    return $this->attributes['user_name'];
-  }
-
-  /**
-  */
-  public function route()
-  {
-    return route('user.index');
-  }
-
-  public function setPasswordAttribute($value)
-  {
-    if (empty($value))
-    {
-    unset($this->attributes['password']);
+    /**
+    */
+    public function __toString() {
+        return $this->id;
     }
-    else
+
+    /**
+    * @param $value
+    */
+    public function getTitleAttribute($value)
     {
-    $this->attributes['password'] = bcrypt($value);
+        return $this->attributes['user_name'];
     }
-  }
 
-  public function setDisabledAttribute($value)
-  {
-    $this->attributes['disabled'] = $value?1:0;
-  }
+    /**
+    */
+    public function route()
+    {
+        return route('user.index');
+    }
 
-  public function active()
-  {
-    return !$this->disabled;
-  }
+    public function setPasswordAttribute($value)
+    {
+        if (empty($value))
+        {
+        unset($this->attributes['password']);
+        }
+        else
+        {
+        $this->attributes['password'] = bcrypt($value);
+        }
+    }
+
+    public function setDisabledAttribute($value)
+    {
+        $this->attributes['disabled'] = $value?1:0;
+    }
+
+    public function active()
+    {
+        return !$this->disabled;
+    }
 }

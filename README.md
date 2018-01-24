@@ -125,7 +125,7 @@ $ php artisan tucle:init --force --only=assets,packages
 > yarn global add bower
 > bower install
 > yarn run prod
-# TucleCoreをpackagesフォルダから読み込む場合は
+# TucleCoreをpackagesフォルダから読み込む場合
 > yarn run prod-dev
 ~~~
 

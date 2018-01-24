@@ -16,10 +16,16 @@ class UsersTableSeeder extends Seeder
     {
       DB::table('users')->truncate();
       User::create([
-        'user_name'     => '管理者',
+        'user_name'     => 'システム管理者',
         config('tucle.auth_credential_key') => 'admin',
         'password' => 'password',
         'role' => 'admin',
+      ]);
+      User::create([
+        'user_name'     => 'サイト管理者',
+        config('tucle.auth_credential_key') => 'manager',
+        'password' => 'password',
+        'role' => 'manager',
       ]);
       User::create([
         'user_name'     => 'ユーザー',

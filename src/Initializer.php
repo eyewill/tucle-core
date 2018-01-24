@@ -21,21 +21,6 @@ class Initializer extends Generator
 
   public function generator()
   {
-    if (in_array('composer', $this->tasks))
-    {
-      yield $this->composer->add('laravelcollective/html', '5.3.*');
-      yield $this->composer->add('codesleeve/laravel-stapler', '1.0.*');
-      yield $this->composer->add('barryvdh/laravel-debugbar', '~2.4');
-      yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
-      yield $this->composer->scripts('php artisan ide-helper:generate', 1);
-      yield $this->composer->scripts('php artisan ide-helper:meta', 2);
-      yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
-      yield $this->composer->add('primalbase/view-builder', 'dev-master');
-      yield $this->composer->add('eyewill/tucle-builder', 'dev-master');
-      yield $this->composer->add('bugsnag/bugsnag-laravel', '^2.0');
-      yield $this->composer->addAutoload('files', 'app/helpers.php');
-    }
-
     if (in_array('config', $this->tasks))
     {
       yield $this->makeFromStub(
@@ -51,9 +36,28 @@ class Initializer extends Generator
         $this->basePath.'/.env.local'
       );
       yield $this->makeFromStub(
+        __DIR__ . '/../files/.env.local.stub',
+        $this->basePath.'/.env'
+      );
+      yield $this->makeFromStub(
         __DIR__ . '/../files/.gitignore.stub',
         $this->basePath.'/.gitignore'
       );
+    }
+
+    if (in_array('composer', $this->tasks))
+    {
+      yield $this->composer->add('laravelcollective/html', '5.3.*');
+      yield $this->composer->add('codesleeve/laravel-stapler', '1.0.*');
+      yield $this->composer->add('barryvdh/laravel-debugbar', '~2.4');
+      yield $this->composer->add('barryvdh/laravel-ide-helper', '^2.2');
+      yield $this->composer->scripts('cpphp artisan ide-helper:generate', 1);
+      yield $this->composer->scripts('php artisan ide-helper:meta', 2);
+      yield $this->composer->add('primalbase/laravel5-migrate-build', 'dev-master');
+      yield $this->composer->add('primalbase/view-builder', 'dev-master');
+      yield $this->composer->add('eyewill/tucle-builder', 'dev-master');
+      yield $this->composer->add('bugsnag/bugsnag-laravel', '^2.0');
+      yield $this->composer->addAutoload('files', 'app/helpers.php');
     }
 
     if (in_array('helpers', $this->tasks))

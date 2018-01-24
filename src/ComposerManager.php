@@ -71,7 +71,10 @@ class ComposerManager
     {
       foreach ($values as $value)
       {
-        $composerJson[$baseKey][$name][] = $value;
+        if (!in_array($value, $composerJson[$baseKey][$name]))
+        {
+          $composerJson[$baseKey][$name][] = $value;
+        }
       }
     }
     else

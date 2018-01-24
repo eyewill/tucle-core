@@ -5,9 +5,7 @@ use Eyewill\TucleCore\Contracts\NavigationManager;
 if (!function_exists('role')) {
   function role($name)
   {
-    return collect(config('tucle.roles'))->first(function ($value) use ($name) {
-      return ($value['name'] == $name);
-    });
+    return \Eyewill\TucleCore\Support\Role::get($name);
   }
 }
 
@@ -64,5 +62,12 @@ if (!function_exists('fakemodel')) {
   function fakemodel()
   {
     return app()->make(\Eyewill\TucleCore\Database\FakeModelGenerator::class);
+  }
+}
+
+if (!function_exists('visibilities')) {
+  function visibilities($user)
+  {
+    return \Eyewill\TucleCore\Support\Role::visibilities($user);
   }
 }
