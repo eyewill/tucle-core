@@ -1,11 +1,20 @@
 <?php
 use Eyewill\TucleCore\Contracts\ModuleManager;
 use Eyewill\TucleCore\Contracts\NavigationManager;
+use Eyewill\TucleCore\Support\Role;
 
 if (!function_exists('role')) {
   function role($name)
   {
     return \Eyewill\TucleCore\Support\Role::get($name);
+  }
+}
+
+if (!function_exists('roles')) {
+  function roles()
+  {
+    return Role::roles();
+
   }
 }
 

@@ -31,13 +31,16 @@ class Initializer extends Generator
         __DIR__.'/../files/config/app.stub',
         $this->configPath.'/app.php'
       );
-      yield $this->makeFromStub(
-        __DIR__ . '/../files/.env.local.stub',
-        $this->basePath.'/.env.local'
-      );
-      yield $this->makeFromStub(
-        __DIR__ . '/../files/.env.local.stub',
-        $this->basePath.'/.env'
+      $env =         [
+        'APP_URL=http://localhost' => 'http://localhost/admin',
+        'MAIL_HOST=mailtrap.io'    => 'localhost',
+        'MAIL_PORT=2525'           => '1025',
+        'FRONT_URL='               => 'http://localhost',
+        'BUGSNAG_API_KEY='         => '',
+      ];
+      yield $this->updateDotEnv(
+        $this->basePath.'/.env',
+        $env
       );
       yield $this->makeFromStub(
         __DIR__ . '/../files/.gitignore.stub',

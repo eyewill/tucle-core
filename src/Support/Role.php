@@ -42,4 +42,14 @@ class Role
 
     return $visibilities;
   }
+
+  public static function visible($user, $role)
+  {
+    if ($user->role == 'admin')
+    {
+      return true;
+    }
+
+    return in_array($role, static::visibilities($user));
+  }
 }

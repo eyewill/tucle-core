@@ -177,7 +177,11 @@ class UserPresenter extends ModelPresenter {
 
   public function roleValues()
   {
-    return array_pluck(config('tucle.roles', []), 'label', 'name');
+    $visibilities = visibilities(auth()->user());
+    $values = roles()->pluck('label', 'name');
+    return $values->filter(function($label, $name) use ($visibilities) {
+      return in_array($name, $visibilities);
+    });
   }
 
   public function roleTableColumn($model, $format)
@@ -206,5 +210,10 @@ class UserPresenter extends ModelPresenter {
   {
     $format = '<td data-search="%s">%s</td>';
     return sprintf($format, $model->disabled, array_get($this->disabledFilterValues(), $model->disabled, '-'));
+  }
+
+  public function getEntriesBuilder($model)
+  {
+    return parent::getEntriesBuilder($model)->visible();
   }
 }

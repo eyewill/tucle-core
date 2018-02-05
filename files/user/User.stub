@@ -86,4 +86,12 @@ class User extends Authenticatable
     {
         return !$this->disabled;
     }
+
+    public function scopeVisible($builder)
+    {
+        if (auth()->user()->role != 'admin')
+        {
+            $builder->whereIn('role', visibilities(auth()->user()));
+        }
+    }
 }
