@@ -20,12 +20,12 @@ return [
    * - presenter 使用するプレゼンター
    */
   'modules' => [
-    [
-      'name' => 'user',
-      'allows' => 'manager',
-      'model' => \App\User::class,
-      'presenter' => \App\Http\Presenters\UserPresenter::class,
-    ],
+//    [
+//      'name' => 'user',
+//      'allows' => 'manager',
+//      'model' => \App\User::class,
+//      'presenter' => \App\Http\Presenters\UserPresenter::class,
+//    ],
     [
       'name' => 'eventlog',
       'allows' => null,
