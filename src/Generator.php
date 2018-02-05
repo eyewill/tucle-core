@@ -124,4 +124,45 @@ class Generator implements GeneratorContracts
       return $table.' migration file can\'t generated.'.$e->getMessage();
     }
   }
+
+  public function updateDotEnv($path, $replacement = [], $name = null)
+  {
+    $name = $name ?: $path;
+
+    if (!$this->filesystem->exists($path))
+    {
+      return $path.' not found';
+    }
+
+    $data = '';
+    foreach (file($path) as $line)
+    {
+      $line = trim($line);
+      foreach ($replacement as $pair => $to)
+      {
+        list($key) = explode('=', $pair);
+        if ($line === $pair)
+        {
+          $data.= $key.'='.$to.PHP_EOL;
+          array_shift($replacement);
+          continue 2;
+        }
+        elseif (strpos($line, $key.'=') !== false)
+        {
+          array_shift($replacement);
+          $data.= $line.PHP_EOL;
+          continue 2;
+        }
+      }
+      $data.= $line.PHP_EOL;
+    }
+    foreach ($replacement as $pair => $to)
+    {
+      list($key) = explode('=', $pair);
+      $data.= $key.'='.$to.PHP_EOL;
+    }
+    file_put_contents($path, $data);
+
+    return $name.' updated.';
+  }
 }
