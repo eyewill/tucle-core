@@ -60,6 +60,7 @@ elixir((mix) => {
   mix
     .copy('bower_components/bootstrap-fileinput/css', 'public/assets/bootstrap-fileinput/css')
     .copy('bower_components/bootstrap-fileinput/img', 'public/assets/bootstrap-fileinput/img')
-    .copy('bower_components/bootstrap-fileinput/js', 'public/assets/bootstrap-fileinput/js');
+    .copy('bower_components/bootstrap-fileinput/js', 'public/assets/bootstrap-fileinput/js')
+    .copy('bower_components/bootstrap-fileinput/themes', 'public/assets/bootstrap-fileinput/themes');
 
 });
