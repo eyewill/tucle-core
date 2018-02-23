@@ -34,6 +34,17 @@
 ],
 ~~~
 
+- User/UpdateRequestからuser_idのチェックを削除
+
+~~~php
+public function rules() {
+return [
+  'user_name' => 'required',
+  'role' => 'required',
+];
+}
+~~~
+
 #### 0.5.5
 
 ##### 変更点
