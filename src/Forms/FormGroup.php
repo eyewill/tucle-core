@@ -48,6 +48,11 @@ class FormGroup extends FormInput
       {
         continue;
       }
+      $creates = array_get($spec, 'creates', false);
+      if ($creates && !is_null($model))
+      {
+        continue;
+      }
       $type = array_get($spec, 'type', 'text');
       $class = array_get($spec, 'class', 'col-xs-12');
       $factory = app()->make('form.'.$type, [$spec]);
