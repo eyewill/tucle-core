@@ -118,10 +118,8 @@ class UserModule extends Generator
 
       $builder->setRule('update', function ($builder) {
         $code = '';
-        $code.= '$user = $this->route(\'user\');'.PHP_EOL;
         $code.= 'return ['.PHP_EOL;
         $code.= "'user_name' => 'required',".PHP_EOL;
-        $code.= "'login_id' => 'required|unique:users,login_id,'.\$user->id,".PHP_EOL;
         $code.= "'role' => 'required',".PHP_EOL;
         $code.= '];';
 
