@@ -25,7 +25,7 @@ $ composer create-project "laravel/laravel=~5.2.0" .
 
 <pre>
 # TucleCoreをインストール
-$ composer require eyewill/tucle-core:dev-master
+$ composer require eyewill/tucle-core:^0.5
 </pre>
 
 <pre>

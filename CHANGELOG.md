@@ -1,5 +1,39 @@
 ### リリースノート
 
+#### 0.5.6
+
+##### 変更点
+
+- Presenterにcreatesフラグを追加
+
+##### アップグレード
+
+-
+
+##### 推奨するアップグレード
+
+- UserPresenterを更新して、作成時と更新時で表示が変わるようにする
+
+~~~php
+[
+  'type' => 'text',
+  'name' => 'user_name',
+  'label' => 'ユーザー名',
+  'class' => 'col-sm-6',
+  'creates' => true,
+],
+[
+  'type' => 'static',
+  'name' => 'user_name',
+  'label' => 'ユーザー名',
+  'attr' => [
+    'placeholder' => '',
+  ],
+  'class' => 'col-sm-6',
+  'exists' => true,
+],
+~~~
+
 #### 0.5.5
 
 ##### 変更点

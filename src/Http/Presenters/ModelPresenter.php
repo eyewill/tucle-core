@@ -365,6 +365,11 @@ class ModelPresenter extends Presenter
       {
         continue;
       }
+      $creates = array_get($spec, 'creates', false);
+      if ($creates && !is_null($model))
+      {
+        continue;
+      }
       $type = array_get($spec, 'type', 'text');
 
       $factory = app()->make('form.'.$type, [$spec]);

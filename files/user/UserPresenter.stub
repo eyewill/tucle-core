@@ -41,6 +41,14 @@ class UserPresenter extends ModelPresenter {
             'placeholder' => '',
           ],
           'class' => 'col-sm-6',
+          'creates' => true,
+        ],
+        [
+          'type' => 'static',
+          'name' => 'login_id',
+          'label' => 'ログインID',
+          'class' => 'col-sm-6',
+          'exists' => true,
         ],
         [
           'type' => 'password',
