@@ -118,10 +118,10 @@ class ModelPresenter extends Presenter
     {
       $builder = $this->getEntriesBuilder($model);
     }
-    if (request()->get('take') != 'all')
+    if (!is_null($this->getLimit()) && request()->get('take') != 'all')
     {
       $builder->skip(request()->get('take'));
-      $builder->limit($this->limit);
+      $builder->limit($this->getlimit());
     }
     $sortColumns = $this->defaultSortColumn;
     if (!is_array($sortColumns))
@@ -174,7 +174,11 @@ class ModelPresenter extends Presenter
   {
     $values = [];
 
-    if (is_null($total))
+    if (is_null($this->getLimit()))
+    {
+      //
+    }
+    elseif (is_null($total))
     {
       $values['0'] = '1件目から'.$this->getLimit().'件目まで';
     }
@@ -214,9 +218,11 @@ class ModelPresenter extends Presenter
 
   public function renderLengthSelector($total)
   {
-    $values = [
-      '' => $this->getLimit().'件',
-    ];
+    $values = [];
+    if (!is_null($this->getLimit()))
+    {
+      $values[''] = $this->getLimit().'件';
+    }
 
     if (is_null($total))
     {
