@@ -21,18 +21,31 @@ class TucleHomePresenter extends Presenter
       $entries = [];
       foreach (module()->all() as $module)
       {
+        $newest = null;
         if (Gate::allows('show-'.$module->name(), $module->model))
         {
-          $updatedAt = '-';
-          if (Schema::hasColumn(app($module->model)->getTable(), 'updated_at'))
+          if (method_exists($module->presenter, 'getTotal'))
           {
-            $newest = app($module->model)->orderBy('updated_at', 'desc')->first();
-            $updatedAt = $newest && $newest->updated_at ? $newest->updated_at->format('Y/m/d H:i') : '-';
+            $count = $module->presenter->getTotal($module->model);
+            if (Schema::hasColumn(app($module->model)->getTable(), 'updated_at'))
+            {
+              $builder = $module->presenter->getEntriesBuilder($module->model)->orderBy('updated_at', 'desc');
+              $newest = $module->presenter->getEntries($builder)->first();
+            }
           }
+          else
+          {
+            $count = app($module->model)->count();
+            if (Schema::hasColumn(app($module->model)->getTable(), 'updated_at'))
+            {
+              $newest = app($module->model)->orderBy('updated_at', 'desc')->first();
+            }
+          }
+          $updatedAt = $newest && $newest->updated_at ? $newest->updated_at->format('Y/m/d H:i') : '-';
           $entries[] = [
             'label' => $module->label(),
             'url' => $module->url(),
-            'count' => app($module->model)->count(),
+            'count' => $count,
             'updated_at' => $updatedAt,
           ];
         }
