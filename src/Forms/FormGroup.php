@@ -53,6 +53,11 @@ class FormGroup extends FormInput
       {
         continue;
       }
+      $name = array_get($spec, 'name');
+      if (!$this->presenter->renderWhen($name, $model))
+      {
+        continue;
+      }
       $type = array_get($spec, 'type', 'text');
       $class = array_get($spec, 'class', 'col-xs-12');
       $factory = app()->make('form.'.$type, [$spec]);

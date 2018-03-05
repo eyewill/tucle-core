@@ -466,6 +466,17 @@ class ModelPresenter extends Presenter
     return $html;
   }
 
+  public function renderWhen($column, $model)
+  {
+    $method = 'when'.studly_case($column);
+    if (method_exists($this, $method))
+    {
+      return $this->$method($model);
+    }
+
+    return true;
+  }
+
   public function getAttributeNames()
   {
     $attributeNames = [];
