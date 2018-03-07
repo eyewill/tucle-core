@@ -10,7 +10,7 @@ use Eyewill\TucleCore\Factories\Forms\RadioFactory;
  */
 class FormRadio extends FormInput
 {
-  protected function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $factory = $this->factory;
     $name = $factory->getName();

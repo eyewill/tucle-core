@@ -2,7 +2,7 @@
 
 class FormPassword extends FormInput
 {
-  protected function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $spec = $this->factory;
     $name = $spec->getName();

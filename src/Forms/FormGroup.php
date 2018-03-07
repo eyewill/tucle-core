@@ -36,7 +36,7 @@ class FormGroup extends FormInput
     return $html;
   }
 
-  public function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $html = '';
     $forms = $this->factory->getForms();
@@ -71,7 +71,7 @@ class FormGroup extends FormInput
     return $html;
   }
 
-  protected function formGroup($source = '')
+  public function formGroup($source = '')
   {
     $class = 'form-group group';
 
