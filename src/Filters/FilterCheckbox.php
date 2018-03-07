@@ -20,7 +20,7 @@ class FilterCheckbox extends FilterInput
     return parent::label();
   }
 
-  protected function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $factory = $this->factory;
     $inputName = $factory->getName();

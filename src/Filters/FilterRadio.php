@@ -10,7 +10,7 @@ use Eyewill\TucleCore\Factories\Filters\RadioFactory;
  */
 class FilterRadio extends FilterInput
 {
-  protected function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $factory = $this->factory;
     $name = $factory->getName();

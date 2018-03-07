@@ -11,7 +11,7 @@ use Eyewill\TucleCore\Factories\Forms\FileFactory;
  */
 class FormFile extends FormInput
 {
-  protected function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $spec = $this->factory;
     $name = $spec->getName();
@@ -40,7 +40,7 @@ __SCRIPT__;
     return $html;
   }
 
-  protected function renderFileExists($name, $model, $attributes)
+  public function renderFileExists($name, $model, $attributes)
   {
     /** @var Attachment $attachment */
     $attachment = $model->{$name};
@@ -130,7 +130,7 @@ __SCRIPT__;
     return $html;
   }
 
-  protected function renderFile($name, $attributes)
+  public function renderFile($name, $attributes)
   {
     $html = '';
     $html.= $this->presenter->getForm()->file($name, $attributes)->toHtml();

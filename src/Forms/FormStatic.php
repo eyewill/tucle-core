@@ -2,7 +2,7 @@
 
 class FormStatic extends FormInput
 {
-  public function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $name = $this->factory->getName();
     $value = $this->factory->getDefaultValue($this->presenter, $model);

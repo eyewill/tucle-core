@@ -70,7 +70,7 @@ class FormInput
     return $html;
   }
 
-  protected function addon($source)
+  public function addon($source)
   {
     $html = '';
     $prefix = $this->factory->getAttribute('prefix');
@@ -101,7 +101,7 @@ class FormInput
     return $html;
   }
 
-  protected function renderComponent($model)
+  public function renderComponent($model = null)
   {
     $factory = $this->factory;
     $name = $factory->getName();
@@ -117,7 +117,7 @@ class FormInput
    * @param string $source
    * @return string
    */
-  protected function formGroup($source = '')
+  public function formGroup($source = '')
   {
     $class = 'form-group';
 
