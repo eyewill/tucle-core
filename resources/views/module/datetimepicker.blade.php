@@ -12,6 +12,7 @@
     $('[data-provider=datetimepicker]').each(function () {
       $(this).datetimepicker({
         locale: 'ja',
+        useCurrent: false,
         viewDate: $(this).val() || false
       });
     });
