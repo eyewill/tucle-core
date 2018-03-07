@@ -70,7 +70,7 @@ class FormInput
     return $html;
   }
 
-  protected function addon($source)
+  public function addon($source)
   {
     $html = '';
     $prefix = $this->factory->getAttribute('prefix');
