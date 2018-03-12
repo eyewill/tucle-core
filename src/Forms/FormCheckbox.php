@@ -10,14 +10,14 @@ use Eyewill\TucleCore\Factories\Forms\CheckboxFactory;
  */
 class FormCheckbox extends FormInput
 {
-  public function label()
+  public function label($model = null)
   {
     if (!$this->factory->isMulti())
     {
       return '';
     }
 
-    return parent::label();
+    return parent::label($model);
   }
 
   public function renderComponent($model = null)

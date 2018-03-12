@@ -54,9 +54,9 @@ class FormInput
       $html.= '<div class="'.$spec->getClass().'">';
     }
 
-    $html.= $this->label();
+    $html.= $this->label($model);
     $html.= $this->renderComponent($model);
-    $html.= $this->renderHelp();
+    $html.= $this->renderHelp($model);
     $html.= $this->renderError();
 
     if ($row)
@@ -134,9 +134,9 @@ class FormInput
   }
 
 
-  public function label()
+  public function label($model = null)
   {
-
+    if ($this->factory->getName() == 'balance')debug($this->factory->getRequired());
     $html = '';
     $html.= '<label class="control-label">';
     $html.= e($this->factory->getLabel());
@@ -149,7 +149,7 @@ class FormInput
     return $html;
   }
 
-  public function renderHelp()
+  public function renderHelp($model = null)
   {
     $help = $this->factory->getHelp();
 
