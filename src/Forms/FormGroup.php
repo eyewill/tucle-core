@@ -15,7 +15,7 @@ class FormGroup extends FormInput
     $spec = $this->factory;
 
     $html = '';
-    $html.= $this->label();
+    $html.= $this->label($model);
     if ($row)
     {
       $html.= '<div class="row">';
@@ -23,7 +23,7 @@ class FormGroup extends FormInput
     }
 
     $html.= $this->renderComponent($model);
-    $html.= $this->renderHelp();
+    $html.= $this->renderHelp($model);
 
     if ($row)
     {

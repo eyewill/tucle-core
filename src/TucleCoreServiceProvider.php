@@ -6,6 +6,7 @@ use Eyewill\TucleCore\Contracts\Initializer;
 use Eyewill\TucleCore\Contracts\ModuleManager;
 use Eyewill\TucleCore\Contracts\NavigationManager;
 use Eyewill\TucleCore\Database\FakeModelGenerator;
+use Eyewill\TucleCore\Factories\Forms\CustomFactory;
 use Eyewill\TucleCore\Factories\Forms\PasswordFactory;
 use Eyewill\TucleCore\Factories\Forms\StaticFactory;
 use Eyewill\TucleCore\Factories\InitializerFactory;
@@ -49,6 +50,7 @@ class TucleCoreServiceProvider extends ServiceProvider
     'textarea' => TextareaFactory::class,
     'password' => PasswordFactory::class,
     'static' => StaticFactory::class,
+    'custom' => CustomFactory::class,
   ];
 
   protected $filterFactories = [
