@@ -136,7 +136,6 @@ class FormInput
 
   public function label($model = null)
   {
-    if ($this->factory->getName() == 'balance')debug($this->factory->getRequired());
     $html = '';
     $html.= '<label class="control-label">';
     $html.= e($this->factory->getLabel());
