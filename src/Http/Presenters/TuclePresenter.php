@@ -6,6 +6,20 @@ use Illuminate\Support\HtmlString;
 
 class TuclePresenter
 {
+  public function title()
+  {
+    $title = '';
+
+    if (!app()->environment('production'))
+    {
+      $title.= app()->environment().' - ';
+    }
+
+    $title.= config('tucle.brand', 'TUCLE5');
+
+    return $title;
+  }
+
   public function navigation()
   {
     $html = '';
