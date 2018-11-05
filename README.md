@@ -94,9 +94,10 @@ $ php artisan tucle:init --force --only=assets,packages
 ### リソースを更新 (Resources)
 
 ~~~
-# Vagrantの場合、host(windows)側で実行する
 > npm install
+> sudo npm install -g bower
 > bower install
+> sudo npm install -g gulp
 > gulp
 ~~~
 
