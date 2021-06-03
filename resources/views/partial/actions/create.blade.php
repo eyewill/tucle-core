@@ -7,6 +7,11 @@
         一覧に戻る
       </a>
 
+      <a href="{{ $presenter->route('create') }}" class="btn btn-primary">
+        <span class="fa fa-file-o"></span>
+        作成
+      </a>
+
     </div>
   </div>
 </div>
