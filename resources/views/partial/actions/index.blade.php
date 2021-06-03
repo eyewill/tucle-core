@@ -16,7 +16,7 @@
       @if ($presenter->hasRoute('create'))
       <a href="{{ $presenter->route('create') }}" class="btn btn-primary">
         <span class="fa fa-file-o"></span>
-        作成
+        新規作成
       </a>
       @endif
     </div>
